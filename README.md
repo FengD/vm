@@ -40,7 +40,7 @@
 	>> * topic：驼峰，首字母小写
 	>> * package：名字首字母小写 
 	> 2. 文件夹名字：小写单词下划线分割
-	> 3. 所以文件都应有namespace，一律为`itd_lidar`
+	> 3. 所以文件都应有namespace，一律为`itd_hmi`
 	> 4. 文件头的copyright等信息注意填写，有修改的注意在author中添加自己的名字
 	> 5. 项目中的可执行文件均使用`yaml`文件传递参数, S32V版本的和ROS版本的区分
 

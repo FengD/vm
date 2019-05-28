@@ -36,9 +36,9 @@
 	
 * C/C++其他规范 
 	> ROS
-	>> service/msg: 按照类名写
-	>> topic：驼峰，首字母小写
-	>> package：名字首字母小写 
+	>> * service/msg: 按照类名写
+	>> * topic：驼峰，首字母小写
+	>> * package：名字首字母小写 
 	> 文件夹名字：小写单词下划线分割
 	> 所以文件都应有namespace，一律为`itd_lidar`
 	> 文件头的copyright等信息注意填写，有修改的注意在author中添加自己的名字

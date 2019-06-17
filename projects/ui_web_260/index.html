@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="imgs/favicon.ico">
+
+  <link href="css/default.css" rel="stylesheet">
+  <link href="css/buttons.css" rel="stylesheet">
+
+
+  <title>HirainITD</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <link href="font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <nav class="navbar navbar-inverse navbar-fixed-top"  tabindex="-1">
+    <div class="container">
+
+      <div class="navbar-header">
+        <img src="./imgs/logo.png" class="navbar-brand logo img-rounded">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        <a class="navbar-brand" href="#">HirainITD</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">260 HOME</a></li>
+          <li>
+            <div class="btn-group" tabindex="-1">
+              <button type="button" class="btn-head btn btn-default">Start Position Select</button>
+              <button type="button" class="btn-head btn btn-default dropdown-toggle" data-toggle="dropdown">
+            		<span class="caret"></span>
+            	</button>
+              <ul class="dropdown-menu" role="menu">
+                <li><button class="button button-default  button-small start_pos" value="0">1</button></li>
+                <li><button class="button button-default  button-small start_pos" value="1">2</button></li>
+                <li><button class="button button-default  button-small start_pos" value="2">3</button></li>
+                <li><button class="button button-default  button-small start_pos" value="3">4</button></li>
+                <li><button class="button button-default  button-small start_pos" value="4">5</button></li>
+                <li><button class="button button-default  button-small start_pos" value="5">6</button></li>
+              </ul>
+            </div>
+          </li>
+
+          <li>
+            <div class="btn-group" tabindex="-1">
+              <button type="button" class="btn-head btn btn-default">Show Items</button>
+              <button type="button" class="btn-head btn btn-default dropdown-toggle" data-toggle="dropdown">
+            		<span class="caret"></span>
+            	</button>
+              <ul class="dropdown-menu" role="menu">
+                <li>
+                  <div class="row display-drop-item">
+                    <div>
+                      <label class="form-inline"><input class="mui-switch mui-switch-animbg wheel-speed-check" type="checkbox"> Wheels Speed</label>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="row display-drop-item">
+                    <div>
+                      <label class="form-inline"><input class="mui-switch mui-switch-animbg path-check" type="checkbox" checked> Path</label>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <!--/.nav-collapse -->
+    </div>
+  </nav>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 center">
+      <div id="map_top_view" class="map" />
+      </div>
+    </div>
+  </div>
+
+  <div class="wheel-speed-display">
+    <div class="input-group margin-bottom-sm">
+      <span class="input-group-addon"><i class="fa fa-life-buoy fa-lg wheelicon"></i>LF</span>
+      <span class="wheel1 input-group-addon">0.0</span>
+    </div>
+    <div class="input-group margin-bottom-sm">
+      <span class="input-group-addon"><i class="fa fa-life-buoy fa-lg wheelicon"></i>RF</span>
+      <span class="wheel2 input-group-addon">0.0</span>
+    </div>
+    <div class="input-group margin-bottom-sm">
+      <span class="input-group-addon"><i class="fa fa-life-buoy fa-lg wheelicon"></i>LB</span>
+      <span class="wheel3 input-group-addon">0.0</span>
+    </div>
+    <div class="input-group margin-bottom-sm">
+      <span class="input-group-addon"><i class="fa fa-life-buoy fa-lg wheelicon"></i>RB</span>
+      <span class="wheel4 input-group-addon">0.0</span>
+    </div>
+  </div>
+
+  <!-- /.container -->
+
+
+  <!-- Bootstrap core JavaScript
+    ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="js/jquery/jquery-3.3.1.min.js"></script>
+  <script src="bootstrap-3.3.7/js/bootstrap.min.js"></script>
+  <script src="js/threejs/three.js"></script>
+  <script type="text/javascript" src="roslib/eventemitter2.min.js"></script>
+  <script type="text/javascript" src="roslib/roslib.min.js"></script>
+  <script type="text/javascript" src="js/ros.js"></script>
+  <script type="text/javascript" src="js/threejs/js/loaders/PCDLoader.js"></script>
+  <script type="text/javascript" src="js/threejs/js/controls/TrackballControls.js"></script>
+  <script type="text/javascript" src="js/threejs/js/loaders/BinaryLoader.js"></script>
+  <script type="text/javascript" src="js/map.js"></script>
+  <script type="text/javascript" src="js/action.js"></script>
+
+
+  <script>
+
+    var ros = initRos("localhost", 9090);
+    var ndt_pose_pub = pub_create(ros, '/car_info', 'geometry_msgs/PoseStamped');
+    init();
+    animate();
+
+    $(".start_pos").mouseover(function() {
+      startPoseSphere[this.value].material.color.r = 1;
+      startPoseSphere[this.value].material.color.b = 0;
+      startPoseSphere[this.value].material.color.g = 0;
+      startPoseSphere[this.value].scale.x = startPoseSphere[this.value].scale.y = startPoseSphere[this.value].scale.z = 2;
+    });
+
+    $(".start_pos").mouseout(function() {
+      startPoseSphere[this.value].material.color.r = 0;
+      startPoseSphere[this.value].material.color.b = 0;
+      startPoseSphere[this.value].material.color.g = 1;
+      startPoseSphere[this.value].scale.x = startPoseSphere[this.value].scale.y = startPoseSphere[this.value].scale.z = 1;
+    });
+
+    $(".start_pos").click(function() {
+      var index = this.value;
+      var pose_msg = msg_create({
+        header: {
+          frame_id: 'map',
+          seq: 0,
+          stamp: {
+            sec: 0,
+            nsec: 0
+          }
+        },
+        pose: {
+          position: {
+            x: startPositions[index].x,
+            y: startPositions[index].y,
+            z: startPositions[index].ya
+          },
+          orientation: {
+            x: 0,
+            y: 0,
+            z: 0,
+            w: 0
+          }
+        }
+      });
+
+
+      ndt_pose_pub.publish(pose_msg);
+    });
+
+    var wheel_speed_sub = sub_create(ros, '/dr_deplacement', 'geometry_msgs/PoseStamped');
+
+    wheel_speed_sub.subscribe(function(message) {
+      // console.log(message);
+      $(".wheel1").text(message.pose.orientation.x.toFixed(2));
+      $(".wheel2").text(message.pose.orientation.y.toFixed(2));
+      $(".wheel3").text(message.pose.orientation.z.toFixed(2));
+      $(".wheel4").text(message.pose.orientation.w.toFixed(2));
+      $(".wheelicon").addClass("fa-spin");
+    });
+
+    function stopWheel() {
+      $(".wheelicon").removeClass("fa-spin");
+    }
+    setInterval(stopWheel, 1000);
+  </script>
+
+</body>
+
+</html>

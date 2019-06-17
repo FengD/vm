@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="imgs/favicon.ico">
+
+  <link href="css/default.css" rel="stylesheet">
+  <title>HirainITD</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="3rd_part/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <link href="3rd_part/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <nav class="navbar navbar-inverse navbar-fixed-top" tabindex="-1">
+    <div class="container">
+
+      <div class="navbar-header">
+        <img src="./imgs/logo.png" class="navbar-brand logo img-rounded">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+        <a class="navbar-brand" href="#">HirainITD</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">HDS Localization</a></li>
+          <li>
+            <div class="btn-group" tabindex="-1">
+              <button type="button" class="btn-head btn btn-default show_info_btn">Show Info</button>
+            </div>
+          </li>
+          <li>
+            <div class="btn-group" tabindex="-1">
+              <button type="button" class="btn-head btn btn-default show_camera_btn">Show Camera</button>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <!--/.nav-collapse -->
+    </div>
+  </nav>
+  <div id="main"></div>
+  <div class="info-display display-left">
+    <div class="input-group margin-bottom-sm">
+      <span class="input-group-addon">
+  <!-- <i class="fa fa-life-buoy fa-lg wheelicon"></i> -->
+        分离合并点</span>
+      <span class="nxtSpmrDis input-group-addon">N/A</span>
+    </div>
+    <div class="input-group margin-bottom-sm">
+      <span class="input-group-addon">
+  <!-- <i class="fa fa-life-buoy fa-lg wheelicon"></i> -->
+  匝道</span>
+      <span class="nxtRampDis input-group-addon">N/A</span>
+    </div>
+    <div class="input-group margin-bottom-sm">
+      <span class="input-group-addon">
+  <!-- <i class="fa fa-life-buoy fa-lg wheelicon"></i> -->
+  车道变更</span>
+      <span class="nxtLnNmChgDis input-group-addon">N/A</span>
+    </div>
+    <div class="input-group margin-bottom-sm">
+      <span class="input-group-addon">
+  <!-- <i class="fa fa-life-buoy fa-lg wheelicon"></i> -->
+  限速变化</span>
+      <span class="nxtSplmtChgDis input-group-addon">N/A</span>
+    </div>
+    <div class="input-group margin-bottom-sm">
+      <span class="input-group-addon">
+  <!-- <i class="fa fa-life-buoy fa-lg wheelicon"></i> -->
+  道路通行状态异常</span>
+      <span class="nxtDnStatusDis input-group-addon">N/A</span>
+    </div>
+    <div class="input-group margin-bottom-sm">
+      <span class="input-group-addon">
+  <!-- <i class="fa fa-life-buoy fa-lg wheelicon"></i> -->
+  开放路段</span>
+      <span class="nxtOpSegDis input-group-addon">N/A</span>
+    </div>
+    <div class="input-group margin-bottom-sm">
+      <span class="input-group-addon">
+  <!-- <i class="fa fa-life-buoy fa-lg wheelicon"></i> -->
+  接边跳变标记</span>
+      <span class="nxtJpFlgDis input-group-addon">N/A</span>
+    </div>
+    <div class="input-group margin-bottom-sm">
+      <span class="input-group-addon">
+  <!-- <i class="fa fa-life-buoy fa-lg wheelicon"></i> -->
+  交通灯</span>
+      <span class="nxtTfcLtDis input-group-addon">N/A</span>
+    </div>
+    <div class="input-group margin-bottom-sm">
+      <span class="input-group-addon">
+  <!-- <i class="fa fa-life-buoy fa-lg wheelicon"></i> -->
+  过街天桥</span>
+      <span class="nxtBrgDis input-group-addon">N/A</span>
+    </div>
+    <div class="input-group margin-bottom-sm">
+      <span class="input-group-addon">
+  <!-- <i class="fa fa-life-buoy fa-lg wheelicon"></i> -->
+  收费站</span>
+      <span class="nxtTlgtDis input-group-addon">N/A</span>
+    </div>
+    <div class="input-group margin-bottom-sm">
+      <span class="input-group-addon">
+  <!-- <i class="fa fa-life-buoy fa-lg wheelicon"></i> -->
+  隧道</span>
+      <span class="nxtTnlDis input-group-addon">N/A</span>
+    </div>
+    <div class="input-group margin-bottom-sm">
+      <span class="input-group-addon">
+  <!-- <i class="fa fa-life-buoy fa-lg wheelicon"></i> -->
+  交通标志牌</span>
+      <span class="nxtTfSgnDis input-group-addon">N/A</span>
+    </div>
+    <div class="input-group margin-bottom-sm">
+      <span class="input-group-addon">
+  <!-- <i class="fa fa-life-buoy fa-lg wheelicon"></i> -->
+  路面符号</span>
+      <span class="nxtSmblDis input-group-addon">N/A</span>
+    </div>
+    <div class="input-group margin-bottom-sm">
+      <span class="input-group-addon">
+  <!-- <i class="fa fa-life-buoy fa-lg wheelicon"></i> -->
+  杆状物</span>
+      <span class="nxtPlDis input-group-addon">N/A</span>
+    </div>
+    <div class="input-group margin-bottom-sm">
+      <span class="input-group-addon">
+  <!-- <i class="fa fa-life-buoy fa-lg wheelicon"></i> -->
+  信号失锁区域</span>
+      <span class="nxtDdrkDis input-group-addon">N/A</span>
+    </div>
+  </div>
+
+  <div class="info-display display-right">
+    <div class="input-group margin-bottom-sm">
+      <span class="input-group-addon">纬度</span>
+      <span class="latitude input-group-addon">0.0</span>
+    </div>
+    <div class="input-group margin-bottom-sm">
+      <span class="input-group-addon">经度</span>
+      <span class="longitude input-group-addon">0.0</span>
+    </div>
+    <div class="input-group margin-bottom-sm">
+      <span class="input-group-addon">航向</span>
+      <span class="heading input-group-addon">0.0</span>
+    </div>
+    <div class="input-group margin-bottom-sm">
+      <span class="input-group-addon">UTC</span>
+      <span class="utctime input-group-addon">0.0</span>
+    </div>
+  </div>
+
+  <div class="camera-container">
+    <div class="camera-display" />
+  </div>
+
+</body>
+
+
+<script type="text/javascript" src="3rd_part/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="js/threejs/three.min.js"></script>
+<script type="text/javascript" src="js/d3.min.js"></script>
+<script type="text/javascript" src="js/threejs/js/controls/OrbitControls.js"></script>
+<script type="text/javascript" src="js/threejs/js/loaders/BinaryLoader.js"></script>
+<script type="text/javascript" src="js/action.js"></script>
+<script type="text/javascript" src="js/webcam.js"></script>
+<script>
+  // global var
+  var div, width, height;
+  var fov, ratio;
+  var scene, camera, cameraControls, renderer, carPos, carTraceLine, searchPose;
+  var index;
+  var car_veyron;
+  var centerLng, centerLat;
+  var rtkPose;
+</script>
+<script type="text/javascript" src="js/utils.js"></script>
+<script type="text/javascript" src="js/tileImage.js"></script>
+<script language="JavaScript">
+	Webcam.set({
+		width: 480,
+		height: 360,
+		image_format: 'jpeg',
+		jpeg_quality: 90
+	});
+	Webcam.attach( '.camera-display' );
+</script>
+
+<script>
+
+  // threejs renderer settings
+  function init() {
+    // threejs dom element add
+    div = document.getElementById("main");
+    width = window.innerWidth;
+    height = window.innerHeight;
+    div.style.width = width + "px";
+    div.style.height = height + "px";
+    // global var init
+    fov = 70;
+    ratio = width / height;
+    index = 0;
+    car_veyron = {
+      name: "Bugatti Veyron",
+      url: "models/veyron/VeyronNoUv_bin.js",
+      init_rotation: [1.57, 1.57, 0],
+      scale: 0.014,
+      mmap: {
+        0: new THREE.MeshLambertMaterial({
+          color: 0x909090
+        }), // tires + inside
+        1: new THREE.MeshLambertMaterial({
+          color: 0x808080
+        }), // wheels + extras chrome
+        2: new THREE.MeshLambertMaterial({
+          color: 0x909090,
+          combine: THREE.MultiplyOperation
+        }), // back / top / front torso
+        3: new THREE.MeshLambertMaterial({
+          color: 0xffffff,
+          opacity: 0.5,
+          transparent: true
+        }), // glass
+        4: new THREE.MeshLambertMaterial({
+          color: 0xffffff
+        }), // sides torso
+        5: new THREE.MeshLambertMaterial({
+          color: 0xff0000
+        }), // engine
+        6: new THREE.MeshLambertMaterial({
+          color: 0xff0000,
+          opacity: 0.5,
+          transparent: true
+        }), // backlights
+        7: new THREE.MeshLambertMaterial({
+          color: 0xff0000,
+          opacity: 0.5,
+          transparent: true
+        }) // backsignals
+      }
+    };
+    // threejs var init
+    scene = new THREE.Scene();
+    // add light
+    var ambient = new THREE.AmbientLight(0x050505);
+    scene.add(ambient);
+
+    var directionalLight = new THREE.DirectionalLight(0x0f0f0f, 2);
+    directionalLight.position.set(2, 1.2, 1000).normalize();
+    scene.add(directionalLight);
+
+    var pointLight = new THREE.PointLight(0x808080, 2);
+    pointLight.position.set(20, 12, 10000);
+    scene.add(pointLight);
+
+    // add camera
+    camera = new THREE.PerspectiveCamera(fov, ratio, 0.1, 150000000);
+    // camera.up.set(0, 0, 1);
+    camera.position.set(0, 4000, -100);
+    camera.lookAt(scene.position);
+    // renderer settings
+    renderer = new THREE.WebGLRenderer({
+      antialias: true //anti alias used to remove the picture edge
+    });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setClearColor(0x000000);
+    // camera control settings
+    cameraControls = new THREE.OrbitControls(camera, renderer.domElement);
+    cameraControls.enablePan = true;
+    cameraControls.enableRotate = true;
+
+    cameraControls.zoomSpeed = 2.0;
+    cameraControls.panSpeed = 2.0;
+    cameraControls.rotateSpeed = 1.0;
+    cameraControls.maxDistance = 2000000;
+    cameraControls.minDistance = 1000;
+    cameraControls.update();
+    // car trace
+    var carTrace = new THREE.BufferGeometry();
+    // attributes
+    var positions = new Float32Array(20 * 3); // 3 vertices per point
+    carTrace.addAttribute('position', new THREE.BufferAttribute(positions, 3));
+    // drawcalls
+    drawCount = 0;
+    // material
+    var material = new THREE.LineBasicMaterial({
+      color: 0x00cc00,
+      linewidth: 5
+    });
+    // carTraceLine
+    carTraceLine = new THREE.Line(carTrace, material);
+    carTraceLine.frustumCulled = false;
+    scene.add(carTraceLine);
+    // add renderer to dom
+    div.appendChild(renderer.domElement);
+    var render = function() {
+      cameraControls.update();
+      carTraceLine.geometry.setDrawRange(0, drawCount);
+      carTraceLine.geometry.attributes.position.needsUpdate = true;
+      renderer.render(scene, camera);
+      requestAnimationFrame(render);
+    }
+    render();
+  }
+
+  init();
+
+  // window resize action
+  function onWindowResize() {
+    height = window.innerHeight;
+    width = window.innerWidth;
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+    renderer.setSize(width, height);
+  }
+  window.addEventListener('resize', onWindowResize, false);
+
+  // hds creation
+  var mapFilePath = "source/CHONGQINGV2/";
+  var R_Earth = 6378137;
+
+  /**
+   * 标记出当前位置
+   * @param {Object} x webGL坐标
+   * @param {Object} y
+   */
+  function markCurrentPosition(x, y) {
+    var loader = new THREE.BinaryLoader();
+    loader.load(car_veyron.url, function(geometry) {
+      geometry.sortFacesByMaterialIndex();
+      var m = [];
+      for (var i in car_veyron.mmap) {
+        m[i] = car_veyron.mmap[i];
+      }
+
+      carPos = new THREE.Mesh(geometry, m);
+
+      carPos.rotation.x = car_veyron.init_rotation[0];
+      carPos.rotation.y = car_veyron.init_rotation[1];
+      carPos.rotation.z = car_veyron.init_rotation[2];
+
+      carPos.position.x = x;
+      carPos.position.y = y;
+      carPos.position.z = 1;
+
+      carPos.scale.x = carPos.scale.y = carPos.scale.z = car_veyron.scale;
+
+      scene.add(carPos);
+      camera.position.set(0, 1500, -1);
+      carPos.add(camera);
+    });
+  }
+
+  function markSearchPose(x, y) {
+    searchPose = Array();
+    // var gCs = generateColor('00ff00', '0000ff', 20);
+
+    for (var i = 0; i < 20; i++) {
+      var geometry = new THREE.SphereGeometry(0.5, 30, 30);
+      var material = new THREE.MeshBasicMaterial({
+        color: '#00ff00'
+      });
+      searchPose[i] = new THREE.Mesh(geometry, material);
+      searchPose[i].position.x = x + i * 2;
+      searchPose[i].position.y = y + 10;
+      searchPose[i].position.z = 1;
+      scene.add(searchPose[i]);
+    }
+
+    // for stk display
+    // var geometryRtk = new THREE.SphereGeometry(0.5, 30, 30);
+    // var materialRtk = new THREE.MeshBasicMaterial({
+    //   color: '#ffff00'
+    // });
+    // rtkPose = new THREE.Mesh(geometryRtk, materialRtk);
+    // rtkPose.position.x = 0;
+    // rtkPose.position.y = 0;
+    // rtkPose.position.z = 1;
+    // scene.add(rtkPose);
+    // for stk display
+  }
+
+  function lnDraw(points, type) {
+    var lineWidth = 2;
+    switch (type) {
+      case 0:
+      default:
+        return null;
+      case 1:
+        return new THREE.LineSegments(points, new THREE.LineDashedMaterial({
+          color: 0xffffff,
+          linewidth: lineWidth
+        }));
+      case 2:
+        return new THREE.Line(points, new THREE.LineDashedMaterial({
+          color: 0xffffff,
+          linewidth: lineWidth
+        }));
+      case 3:
+        return new THREE.Line(points, new THREE.LineDashedMaterial({
+          color: 0xffff00,
+          linewidth: lineWidth
+        }));
+      case 4:
+        return new THREE.Line(points, new THREE.LineDashedMaterial({
+          color: 0xffffff,
+          linewidth: lineWidth + 3
+        }));
+      case 5:
+        return new THREE.LineSegments(points, new THREE.LineDashedMaterial({
+          color: 0xff0000,
+          linewidth: lineWidth
+        }));
+      case 6:
+        return new THREE.Line(points, new THREE.LineDashedMaterial({
+          color: 0xffffff,
+          linewidth: lineWidth + 1
+        }));
+    }
+    return line;
+  }
+
+  function hdsDraw() {
+    d3.csv(mapFilePath + "/fileIndexList.csv", function(err, files) {
+      files.forEach(function(file) {
+        // console.log(file.fileName);
+        d3.csv(mapFilePath + file.fileName, function(err, points) {
+          var indexFile = 0;
+          var points3D = new THREE.Geometry();
+          var lns = Array();
+          var lineType = Array();
+          points.forEach(function(point) {
+            var trlnwid = 3.75;
+            // console.log(trlnwid);
+            var heading = (180 - parseFloat(point.heading)) * Math.PI / 180.0;
+
+            var numlns = parseInt(point.numlns);
+            var lat, long, k;
+            k = 1 - point.tralineno;
+            if(k < -1) {
+              k = -1;
+            }
+            for (i = k; i < numlns; i++) {
+              var long = parseFloat(point.longitude) + (-i * trlnwid * Math.cos(heading) / (R_Earth * Math.cos(parseFloat(point.latitude) * Math.PI / 180.0))) * 180.0 / Math.PI;
+              var lat = parseFloat(point.latitude) + (-i * trlnwid * Math.sin(heading) / R_Earth) * 180.0 / Math.PI;
+              var lnWebGLPos = lonLat2WebGL(long, lat, 18);
+              if (lns[i - k] === undefined) {
+                lns[i - k] = {
+                  points: new THREE.Geometry()
+                }
+              }
+              lns[i - k].points.vertices.push(new THREE.Vector3(lnWebGLPos.x, lnWebGLPos.y, 1));
+            }
+
+          });
+
+          for (var j = 0; j < lns.length; j++) {
+            if(j == 0 || j == lns.length - 1){
+              var line = lnDraw(lns[j].points, 4);
+              if (line) {
+                scene.add(line);
+              }
+            } else if(j == 1) {
+              var line = lnDraw(lns[j].points, 5);
+              if (line) {
+                scene.add(line);
+              }
+            } else {
+              var line = lnDraw(lns[j].points, 1);
+              if (line) {
+                scene.add(line);
+              }
+            }
+          }
+        });
+      });
+
+    });
+  }
+  var ls, lss;
+  function posUpdate() {
+
+    setInterval(function(){
+      d3.csv("source/data.csv", function(err, lines) {
+
+        ls = lines[0];
+        var t = lonLat2WebGL(ls.long, ls.lat, 18);
+        carPos.position.x = t.x;
+        carPos.position.y = t.y;
+        carPos.rotation.y = ls.heading / 180.0 * Math.PI;
+
+        $(".latitude").text(parseFloat(ls.lat).toFixed(6));
+        $(".longitude").text(parseFloat(ls.long).toFixed(6));
+        $(".heading").text(parseFloat(ls.heading).toFixed(2));
+
+        // var positions = carTraceLine.geometry.attributes.position.array;
+        //
+        // positions[index++] = carPos.position.x;
+        // positions[index++] = carPos.position.y;
+        // positions[index++] = carPos.position.z;
+
+        searchPose[drawCount].position.x = carPos.position.x;
+        searchPose[drawCount].position.y = carPos.position.y;
+        searchPose[drawCount].position.z = carPos.position.z;
+
+        drawCount++;
+
+        if (drawCount > 19) {
+          // index = 0;
+          drawCount = 0;
+        }
+      });
+    }, 100);
+
+    setInterval(function(){
+      d3.csv("source/data2.csv", function(err, lines) {
+
+        lss = lines[0];
+        //for stk display
+        // var t = lonLat2WebGL(lss.longitude, lss.latitude, 18);
+        // rtkPose.position.x = t.x;
+        // rtkPose.position.y = t.y;
+        // for stk display
+        $(".utctime").text(parseInt(lss.timeStamp));
+
+
+      });
+    }, 100);
+
+  }
+
+  function infoUpdate() {
+    setInterval(function(){
+      d3.csv("source/data1.csv", function(err, lines) {
+        var info = lines[0];
+        for (var key in info) {
+          if($("." + key).text() != info[key]) {
+            $("." + key).text(info[key]);
+            $("." + key).addClass("backgroundColorRed");
+          }else {
+            $("." + key).removeClass("backgroundColorRed");
+          }
+        }
+      });
+    }, 500);
+  }
+
+  function main() {
+
+    centerLng = 106.63470595;
+    centerLat = 29.7174113;
+
+    var currentWebGLPos = [centerLng, centerLat];
+    markCurrentPosition(currentWebGLPos[0], currentWebGLPos[1]);
+    markSearchPose(currentWebGLPos[0], currentWebGLPos[1])
+    hdsDraw();
+    posUpdate();
+    infoUpdate();
+  }
+
+  main();
+
+
+</script>
+
+</html>

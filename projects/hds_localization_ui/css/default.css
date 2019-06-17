@@ -1,0 +1,103 @@
+html,body {
+    height: 100%;
+    width: 100%;
+    padding-top: 10px;
+    margin: 0;
+    overflow: hidden;
+}
+
+.logo {
+  width: 50px;
+  padding: 10px !important;
+}
+
+#main {
+    background-color: #ddd;
+}
+
+.button-small {
+  width: 100%;
+}
+
+.btn-head {
+  background-color: transparent !important;
+  margin: 8px 5px !important;
+  color: #9d9d9d !important;
+  width: 150px !important;
+}
+
+.info-display {
+  display: none;
+  top: 50px;
+}
+
+.display-left {
+  position: absolute;
+  left: 0;
+  z-index: 9999;
+  width: 200px;
+}
+
+.display-right {
+  position: absolute;
+  right: 100px;
+  z-index: 8888;
+  width: 200px;
+}
+
+.camera-container {
+  display: none;
+  bottom: 10px;
+  right: 10px;
+  position: absolute;
+  z-index: 99999;
+  margin: 2em auto 0;
+  -webkit-box-shadow: 0 1px 10px #D9D9D9;
+  -moz-box-shadow: 0 1px 10px #D9D9D9;
+  -ms-box-shadow: 0 1px 10px #D9D9D9;
+  -o-box-shadow: 0 1px 10px #D9D9D9;
+  box-shadow: 0 1px 10px #D9D9D9;
+}
+
+.display-right .input-group-addon {
+  font-size: 25px !important;
+  background-color: transparent !important;
+  color: #ffffff;
+  border: 0px !important;
+}
+
+.display-left .input-group-addon {
+  font-size: 15px !important;
+  background-color: transparent !important;
+  color: #ffffff;
+  border: 0px !important;
+}
+
+.input-group-addon {
+  white-space: unset !important;
+  text-align: left !important;
+}
+
+.display-drop-item {
+  padding-left: 25px;
+}
+
+.display-right .input-group {
+  width: 300px !important;
+}
+
+.display-right .input-group-addon {
+  width: 100px !important;
+}
+
+.display-left .input-group {
+ width: 300px !important;
+}
+
+.display-left .input-group-addon {
+  width: 60px !important;
+}
+
+.backgroundColorRed {
+  color: #ff0000 !important;
+}

@@ -19,7 +19,7 @@ export default class OrbitControls {
 
             this.object = object;
 
-            this.object.up.set(0, -1, 0);
+            // this.object.up.set(0, -1, 0);
 
             this.domElement = (domElement !== undefined) ? domElement : document;
 
@@ -355,7 +355,7 @@ export default class OrbitControls {
                     v.multiplyScalar(distance);
 
                     panOffset.add(v);
-
+  
                 };
 
             }();

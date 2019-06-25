@@ -33,7 +33,7 @@ class SseNavigatorApp extends React.Component {
             this.state.data.nextPage = this.state.data.previousPage = null;
             this.setState(this.state);
         }
-        console.log("params,fi,ti",params,fi,ti);
+        // console.log("params,fi,ti",params,fi,ti);
         Meteor.call("images", params.path, fi, ti, (err, res) => {
             this.setState({data: res});
             if (res) {

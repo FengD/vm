@@ -20,9 +20,10 @@ export default class SseToolbar3d extends SseToolbar {
 
     componentDidMount() {
         super.componentDidMount();
-        this.addCommand("returnFolderCommand","Return Folder",0,"R","return",Home,undefined,undefined);
 
-        this.addCommand("pageUpCommand","Page Up",0,"U","pageup",ArrowLeft,undefined,undefined);
+        this.addCommand("returnFolderCommand","Return Folder",0,"W","return",Home,undefined,undefined);
+
+        this.addCommand("pageUpCommand","Page Up",0,"A","pageup",ArrowLeft,undefined,undefined);
         this.addCommand("pageDownCommand","Page Down",0,"D","pagedown",ArrowRight,undefined,undefined);
 
         this.addCommand("selectorCommand", "Lasso Selector", 1, "H", "selector", Gesture, undefined, undefined);
@@ -42,7 +43,7 @@ export default class SseToolbar3d extends SseToolbar {
         this.addCommand("globalboxCommand", "Bounding Box", false, "G", "globalbox-checkbox");
         this.addCommand("selectionOutlineCommand", "Selection Outline", false, "V", "selectionOutline-checkbox");
 
-        this.addCommand("undoCommand", "Undo", false, "Ctrl+Z", "undo", Undo, "disabled");
+        this.addCommand("undoCommand", "Undo", false, "Ctrl+Z", "undo", Undo, undefined,undefined);
         this.addCommand("redoCommand", "Redo", false, "Ctrl+Y", "redo", Redo, "disabled");
         this.addCommand("downloadTextCommand", "PCD Output as Text", false, "", "downloadText", FileDownloadOutline);
         this.addCommand("downloadFileCommand", "PCD Output as File", false, "", "downloadFile", FileDownloadOutline);
@@ -58,6 +59,14 @@ export default class SseToolbar3d extends SseToolbar {
                     <div className="tool-title">Return Folder</div>
                     <div className="hflex">
                     {this.renderCommand("returnFolderCommand")}
+                    </div>
+                </div>
+
+                <div className="vflex">
+                    <div className="tool-title">Undo</div>
+                    <div className="hflex">
+                    {this.renderCommand("undoCommand")}
+                    {/* {this.renderCommand("redoCommand")} */}
                     </div>
                 </div>
 

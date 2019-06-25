@@ -33,7 +33,6 @@ const HALFPI = PI / 2;
 const modulo = (x) => (x % DOUBLEPI + DOUBLEPI) % DOUBLEPI;
 const moduloHalfPI = (x) => modulo(x + PI) - PI;
 const round2 = (x) => Math.round(x * 100) / 100;
-// const temp = window.global
 
 export default class SseEditor3d extends React.Component {
     constructor() {
@@ -171,6 +170,7 @@ export default class SseEditor3d extends React.Component {
 
     displayAll() {
         if (this.cloudData) {
+            console.log("cloud",this.cloudData);
             this.cloudData.forEach((pt, pos) => {
 
                 const classData = this.classesDescriptors.byIndex[pt.classIndex];
@@ -432,6 +432,25 @@ export default class SseEditor3d extends React.Component {
             window.location=firsturl;
         });
 
+        //function undo
+        this.onMsg("undo",() =>{
+            console.log("undo_selection",this.selection);
+            console.log("undo_state",this.state);
+            var str=localStorage.getItem("changepoints");
+            var changepoints=JSON.parse(str);
+            console.log("changepoints",changepoints);
+            changepoints.forEach(idx => this.assignNewClass(idx, 0));
+            if (this.selectedObject) {
+                this.selectedObject.classIndex = 0;
+                this.selectedObject.points.forEach(idx => this.assignNewClass(idx, 0));
+                this.sendMsg("object-select", {value: this.selectedObject})
+            }
+            this.invalidateColor();
+            this.invalidateCounters();
+            this.saveAll();
+        });
+
+
         //page down or up can both browse all images including in this folder;
         this.onMsg("pageup",() => {
             var infoStr=localStorage.getItem("imagesres");
@@ -653,8 +672,7 @@ export default class SseEditor3d extends React.Component {
         this.orbiter.addEventListener("start", this.orbiterStart.bind(this), false);
         this.orbiter.addEventListener("change", this.orbiterChange.bind(this), false);
         this.orbiter.addEventListener("end", this.orbiterEnd.bind(this), false);
-        console.log("orbiter",this.orbiter);
-
+        
         this.frustum = new THREE.Frustum();
 
         this.setupTools();
@@ -740,7 +758,6 @@ export default class SseEditor3d extends React.Component {
                 console.log("behind",this.cameraPresetInfo);
                 break;
             case "spin":
-                console.log(this.camera.up.y);
                 if (this.camera.up.y==-1)
                     {
                         this.camera.up.set(0, 0, 1);                

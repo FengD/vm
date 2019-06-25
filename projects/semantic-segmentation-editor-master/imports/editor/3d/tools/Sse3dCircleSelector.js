@@ -15,6 +15,14 @@ export default class extends Sse3dSelector {
             this.scene.selectByPolygon(this.polygon);
             this.polygon.length = 0;
             this.startX = this.startY = NaN;
+            //before change store set include points which will be changed
+            console.log("mouse_up",typeof(this.scene.selection));
+            var temp=[];
+            for (var x of this.scene.selection) { // 遍历Array
+                temp.push(x);
+            }
+            var str=JSON.stringify(temp);
+            localStorage.setItem("changepoints",str);
         }
     }
 

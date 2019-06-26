@@ -20,6 +20,7 @@ import SseObjectToolbar from "./SseObjectToolbar";
 import tippy from "tippy.js";
 import SseTooltips3d from "./SseTooltips3d";
 import SseCurrentFolder from "../../common/SseCurrentFolder";
+import SseSearch from "../../common/SseSearch";
 import SseGlobals from "../../common/SseGlobals";
 
 
@@ -77,7 +78,12 @@ export default class SseApp3d extends React.Component {
                                 /> 
                                  </div>
 
-                                  <div className="scroller" 
+                                 <div>
+                                     <SseSearch/>
+                                 </div>
+                                 
+
+                                  {/* <div className="scroller" 
                                   style={{"backgroundColor": "#393536", "padding": "5px 5px 0 0",
                                   width:"300px",height:"450px" }}>
                                     {(JSON.parse(localStorage.getItem("imagesres"))).map((image) =>
@@ -88,7 +94,7 @@ export default class SseApp3d extends React.Component {
                                   <SseCurrentFolder image={image}/>
                                   </div>))}
                                 
-                                 </div>
+                                 </div> */}
 
                               </div>
 

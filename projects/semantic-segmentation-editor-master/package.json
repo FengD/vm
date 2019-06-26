@@ -50,6 +50,7 @@
     "react-dom": "16.6.1",
     "react-router": "4.2.0",
     "react-router-dom": "4.2.2",
+    "react-select": "^3.0.4",
     "serve-static": "1.13.2",
     "shelljs": "0.8.2",
     "simplify-js": "1.2.3",

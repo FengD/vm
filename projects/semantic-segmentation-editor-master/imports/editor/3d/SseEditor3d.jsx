@@ -170,7 +170,6 @@ export default class SseEditor3d extends React.Component {
 
     displayAll() {
         if (this.cloudData) {
-            console.log("cloud",this.cloudData);
             this.cloudData.forEach((pt, pos) => {
 
                 const classData = this.classesDescriptors.byIndex[pt.classIndex];
@@ -432,10 +431,24 @@ export default class SseEditor3d extends React.Component {
             window.location=firsturl;
         });
 
+        this.onMsg("clean",()=>{
+            console.log("clean_cloud",this.cloudData.length);
+            let f = length => Array.from({length}).map((v,k) => k);
+            console.log("array",f(this.cloudData.length));
+            f(this.cloudData.length).forEach(idx => this.assignNewClass(idx, 0));
+            if (this.selectedObject) {
+                this.selectedObject.classIndex = 0;
+                this.selectedObject.points.forEach(idx => this.assignNewClass(idx, 0));
+                this.sendMsg("object-select", {value: this.selectedObject})
+            }
+            this.invalidateColor();
+            this.invalidateCounters();
+            this.saveAll();
+        });
+
         //function undo
         this.onMsg("undo",() =>{
-            console.log("undo_selection",this.selection);
-            console.log("undo_state",this.state);
+            // console.log("undo_selection",this.selection);
             var str=localStorage.getItem("changepoints");
             var changepoints=JSON.parse(str);
             console.log("changepoints",changepoints);
@@ -585,9 +598,9 @@ export default class SseEditor3d extends React.Component {
         });
 
 
-        this.onMsg("orientation-change", () => {
-            this.startPointcloudOrientation();
-        });
+        // this.onMsg("orientation-change", () => {
+        //     this.startPointcloudOrientation();
+        // });
         this.onMsg("orientation-abort", () => {
             this.stopPointcloudOrientation();
         });

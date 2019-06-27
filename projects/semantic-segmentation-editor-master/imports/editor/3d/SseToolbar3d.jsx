@@ -7,7 +7,8 @@ import {
     Undo,
     ArrowRight,
     ArrowLeft,
-    Home
+    Home,
+    Refresh
 } from 'mdi-material-ui';
 
 export default class SseToolbar3d extends SseToolbar {
@@ -22,6 +23,8 @@ export default class SseToolbar3d extends SseToolbar {
         super.componentDidMount();
 
         this.addCommand("returnFolderCommand","Return Folder",0,"W","return",Home,undefined,undefined);
+
+        this.addCommand("CleanCommand","Clean Tab",0,"C","clean",Refresh,undefined,undefined);
 
         this.addCommand("pageUpCommand","Page Up",0,"A","pageup",ArrowLeft,undefined,undefined);
         this.addCommand("pageDownCommand","Page Down",0,"D","pagedown",ArrowRight,undefined,undefined);
@@ -59,6 +62,13 @@ export default class SseToolbar3d extends SseToolbar {
                     <div className="tool-title">Return Folder</div>
                     <div className="hflex">
                     {this.renderCommand("returnFolderCommand")}
+                    </div>
+                </div>
+
+                <div className="vflex">
+                    <div className="tool-title">Clean Tab</div>
+                    <div className="hflex">
+                    {this.renderCommand("CleanCommand")}
                     </div>
                 </div>
 

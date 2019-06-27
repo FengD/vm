@@ -16,9 +16,9 @@ class SseCurrentFolder extends React.Component {
             const durl = decodeURIComponent(image.url);
             name = durl.substring(1 + durl.lastIndexOf("/"));
         }
-        const {classes} = this.props;
+        // const {classes} = this.props;
         return (
-            <div className="sse-class-chooser vflex scroller">
+            <div className="sse-class-chooser vflex scroller" >
                 <li>{name}</li>
             </div>
         );

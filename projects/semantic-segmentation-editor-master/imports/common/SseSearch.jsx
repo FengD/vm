@@ -1,14 +1,14 @@
 import React from 'react';
 import Select from 'react-select';
-import { stateOptions } from '../common/data';
 
 const groupStyles = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
 };
+
 const groupBadgeStyles = {
-  backgroundColor: 'red',
+  backgroundColor: '#EBECF0',
   borderRadius: '2em',
   color: '#172B4D',
   display: 'inline-block',
@@ -20,16 +20,14 @@ const groupBadgeStyles = {
   textAlign: 'center',
 };
 
-
 var infoStr=localStorage.getItem("imagesres");
 var info=JSON.parse(infoStr);
-console.log("info",info)
+// console.log("info",info)
 var temp=[];
 for (var x of info) {
   temp.push({"label":x.name});
-  // temp.push(x.name);
 }
-console.log("temp",temp);
+// console.log("temp",temp);
 
 var groupedOptions=[
   {
@@ -37,8 +35,6 @@ var groupedOptions=[
     options: temp,
   }
 ]
-
-
 
 const formatGroupLabel = data => (
   <div style={groupStyles}>
@@ -48,11 +44,9 @@ const formatGroupLabel = data => (
 );
 
 function logChange(val) {
-  console.log("Selected: " + val);
-  console.log("label",val.label);
+  // console.log("label",val.label);
   for (var i=0;i<info.length;i++)
   {
-    console.log("url",info[i].name)
     if(val.label==(info[i].name))
     {
       window.location.pathname=(info[i].editUrl);
@@ -61,8 +55,9 @@ function logChange(val) {
 }
 
 export default () => (
-  <Select
-    defaultValue={temp[1]}
+  <Select  
+    // defaultValue={temp[1]}
+    // style={{color:"#cc2323"}}
     options={groupedOptions}
     formatGroupLabel={formatGroupLabel}
     onChange={logChange}

@@ -70,6 +70,7 @@ export default class SseApp3d extends React.Component {
                             
                             <div className="hflex grow box2 h0"  >
                               <div className="leftside"  style={{width:"300x"}}>
+
                                  <div className="imagestag" style={{width:"300px",height:"345px"}}>
                                 <SseClassChooser 
                                     mode="3d"
@@ -78,14 +79,13 @@ export default class SseApp3d extends React.Component {
                                 /> 
                                  </div>
 
-                                 <div>
+                                 <div  className="search" style={{"color":"black"}}>
                                      <SseSearch/>
                                  </div>
                                  
-
-                                  {/* <div className="scroller" 
-                                  style={{"backgroundColor": "#393536", "padding": "5px 5px 0 0",
-                                  width:"300px",height:"450px" }}>
+                                  {/* <div className="grow scroller" 
+                                  style={{"backgroundColor": "#393536","padding": "5px 5px 0 0",
+                                  width:"300px",height:"50%"}}>
                                     {(JSON.parse(localStorage.getItem("imagesres"))).map((image) =>
                                   (<div
                                   onClick={() => this.startEditing(image)}
@@ -93,7 +93,6 @@ export default class SseApp3d extends React.Component {
                                   key={SseGlobals.getFileUrl(image.url) + Math.random()}>
                                   <SseCurrentFolder image={image}/>
                                   </div>))}
-                                
                                  </div> */}
 
                               </div>

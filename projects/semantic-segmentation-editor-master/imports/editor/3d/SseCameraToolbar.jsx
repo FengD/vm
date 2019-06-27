@@ -31,7 +31,7 @@ export default class SseCameraToolbar extends SseToolbar {
         this.addCommand("viewRightCommand", "Right View", false, "R", "view-right", ArrowCollapseRight, undefined, undefined);
         this.addCommand("viewCenterCommand", "Center View", false, "X", "view-center", Target, undefined, undefined);
         this.addCommand("hullCommand", "Show Hull", false, "H", "show-hull", CubeSend, undefined, undefined);
-        this.addCommand("orientationCommand", "Pointcloud Orientation", false, "-", "orientation-change", Rotate3D, undefined, " ");
+        // this.addCommand("orientationCommand", "Pointcloud Orientation", false, "-", "orientation-change", Rotate3D, undefined, " ");
         this.addCommand("colorBoostCommand", "Color Intensity", 1, "-", "color-boost-toggle", Brightness6, undefined, " ");
         this.addCommand("pointSizeCommand", "Point Size", 1, "-", "point-size-toggle", ImageFilterTiltShift, undefined, " ");
         this.addCommand("distanceAttenuationCommand", "Distance Attenuation", Blur, "", "distance-attenuation", BlurOff, undefined, undefined, BlurOff);
@@ -127,7 +127,7 @@ export default class SseCameraToolbar extends SseToolbar {
                             onChange={this.dataChange('colorBoost', "color-boost").bind(this)}
                         />
                     </div>
-                    {this.renderCommand("orientationCommand")}
+                    {/* {this.renderCommand("orientationCommand")} */}
                 </div>
             </div>
         )

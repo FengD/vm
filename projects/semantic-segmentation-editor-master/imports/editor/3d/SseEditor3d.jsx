@@ -477,8 +477,19 @@ export default class SseEditor3d extends React.Component {
                 }
                 if(this.props.imageUrl==(info[i].editUrl.slice(5)))
                 {
-                    i=i-1;
-                    break;
+                    if(info[i-1].editUrl.slice(-4)!=".jpg")
+                    {
+                      i=i-1;
+                      break;
+                    }
+                    else
+                    {
+                      if(i-2>=0)
+                      {
+                          i=i-2;
+                          break;
+                      }  
+                    }
                 }
             }
             this.props.imageUrl=info[i].editUrl.slice(5);
@@ -498,8 +509,19 @@ export default class SseEditor3d extends React.Component {
                 }
                 if(this.props.imageUrl==(info[i].editUrl.slice(5)))
                 {
-                    i=i+1
-                    break;
+                    if(info[i+1].editUrl.slice(-4)!=".jpg")
+                    {
+                      i=i+1;
+                      break;
+                    }
+                    else
+                    {
+                      if(i+2<=info.length-1)
+                      {
+                          i=i+2;
+                          break;
+                      }  
+                    }
                 }
             }
             this.props.imageUrl=info[i].editUrl.slice(5);

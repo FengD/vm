@@ -80,7 +80,8 @@ export default class SseApp3d extends React.Component {
                                  </div>
 
                                  <div  className="search" style={{"color":"black"}}>
-                                     <SseSearch/>
+                                     <SseSearch
+                                     imageUrl={this.props.imageUrl}/>
                                  </div>
                                  
                                   {/* <div className="grow scroller" 

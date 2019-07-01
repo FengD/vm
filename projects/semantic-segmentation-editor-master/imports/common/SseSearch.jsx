@@ -27,6 +27,7 @@ var tempPcd=[];
 var tempJpg=[];
 console.log(window.location.pathname);
 var tempUrlNow=[];
+var viewUrl;
 for (var x of info) {
   if (x.editUrl==window.location.pathname)
   {
@@ -69,7 +70,17 @@ function logChange(val) {
   console.log("label",val.label);
   if(val.label.slice(-4)==".jpg")
   {
-    window.open("http://localhost:3000/edit/%2Fpcd%2F456%2F1022(copy).pcd", null, "Height:100px; Width:100px; resizable:yes");
+    for (var x of info) {
+      if (x.name==val.label)
+      {
+        viewUrl=x.url;
+      }
+    }
+    console.log("window",window.location);
+    console.log("url","http://localhost:3000/view/"+'file'+viewUrl);
+    // window.open("http://localhost:3000//file"+viewUrl, null, "height:50; width:50; resizable:yes");
+    window.open("/file"+viewUrl, null, "height:50; width:50; resizable:yes");
+
   }
   else
   {

@@ -4,6 +4,7 @@ import createBrowserHistory from 'history/createBrowserHistory';
 import SseEditorApp from "../imports/editor/SseEditorApp";
 import SseNavigatorApp from "../imports/navigator/SseNavigatorApp";
 import SseAllAnnotated from "../imports/navigator/SseAllAnnotated";
+import SseSeePicture from "../imports/common/SseSeePicture";
 
 const browserHistory = createBrowserHistory();
 export const renderRoutes = () => (
@@ -15,6 +16,7 @@ export const renderRoutes = () => (
             <Route exact path="/edit" render={()=>(<Redirect to="/browse/0/20/"/>)}/>
             <Route path="/browse/:fromIndex/:pageLength/:path?" component={SseNavigatorApp}/>
             <Route path="/annotated" component={SseAllAnnotated}/>
+            {/* <Route path="/view/:path" component={SseSeePicture}/> */}
         </div>
     </Router>
 );

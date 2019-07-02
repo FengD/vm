@@ -68,22 +68,21 @@ const formatGroupLabel = data => (
 
 function logChange(val) {
   console.log("label",val.label);
-  if(val.label.slice(-4)==".jpg")
-  {
-    for (var x of info) {
-      if (x.name==val.label)
-      {
-        viewUrl=x.url;
-      }
-    }
-    console.log("window",window.location);
-    console.log("url","http://localhost:3000/view/"+'file'+viewUrl);
-    // window.open("http://localhost:3000//file"+viewUrl, null, "height:50; width:50; resizable:yes");
-    window.open("/file"+viewUrl, null, "height:50; width:50; resizable:yes");
+  // if(val.label.slice(-4)==".jpg")
+  // {
+  //   for (var x of info) {
+  //     if (x.name==val.label)
+  //     {
+  //       viewUrl=x.url;
+  //     }
+  //   }
+  //   console.log("window",window.location);
+  //   console.log("url","http://localhost:3000/view/"+'file'+viewUrl);
+  //   // window.open("http://localhost:3000//file"+viewUrl, null, "height:50; width:50; resizable:yes");
+  //   window.open("/file"+viewUrl, '', 'height:200,width:300,left:20,top:20');
 
-  }
-  else
-  {
+  // }
+  // else
     for (var i=0;i<info.length;i++)
     {
       if(val.label==(info[i].name))
@@ -91,7 +90,6 @@ function logChange(val) {
         window.location.pathname=(info[i].editUrl);
       }
     }
-  }
 }
 
 export default () => (

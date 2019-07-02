@@ -431,19 +431,33 @@ export default class SseEditor3d extends React.Component {
             window.location=firsturl;
         });
 
+        this.onMsg("viewpicture",() =>{
+            var infoStr=localStorage.getItem("imagesres");
+            var info=JSON.parse(infoStr);
+            var viewUrl;
+            for (var x of info) {
+                if (x.editUrl.slice(5)==this.props.imageUrl){
+                    viewUrl=x.url;
+                }
+            }
+            var newUrl=viewUrl.replace(".pcd",".jpg");
+            console.log("newurl",viewUrl);
+            window.open("/file"+newUrl+"?size=small", '', 'height:100,width:100,left:0,top:20');
+        });
+
         this.onMsg("clean",()=>{
             console.log("clean_cloud",this.cloudData.length);
             let f = length => Array.from({length}).map((v,k) => k);
             console.log("array",f(this.cloudData.length));
             f(this.cloudData.length).forEach(idx => this.assignNewClass(idx, 0));
-            if (this.selectedObject) {
-                this.selectedObject.classIndex = 0;
-                this.selectedObject.points.forEach(idx => this.assignNewClass(idx, 0));
-                this.sendMsg("object-select", {value: this.selectedObject})
+            if (this.objects) {
+                console.log("objects",this.objects);
+                this.objects.clear();
             }
             this.invalidateColor();
             this.invalidateCounters();
             this.saveAll();
+            this.sendMsg("objects-update", {value: this.objects});
         });
 
         //function undo

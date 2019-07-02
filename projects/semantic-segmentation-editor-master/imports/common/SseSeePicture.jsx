@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 export default class SseSeePicture extends React.Component {
     
     render() {
@@ -10,10 +9,7 @@ export default class SseSeePicture extends React.Component {
             <div className="vflex">
                 <span>Semantic</span>
                 <span>Segmentation</span>
-                <Image
-                 source={require('/file/pcd/456/1022.jpg')}
-                />
-                {/* <img src="/file/pcd/456/1022.jpg?size=small"></img> */}
+                <img src="/file/pcd/456/1022.jpg?size=small"></img>
             </div>
         </div>)
     }

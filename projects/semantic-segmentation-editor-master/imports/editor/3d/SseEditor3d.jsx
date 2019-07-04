@@ -311,6 +311,7 @@ export default class SseEditor3d extends React.Component {
 
     selectObject(obj) {
         this.selectedObject = obj;
+        console.log("selectobj",this.selectedObject);
         this.ungrayAll();
         if (this.selectedObject) {
             this.sendMsg("classIndex-select", {value: obj.classIndex});
@@ -330,7 +331,14 @@ export default class SseEditor3d extends React.Component {
                 this.subsetFocus(this.selectedObject.points);
             this.invalidateColor();
             this.setViewFilterState("object");
+            console.log("obb1",this.objectBox3);
             this.updateGlobalBox();
+
+            this.destroyMyBox();
+            var obb=this.drawMyBox(this.selectedObject.points);
+            this.myBoxObject = obb[0];
+            this.objectBox3=obb[1];
+
             if (!this.selectionIsEmpty()) {
                 this.sendMsg("enableCommand", {name: "addPointsObjectCommand"});
             }
@@ -1685,6 +1693,14 @@ export default class SseEditor3d extends React.Component {
         this.globalBoxObject = null;
     }
 
+    destroyMyBox() {
+        this.scene.remove(this.myBoxObject);
+        this.scene.remove(this.hullObject);
+        this.scene.remove(this.globalSphereObject);
+        this.hullObject = null;
+        this.myBoxObject = null;
+    }
+
     drawGlobalBox() {
         const gbb = this.drawBBox(this.visibleIndices);
         this.globalBoxObject = gbb[0];
@@ -1734,8 +1750,40 @@ export default class SseEditor3d extends React.Component {
         bh.userData = forEachableIndices;
         this.drawBSphere(forEachableIndices);
         this.scene.add(bh);
+        console.log("drawbbox",bh,bbox);
         return [bh, bbox];
     }
+
+
+    drawMyBox(forEachableIndices) {
+        let geom;
+        let flat = [];
+        forEachableIndices.forEach(pto => {
+            const p = this.cloudData[pto];
+            flat.push(p.x, p.y, p.z);
+        });
+
+        geom = new THREE.BufferGeometry();
+        const vertices = new Float32Array(flat);
+        geom.addAttribute('position', new THREE.BufferAttribute(vertices, 3));
+        geom.computeBoundingBox();
+        
+        const material = new THREE.LineBasicMaterial({
+            color: 0x787878,
+            linewidth: 1,
+            linecap: 'round',
+            linejoin: 'round'
+        });
+        const bbox = geom.boundingBox;
+        const bbo = new THREE.Mesh(geom, material);
+        const bh = new BoxHelper(bbo, 0x505050);
+        bh.userData = forEachableIndices;
+        this.drawBSphere(forEachableIndices);
+        this.scene.add(bh);
+        console.log("drawMyBox",bh,bbox);
+        return [bh, bbox];
+    }
+
 
     drawBSphere(arr) {
         const flat = [];

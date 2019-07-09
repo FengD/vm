@@ -12,8 +12,6 @@ class SseImageThumbnail extends React.Component {
     render() {
         const image = this.props.image;
         let name = image.name;
-        // console.log('thumbnail',image);
-        // console.log(window.global);
         if (!name) {
             const durl = decodeURIComponent(image.url);
             name = durl.substring(1 + durl.lastIndexOf("/"));

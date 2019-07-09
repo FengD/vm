@@ -83,13 +83,11 @@ class SseNavigatorApp extends React.Component {
         if (this.state.data.error){
             return <div>{this.state.data.error}</div>
         }
-        console.log("seconde",this.props);
-        console.log("images",this.state)
-        console.log("firsturl",window.location);
+        console.log("navigator_props",this.props);
+        console.log("navigator_state",this.state)
         var str=JSON.stringify(this.state.data.allimages);
         localStorage.setItem("imagesres",str);
         localStorage.setItem("firsturl",window.location);
-        // console.log(localStorage.setItem("imagesres",this.state.data.images))
         
         return (
             <MuiThemeProvider theme={new SseTheme().theme}>

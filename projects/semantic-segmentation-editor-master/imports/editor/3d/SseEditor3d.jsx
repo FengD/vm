@@ -268,20 +268,26 @@ export default class SseEditor3d extends React.Component {
     }
 
     createObject() {
-        let points;
+        var points;
+        var firstBox;
         if (this.selection.size > 0)
             points = this.selection;
         else if (this.viewFilterState === "points")
             points = this.visibleIndices;
+        
         if (points) {
+            firstBox=this.computeOriginalBox(points);
+        }
 
-            const obj = {id: Random.id(), classIndex: this.activeClassIndex, points: Array.from(points)};
+        if (points) {
+            const obj = {id: Random.id(), classIndex: this.activeClassIndex, points: Array.from(points),
+            max:firstBox.max,min:firstBox.min};
             this.objects.add(obj);
-
+            console.log("all_obj",this.objects);
+            console.log("now_obj",obj);
             this.sendMsg("objects-update", {value: this.objects});
             this.sendMsg("object-select", {value: obj});
             this.changeClassOfSelection(this.activeClassIndex);
-
         }
         this.saveAll();
     }
@@ -311,7 +317,7 @@ export default class SseEditor3d extends React.Component {
 
     selectObject(obj) {
         this.selectedObject = obj;
-        console.log("selectobj",this.selectedObject);
+        console.log("select_obj",this.selectedObject);
         this.ungrayAll();
         if (this.selectedObject) {
             this.sendMsg("classIndex-select", {value: obj.classIndex});
@@ -331,13 +337,16 @@ export default class SseEditor3d extends React.Component {
                 this.subsetFocus(this.selectedObject.points);
             this.invalidateColor();
             this.setViewFilterState("object");
-            console.log("obb1",this.objectBox3);
+            console.log("select_obb1",this.objectBox3);
             this.updateGlobalBox();
 
             this.destroyMyBox();
-            var obb=this.drawMyBox(this.selectedObject.points);
+            var obb=this.showObjBoundingBox(this.selectedObject.max,this.selectedObject.min);
             this.myBoxObject = obb[0];
             this.objectBox3=obb[1];
+            // var obb=this.drawMyBox(this.selectedObject.points);
+            // this.myBoxObject = obb[0];
+            // this.objectBox3=obb[1];
 
             if (!this.selectionIsEmpty()) {
                 this.sendMsg("enableCommand", {name: "addPointsObjectCommand"});
@@ -449,17 +458,17 @@ export default class SseEditor3d extends React.Component {
                 }
             }
             var newUrl=viewUrl.replace(".pcd",".jpg");
-            console.log("newurl",viewUrl);
+            console.log("new_pic_url",viewUrl);
             window.open("/file"+newUrl+"?size=small", '', 'height:100,width:100,left:0,top:20');
         });
 
         this.onMsg("clean",()=>{
             console.log("clean_cloud",this.cloudData.length);
             let f = length => Array.from({length}).map((v,k) => k);
-            console.log("array",f(this.cloudData.length));
+            // console.log("array",f(this.cloudData.length));
             f(this.cloudData.length).forEach(idx => this.assignNewClass(idx, 0));
             if (this.objects) {
-                console.log("objects",this.objects);
+                console.log("clean_objects",this.objects);
                 this.objects.clear();
             }
             this.invalidateColor();
@@ -470,10 +479,9 @@ export default class SseEditor3d extends React.Component {
 
         //function undo
         this.onMsg("undo",() =>{
-            // console.log("undo_selection",this.selection);
             var str=localStorage.getItem("changepoints");
             var changepoints=JSON.parse(str);
-            console.log("changepoints",changepoints);
+            console.log("change_points",changepoints);
             changepoints.forEach(idx => this.assignNewClass(idx, 0));
             if (this.selectedObject) {
                 this.selectedObject.classIndex = 0;
@@ -521,7 +529,6 @@ export default class SseEditor3d extends React.Component {
         this.onMsg("pagedown",() => {
             var infoStr=localStorage.getItem("imagesres");
             var info=JSON.parse(infoStr);
-            // console.log(SseSamples.find({url: this.props.imageUrl}));
             for (var i=0;i<info.length;i++)
             {
                 if(i==info.length-1)
@@ -812,7 +819,6 @@ export default class SseEditor3d extends React.Component {
                 break;
             case "behind":
                 eye = new THREE.Vector3(target.x, slope, target.z + 1);
-                console.log("behind",this.cameraPresetInfo);
                 break;
             case "spin":
                 if (this.camera.up.y==-1)
@@ -823,8 +829,8 @@ export default class SseEditor3d extends React.Component {
                     {
                         this.camera.up.set(0, -1, 0);                
                     }
-                console.log("op",this.cameraPresetInfo);
-                console.log("camera",this.camera);
+                // console.log("op",this.cameraPresetInfo);
+                // console.log("camera",this.camera);
                 break;    
             case "top":
                 eye = new THREE.Vector3(target.x, -1, 0.99999 * target.z);
@@ -1750,10 +1756,50 @@ export default class SseEditor3d extends React.Component {
         bh.userData = forEachableIndices;
         this.drawBSphere(forEachableIndices);
         this.scene.add(bh);
-        console.log("drawbbox",bh,bbox);
+        console.log("draw_bbox",bh,bbox);
         return [bh, bbox];
     }
 
+    computeOriginalBox(forEachableIndices) {
+        let geom;
+        let flat = [];
+        forEachableIndices.forEach(pto => {
+            const p = this.cloudData[pto];
+            flat.push(p.x, p.y, p.z);
+        });
+        geom = new THREE.BufferGeometry();
+        let vertices = new Float32Array(flat);
+        geom.addAttribute('position', new THREE.BufferAttribute(vertices, 3));
+        geom.computeBoundingBox();
+        let bbox = geom.boundingBox;
+        return bbox;
+    }
+
+    showObjBoundingBox(max,min) {
+        var newbox=new THREE.BufferGeometry();
+        // bbox.max.x=bbox.max.x+10;
+        // bbox.max.y=bbox.max.y+10;
+        // bbox.max.z=bbox.max.z+10;
+        var myvertices = new Float32Array( [
+            max.x,max.y,max.z,
+            min.x,min.y,min.z,
+        ] );
+        const material = new THREE.LineBasicMaterial({
+            color: 0x787878,
+            linewidth: 1,
+            linecap: 'round',
+            linejoin: 'round'
+        });
+        console.log("myvertices",myvertices);
+        newbox.addAttribute( 'position', new THREE.BufferAttribute( myvertices, 3 ) );
+        const bbo = new THREE.Mesh(newbox, material);
+        const bh = new BoxHelper(bbo, 0x505050);
+        console.log("bh",bh);
+        // bh.userData = forEachableIndices
+        // this.drawBSphere(forEachableIndices);
+        this.scene.add(bh);
+        return [bh, bbox];
+    }
 
     drawMyBox(forEachableIndices) {
         let geom;
@@ -1764,24 +1810,57 @@ export default class SseEditor3d extends React.Component {
         });
 
         geom = new THREE.BufferGeometry();
+        console.log("geomnew",geom);
         const vertices = new Float32Array(flat);
         geom.addAttribute('position', new THREE.BufferAttribute(vertices, 3));
         geom.computeBoundingBox();
-        
         const material = new THREE.LineBasicMaterial({
             color: 0x787878,
             linewidth: 1,
             linecap: 'round',
             linejoin: 'round'
         });
-        const bbox = geom.boundingBox;
-        const bbo = new THREE.Mesh(geom, material);
+        var bbox = geom.boundingBox;
+        console.log("bbox",bbox);
+        // const bbo = new THREE.Mesh(geom, material);
+        // const bbo = new THREE.Mesh(geom, material);
+
+        // const newbox= new THREE.BoxBufferGeometry(10,10,10);
+        // console.log("newbox",newbox);
+
+        var goodbox=new THREE.BufferGeometry();
+        console.log("goodbox",goodbox);
+        bbox.max.x=bbox.max.x+10;
+        bbox.max.y=bbox.max.y+10;
+        bbox.max.z=bbox.max.z+10;
+        var myvertices = new Float32Array( [
+            bbox.max.x,bbox.max.y,bbox.max.z,
+            bbox.min.x,bbox.min.y,bbox.min.z,
+        ] );
+        console.log("myvertices",myvertices);
+        goodbox.addAttribute( 'position', new THREE.BufferAttribute( myvertices, 3 ) );
+        const bbo = new THREE.Mesh(goodbox, material);
         const bh = new BoxHelper(bbo, 0x505050);
-        bh.userData = forEachableIndices;
+        console.log("bh",bh);
+        bh.userData = forEachableIndices
         this.drawBSphere(forEachableIndices);
         this.scene.add(bh);
-        console.log("drawMyBox",bh,bbox);
         return [bh, bbox];
+
+        // let max=[10,10,10];
+        // let min=[-10,-10,-10];
+        // var newBox=new THREE.Box3();
+        // newBox.setFromCenterAndSize(new THREE.Vector3(0, 0, 0), new THREE.Vector3(2, 2, 2));
+        // console.log("new_box",newBox);
+        // const newBBox= new THREE.Mesh(newBox,material);
+        // console.log("new_bbox",newBBox);
+        // const newbh= new BoxHelper(newBBox, 0x505050);
+        // newbh.userData = forEachableIndices;
+        // this.drawBSphere(forEachableIndices);
+        // this.scene.add(newbh);
+        // console.log("new_bh",newbh);
+        // return [newbh,newBox];
+
     }
 
 
@@ -2157,10 +2236,12 @@ export default class SseEditor3d extends React.Component {
     }
 
     saveBinaryLabels() {
+        console.log("saveBinaryLabels",this.cloudData.map(x => x.classIndex));
         this.dataManager.saveBinaryFile(this.props.imageUrl + ".labels", this.cloudData.map(x => x.classIndex));
     }
 
     saveBinaryObjects() {
+        console.log(" saveBinaryObjects",Array.from(this.objects));
         this.dataManager.saveBinaryFile(this.props.imageUrl + ".objects", Array.from(this.objects));
     }
 

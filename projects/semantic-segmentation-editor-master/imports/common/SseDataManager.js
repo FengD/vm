@@ -101,19 +101,24 @@ export default class SseDataManager {
 
     saveBinaryFile(fileName, data) {
         const worker = new Worker("/SseDataWorker.js");
+        console.log("saveBinaryFile_1");
         worker.addEventListener("message", (arg) => {
+            console.log("saveBinaryFile_2");
             worker.terminate();
             //this.sendMsg("bottom-right-label", {message: "Sending..."})
             const binary = arg.data.result;
             if (!binary)
                 return;
-
+            
+            console.log("save_url,_oreq",);
             const url = "/save" + fileName;
             const oReq = new XMLHttpRequest();
             oReq.open("POST", url, true);
             oReq.setRequestHeader("Content-Type", "application/octet-stream");
+            console.log("save_url,_oreq,_binary",url,oReq,binary);
             oReq.send(binary);
         });
+        console.log("saveBinaryFile_3");
         worker.postMessage({operation: "compress", data});
     }
 

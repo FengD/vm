@@ -22,10 +22,10 @@ const groupBadgeStyles = {
 
 var infoStr=localStorage.getItem("imagesres");
 var info=JSON.parse(infoStr);
-console.log("info",info)
+console.log("search_info",info)
 var tempPcd=[];
 var tempJpg=[];
-console.log(window.location.pathname);
+console.log("search_url",window.location.pathname);
 var tempUrlNow=[];
 var viewUrl;
 for (var x of info) {
@@ -42,7 +42,6 @@ for (var x of info) {
     tempJpg.push({"label":x.name});
   }
 }
-// console.log("temp",temp);
 
 var groupedOptions=[
   {
@@ -67,7 +66,7 @@ const formatGroupLabel = data => (
 );
 
 function logChange(val) {
-  console.log("label",val.label);
+  console.log("change_label",val.label);
   // if(val.label.slice(-4)==".jpg")
   // {
   //   for (var x of info) {

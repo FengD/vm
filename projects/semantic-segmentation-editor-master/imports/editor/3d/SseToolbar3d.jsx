@@ -9,7 +9,8 @@ import {
     ArrowLeft,
     Home,
     Refresh,
-    ViewColumn
+    ViewColumn,
+    Help
 } from 'mdi-material-ui';
 
 export default class SseToolbar3d extends SseToolbar {
@@ -24,6 +25,8 @@ export default class SseToolbar3d extends SseToolbar {
         super.componentDidMount();
 
         this.addCommand("returnFolderCommand","Return Folder",0,"W","return",Home,undefined,undefined);
+
+        this.addCommand("changeBoxCommand","Box Size",0,"shift+q","minx+",Help,undefined,undefined);
 
         this.addCommand("viewPicCommand","Picture View ",0,"P","viewpicture",ViewColumn,undefined,undefined);
 
@@ -65,6 +68,13 @@ export default class SseToolbar3d extends SseToolbar {
                     <div className="tool-title">Return Folder</div>
                     <div className="hflex">
                     {this.renderCommand("returnFolderCommand")}
+                    </div>
+                </div>
+
+                <div className="vflex">
+                    <div className="tool-title">Box Size</div>
+                    <div className="hflex">
+                    {this.renderCommand("changeBoxCommand")}
                     </div>
                 </div>
 

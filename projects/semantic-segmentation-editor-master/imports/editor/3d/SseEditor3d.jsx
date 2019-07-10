@@ -340,11 +340,9 @@ export default class SseEditor3d extends React.Component {
             console.log("select_obb1",this.objectBox3);
             this.updateGlobalBox();
 
-            this.destroyMyBox();
-            var obb=this.showObjBoundingBox(this.selectedObject.max,this.selectedObject.min);
-            this.myBoxObject = obb[0];
-            this.objectBox3=obb[1];
-            // var obb=this.drawMyBox(this.selectedObject.points);
+            this.showObjBoundingBox();
+            // this.destroyMyBox();
+            // var obb=this.showObjBoundingBox(this.selectedObject.max,this.selectedObject.min);
             // this.myBoxObject = obb[0];
             // this.objectBox3=obb[1];
 
@@ -447,6 +445,13 @@ export default class SseEditor3d extends React.Component {
             var firsturl=localStorage.getItem("firsturl");
             window.location=firsturl;
         });
+
+        this.onMsg("minx+",() =>{
+            this.changeObjBoundingBox("minx+");
+        });
+        // this.onMsg("minx-",() =>{
+        //     this.changeObjBoundingBox("minx-");
+        // });
 
         this.onMsg("viewpicture",() =>{
             var infoStr=localStorage.getItem("imagesres");
@@ -1775,7 +1780,12 @@ export default class SseEditor3d extends React.Component {
         return bbox;
     }
 
-    showObjBoundingBox(max,min) {
+    showObjBoundingBox() {
+
+        this.destroyMyBox();
+
+        var max=this.selectedObject.max;
+        var min=this.selectedObject.min;
         var newbox=new THREE.BufferGeometry();
         // bbox.max.x=bbox.max.x+10;
         // bbox.max.y=bbox.max.y+10;
@@ -1795,10 +1805,56 @@ export default class SseEditor3d extends React.Component {
         const bbo = new THREE.Mesh(newbox, material);
         const bh = new BoxHelper(bbo, 0x505050);
         console.log("bh",bh);
-        // bh.userData = forEachableIndices
-        // this.drawBSphere(forEachableIndices);
         this.scene.add(bh);
-        return [bh, bbox];
+        this.myBoxObject = bh;
+        this.objectBox3=newbox;
+        // return [bh, newbox];
+    }
+
+    changeObjBoundingBox(message) {
+        console.log("message",message);
+        switch(message)
+        {
+            case "minx+":
+                console.log("this.selectedObject.min.x",this.selectedObject.min.x);
+                this.selectedObject.min.x=this.selectedObject.min.x+1;
+                console.log("this.selectedObject.min.x",this.selectedObject.min.x);
+                break;
+            case "minx-":
+                this.selectedObject.min.x=this.selectedObject.min.x-1;
+                break;
+            case "miny+":
+                this.selectedObject.min.y=this.selectedObject.min.y+1;
+                break;
+            case "miny-":
+                this.selectedObject.min.y=this.selectedObject.min.y-1;
+                break;
+            case "minz+":
+                this.selectedObject.min.z=this.selectedObject.min.z+1;
+                break;
+            case "minz-":
+                this.selectedObject.min.z=this.selectedObject.min.z-1;
+                break;
+            case "maxx+":
+                this.selectedObject.max.x=this.selectedObject.max.x+1;
+                break;
+            case "maxx-":
+                this.selectedObject.max.x=this.selectedObject.max.x-1;
+                break;
+            case "maxy+":
+                this.selectedObject.max.y=this.selectedObject.max.y+1;
+                break;
+            case "maxy-":
+                this.selectedObject.max.y=this.selectedObject.max.y-1;
+                break;
+            case "maxz+":
+                this.selectedObject.max.z=this.selectedObject.max.z+1;
+                break;
+            case "maxz-":
+                this.selectedObject.max.z=this.selectedObject.max.z-1;
+                break;
+        }
+        this.showObjBoundingBox();
     }
 
     drawMyBox(forEachableIndices) {

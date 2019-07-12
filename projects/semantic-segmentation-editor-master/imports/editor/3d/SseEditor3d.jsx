@@ -446,12 +446,45 @@ export default class SseEditor3d extends React.Component {
             window.location=firsturl;
         });
 
+        //change box size
         this.onMsg("minx+",() =>{
             this.changeObjBoundingBox("minx+");
         });
-        // this.onMsg("minx-",() =>{
-        //     this.changeObjBoundingBox("minx-");
-        // });
+        this.onMsg("minx-",() =>{
+            this.changeObjBoundingBox("minx-");
+        });
+        this.onMsg("miny+",() =>{
+            this.changeObjBoundingBox("miny+");
+        });
+        this.onMsg("miny-",() =>{
+            this.changeObjBoundingBox("miny-");
+        });
+        this.onMsg("minz+",() =>{
+            this.changeObjBoundingBox("minz+");
+        });
+        this.onMsg("minz-",() =>{
+            this.changeObjBoundingBox("minz-");
+        });
+        this.onMsg("maxx+",() =>{
+            this.changeObjBoundingBox("maxx+");
+        });
+        this.onMsg("maxx-",() =>{
+            this.changeObjBoundingBox("maxx-");
+        });
+        this.onMsg("maxy+",() =>{
+            this.changeObjBoundingBox("maxy+");
+        });
+        this.onMsg("maxy-",() =>{
+            this.changeObjBoundingBox("maxy-");
+        });
+        this.onMsg("maxz+",() =>{
+            this.changeObjBoundingBox("maxz+");
+        });
+        this.onMsg("maxz-",() =>{
+            this.changeObjBoundingBox("maxz-");
+        });
+        
+        
 
         this.onMsg("viewpicture",() =>{
             var infoStr=localStorage.getItem("imagesres");

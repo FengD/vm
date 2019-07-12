@@ -26,7 +26,18 @@ export default class SseToolbar3d extends SseToolbar {
 
         this.addCommand("returnFolderCommand","Return Folder",0,"W","return",Home,undefined,undefined);
 
-        this.addCommand("changeBoxCommand","Box Size",0,"shift+q","minx+",Help,undefined,undefined);
+        this.addCommand("changeBoxCommand0","Box Size",0,"shift+q","minx+",Help,undefined,undefined);
+        this.addCommand("changeBoxCommand1","Box Size",0,"shift+w","minx-",Help,undefined,undefined);
+        this.addCommand("changeBoxCommand2","Box Size",0,"shift+e","miny+",Help,undefined,undefined);
+        this.addCommand("changeBoxCommand3","Box Size",0,"shift+r","miny-",Help,undefined,undefined);
+        this.addCommand("changeBoxCommand4","Box Size",0,"shift+a","minz+",Help,undefined,undefined);
+        this.addCommand("changeBoxCommand5","Box Size",0,"shift+s","minz-",Help,undefined,undefined);
+        this.addCommand("changeBoxCommand6","Box Size",0,"shift+d","maxx+",Help,undefined,undefined);
+        this.addCommand("changeBoxCommand7","Box Size",0,"shift+f","maxx-",Help,undefined,undefined);
+        this.addCommand("changeBoxCommand8","Box Size",0,"shift+z","maxy+",Help,undefined,undefined);
+        this.addCommand("changeBoxCommand9","Box Size",0,"shift+x","maxy-",Help,undefined,undefined);
+        this.addCommand("changeBoxCommand10","Box Size",0,"shift+c","maxz+",Help,undefined,undefined);
+        this.addCommand("changeBoxCommand11","Box Size",0,"shift+v","maxz-",Help,undefined,undefined);
 
         this.addCommand("viewPicCommand","Picture View ",0,"P","viewpicture",ViewColumn,undefined,undefined);
 
@@ -71,11 +82,28 @@ export default class SseToolbar3d extends SseToolbar {
                     </div>
                 </div>
 
-                <div className="vflex">
-                    <div className="tool-title">Box Size</div>
+
+                <div  class="dropdown">
+                <button class="dropbtn">change box</button>
+                <div class="dropdown-content">
+                    <a href="//www.runoob.com">菜鸟教程 1</a>
+                    <li>
                     <div className="hflex">
-                    {this.renderCommand("changeBoxCommand")}
+                    {this.renderCommand("changeBoxCommand0")}
                     </div>
+                    </li>
+                    <li>   {this.renderCommand("changeBoxCommand1")}  </li>
+                    <li>   {this.renderCommand("changeBoxCommand2")}  </li>
+                    <li>   {this.renderCommand("changeBoxCommand3")}  </li>
+                    <li>   {this.renderCommand("changeBoxCommand4")}  </li>
+                    <li>   {this.renderCommand("changeBoxCommand5")}  </li>
+                    <li>   {this.renderCommand("changeBoxCommand6")}  </li>
+                    <li>   {this.renderCommand("changeBoxCommand7")}  </li>
+                    <li>   {this.renderCommand("changeBoxCommand8")}  </li>
+                    <li>   {this.renderCommand("changeBoxCommand9")}  </li>
+                    <li>   {this.renderCommand("changeBoxCommand10")}  </li>
+                    <li>   {this.renderCommand("changeBoxCommand11")}  </li>
+                </div>
                 </div>
 
                 <div className="vflex">

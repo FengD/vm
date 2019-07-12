@@ -199,7 +199,6 @@ export default class SseObjectToolbar extends SseToolbar {
                 </div>
             </div>
 
-
         )
     }
 }

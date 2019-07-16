@@ -1839,6 +1839,9 @@ export default class SseEditor3d extends React.Component {
         const bh = new BoxHelper(bbo, 0x505050);
         console.log("bh",bh);
         this.scene.add(bh);
+
+        this.renderer.render(this.scene, this.camera);
+        
         this.myBoxObject = bh;
         this.objectBox3=newbox;
         // return [bh, newbox];

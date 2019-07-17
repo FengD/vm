@@ -22,6 +22,12 @@ const groupBadgeStyles = {
 
 var infoStr=localStorage.getItem("imagesres");
 var info=JSON.parse(infoStr);
+
+if (info==null)
+  {
+    return ;
+  }
+
 console.log("search_info",info)
 var tempPcd=[];
 var tempJpg=[];

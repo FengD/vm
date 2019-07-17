@@ -281,8 +281,9 @@ export default class SseEditor3d extends React.Component {
 
         if (points) {
             const obj = {id: Random.id(), classIndex: this.activeClassIndex, points: Array.from(points),
-            max:firstBox.max,min:firstBox.min};
+            max:firstBox.max,min:firstBox.min,angle:0};
             this.objects.add(obj);
+            console.log("objangle",obj.angle);
             console.log("all_obj",this.objects);
             console.log("now_obj",obj);
             this.sendMsg("objects-update", {value: this.objects});
@@ -341,6 +342,7 @@ export default class SseEditor3d extends React.Component {
             this.updateGlobalBox();
 
             this.showObjBoundingBox();
+            this.showObjArrow();
             // this.destroyMyBox();
             // var obb=this.showObjBoundingBox(this.selectedObject.max,this.selectedObject.min);
             // this.myBoxObject = obb[0];
@@ -1847,6 +1849,31 @@ export default class SseEditor3d extends React.Component {
         // return [bh, newbox];
     }
 
+    showObjArrow() {
+        this.scene.remove(this.arrowobject);
+
+        console.log("this.selectedObject",this.selectedObject);
+        var max=this.selectedObject.max;
+        var min=this.selectedObject.min;
+        var angle=this.selectedObject.angle;
+        console.log("angle",angle);
+        var x=(max.x+min.x)/2;
+        var y=(max.y+min.y)/2;
+        //keep z max to put arrow
+        var z=max.z;
+        var length = (max.y-min.y)/2;
+        var xadd=Math.cos(angle);
+        var yadd=Math.sin(angle);
+        console.log("xadd,yadd",xadd,yadd);
+        var dir = new THREE.Vector3( x+1, y+0, z);
+        var origin = new THREE.Vector3( x, y, z);
+        var hex = 0xffff00;
+        var arrowHelper = new THREE.ArrowHelper( dir, origin, length, hex );
+        this.arrowobject=arrowHelper;
+        this.scene.add(this.arrowobject);
+
+    }
+
     changeObjBoundingBox(message) {
         console.log("message",message);
         switch(message)
@@ -1891,6 +1918,30 @@ export default class SseEditor3d extends React.Component {
                 break;
         }
         this.showObjBoundingBox();
+    }
+
+    changeBoxArrow(message){
+        console.log("message",message);
+        switch(message)
+        {
+            case "positive":
+                console.log("this.selectedObject.angle1",this.selectedObject.angle);
+                this.selectedObject.angle=this.selectedObject.angle+1/360*Math.PI;
+                if(this.selectedObject.angle>Math.PI)
+                {
+                    this.selectedObject.angle=this.selectedObject.angle%Math.PI
+                }
+                console.log("this.selectedObject.angle2",this.selectedObject.angle);
+                break;
+            case "negative":
+                this.selectedObject.angle=this.selectedObject.angle-1/360*Math.PI;
+                if(this.selectedObject.angle<0)
+                {
+                    this.selectedObject.angle=this.selectedObject.angle+Math.PI
+                }
+                break;
+        }
+        this.showObjArrow();
     }
 
     drawMyBox(forEachableIndices) {

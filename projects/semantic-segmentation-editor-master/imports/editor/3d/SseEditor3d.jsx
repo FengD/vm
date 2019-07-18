@@ -486,7 +486,13 @@ export default class SseEditor3d extends React.Component {
             this.changeObjBoundingBox("maxz-");
         });
         
-        
+        this.onMsg("positive",() =>{
+            this.changeBoxArrow("positive");
+        });
+
+        this.onMsg("negative",() =>{
+            this.changeBoxArrow("negative");
+        });
 
         this.onMsg("viewpicture",() =>{
             var infoStr=localStorage.getItem("imagesres");
@@ -700,6 +706,7 @@ export default class SseEditor3d extends React.Component {
 
         this.onMsg("downloadFile", () => this.downloadFile());
         this.onMsg("downloadText", () => this.downloadText());
+        this.onMsg("downloadBox", () => this.downloadBox());
         this.onMsg("color-boost", (arg => {
             this.colorBoost = arg.value;
             this.invalidateColor();
@@ -716,6 +723,10 @@ export default class SseEditor3d extends React.Component {
 
     downloadText() {
         window.open("/api/pcdtext" + this.props.imageUrl, "_blank");
+    }
+
+    downloadBox(){
+        window.open("/api/boxfile" + this.props.imageUrl, "_blank");
     }
 
     init() {
@@ -1865,13 +1876,15 @@ export default class SseEditor3d extends React.Component {
         var xadd=Math.cos(angle);
         var yadd=Math.sin(angle);
         console.log("xadd,yadd",xadd,yadd);
-        var dir = new THREE.Vector3( x+1, y+0, z);
+        var dir = new THREE.Vector3(xadd,yadd,0);
+        // var dir = new THREE.Vector3( -0.7, 0.7, 0);
         var origin = new THREE.Vector3( x, y, z);
         var hex = 0xffff00;
         var arrowHelper = new THREE.ArrowHelper( dir, origin, length, hex );
         this.arrowobject=arrowHelper;
         this.scene.add(this.arrowobject);
 
+        this.renderer.render(this.scene, this.camera);
     }
 
     changeObjBoundingBox(message) {
@@ -1918,6 +1931,7 @@ export default class SseEditor3d extends React.Component {
                 break;
         }
         this.showObjBoundingBox();
+        this.saveAll();
     }
 
     changeBoxArrow(message){
@@ -1926,22 +1940,23 @@ export default class SseEditor3d extends React.Component {
         {
             case "positive":
                 console.log("this.selectedObject.angle1",this.selectedObject.angle);
-                this.selectedObject.angle=this.selectedObject.angle+1/360*Math.PI;
-                if(this.selectedObject.angle>Math.PI)
+                this.selectedObject.angle=this.selectedObject.angle+10/360*Math.PI;
+                if(this.selectedObject.angle>2*Math.PI)
                 {
-                    this.selectedObject.angle=this.selectedObject.angle%Math.PI
+                    this.selectedObject.angle=this.selectedObject.angle%(2*Math.PI);
                 }
                 console.log("this.selectedObject.angle2",this.selectedObject.angle);
                 break;
             case "negative":
-                this.selectedObject.angle=this.selectedObject.angle-1/360*Math.PI;
+                this.selectedObject.angle=this.selectedObject.angle-10/360*Math.PI;
                 if(this.selectedObject.angle<0)
                 {
-                    this.selectedObject.angle=this.selectedObject.angle+Math.PI
+                    this.selectedObject.angle=this.selectedObject.angle+2*Math.PI
                 }
                 break;
         }
         this.showObjArrow();
+        this.saveAll();
     }
 
     drawMyBox(forEachableIndices) {

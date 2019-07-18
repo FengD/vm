@@ -8,6 +8,7 @@ import SsePCDLoader from "../imports/editor/3d/SsePCDLoader";
 WebApp.connectHandlers.use("/api/json", generateJson);
 WebApp.connectHandlers.use("/api/pcdtext", generatePCDOutput.bind({fileMode: false}));
 WebApp.connectHandlers.use("/api/pcdfile", generatePCDOutput.bind({fileMode: true}));
+WebApp.connectHandlers.use("/api/boxfile", generateBOXOutput.bind({fileMode: true}));
 WebApp.connectHandlers.use("/api/listing", imagesListing);
 
 const {imagesFolder, pointcloudsFolder, setsOfClassesMap} = configurationFile;
@@ -97,7 +98,9 @@ function generatePCDOutput(req, res, next) {
 
                 if (objectsAvailable) {
                     const objects = SseDataWorkerServer.uncompress(objectContent);
+                    // console.log("objects",objects);
                     objects.forEach((obj, objIndex) => {
+                        console.log("obj-index",obj.max,obj.min, obj.angle,obj.classIndex,objIndex);
                         obj.points.forEach(ptIdx => {
                             objectByPointIndex.set(ptIdx, objIndex);
                         })
@@ -134,5 +137,52 @@ function generatePCDOutput(req, res, next) {
                 res.end()
             })
         });
+    });
+}
+
+function generateBOXOutput(req, res, next) {
+    const pcdFile = imagesFolder + decodeURIComponent(req.url);
+    const fileName = basename(pcdFile).slice(0,-3)+"box";
+    const objectFile = pointcloudsFolder + decodeURIComponent(req.url) + ".objects";
+
+    if (this.fileMode) {
+        res.setHeader('Content-disposition', 'attachment; filename=DOC'.replace("DOC", fileName));
+        res.setHeader('Content-type', 'text/plain');
+        res.charset = 'UTF-8';
+    }
+
+    readFile(pcdFile, (err, content) => {
+        if (err) {
+            res.end("Error while parsing PCD file.");
+        }
+
+        let out = "VERSION .7\n";
+        out += "FIELDS objIndex length width height x y z angel classindex\n";
+        out += "DATA ascii\n";
+        res.write(out);
+        out = "";
+        readFile(objectFile, (objectErr, objectContent) => {
+            let objectsAvailable = true;
+            if (objectErr) {
+                objectsAvailable = false;
+            }
+
+            if (objectsAvailable) {
+                const objects = SseDataWorkerServer.uncompress(objectContent);
+                objects.forEach((obj, objIndex) => {
+                    // console.log("obj-index",objIndex,obj.min,obj.max,obj.angle,obj.classIndex);
+                    out +=objIndex + " " + 
+                    (obj.max.x-obj.min.x) + " " + (obj.max.y-obj.min.y) + " " +(obj.max.z-obj.min.z) + " " +
+                    (obj.max.x+obj.min.x)/2 + " " + (obj.max.y+obj.min.y)/2 + " " +(obj.max.z+obj.min.z)/2 + " " +
+                    obj.angle*Math.PI/180 + " " + obj.classIndex + "\n";
+                    // out +=objIndex + " " + 
+                    // obj.min.x + " " + obj.min.y + " " +obj.min.z + " " +
+                    // obj.max.x + " " + obj.max.y + " " +obj.max.z + " " +
+                    // obj.angle + " " + obj.classIndex + "\n";
+                });
+                res.write(out);
+            }
+            res.end();
+        })
     });
 }

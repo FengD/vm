@@ -23,6 +23,7 @@ export default class SseToolbar extends React.Component {
 
     renderCommand(name) {
         const commandDesc = this.commands.get(name);
+        console.log("commandDesc0",commandDesc);
         const tippyKey = "#" + name + "Help";
         if (!commandDesc)
             return null;
@@ -40,6 +41,17 @@ export default class SseToolbar extends React.Component {
                     <Icon/>
                 </IconButton>
                 <span className="title">{commandDesc.legend || commandDesc.shortcut}</span>
+            </div>);
+        }
+    }
+
+    renderMyCommand(name){
+        const commandDesc = this.commands.get(name);
+        if (!commandDesc)
+            return null;
+        else {
+            return (<div>
+                <span className="title">{commandDesc.actionMessage + commandDesc.shortcut}</span>
             </div>);
         }
     }

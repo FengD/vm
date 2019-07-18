@@ -39,6 +39,9 @@ export default class SseToolbar3d extends SseToolbar {
         this.addCommand("changeBoxCommand10","Box Size",0,"shift+c","maxz+",Help,undefined,undefined);
         this.addCommand("changeBoxCommand11","Box Size",0,"shift+v","maxz-",Help,undefined,undefined);
 
+        this.addCommand("changeBoxArrowL","Box Dir",0,"shift+left","positive",ArrowLeft,undefined,undefined);
+        this.addCommand("changeBoxArrowR","Box Dir",0,"shift+right","negative",ArrowRight,undefined,undefined);
+
         this.addCommand("viewPicCommand","Picture View ",0,"P","viewpicture",ViewColumn,undefined,undefined);
 
         this.addCommand("CleanCommand","Clean Tab",0,"C","clean",Refresh,undefined,undefined);
@@ -67,6 +70,8 @@ export default class SseToolbar3d extends SseToolbar {
         this.addCommand("redoCommand", "Redo", false, "Ctrl+Y", "redo", Redo, "disabled");
         this.addCommand("downloadTextCommand", "PCD Output as Text", false, "", "downloadText", FileDownloadOutline);
         this.addCommand("downloadFileCommand", "PCD Output as File", false, "", "downloadFile", FileDownloadOutline);
+        this.addCommand("downloadBoxCommand", "BOX Output as File", false, "", "downloadBox", FileDownloadOutline);
+
         this.sendMsg("selector");
         this.sendMsg("selection-mode-add");
     }
@@ -84,25 +89,30 @@ export default class SseToolbar3d extends SseToolbar {
 
 
                 <div  class="dropdown">
-                <button class="dropbtn">change box</button>
+                <button class="dropbtn">change boxsize</button>
                 <div class="dropdown-content">
                     <a href="//www.runoob.com">菜鸟教程 1</a>
-                    <li>
-                    <div className="hflex">
-                    {this.renderCommand("changeBoxCommand0")}
-                    </div>
-                    </li>
-                    <li>   {this.renderCommand("changeBoxCommand1")}  </li>
-                    <li>   {this.renderCommand("changeBoxCommand2")}  </li>
-                    <li>   {this.renderCommand("changeBoxCommand3")}  </li>
-                    <li>   {this.renderCommand("changeBoxCommand4")}  </li>
-                    <li>   {this.renderCommand("changeBoxCommand5")}  </li>
-                    <li>   {this.renderCommand("changeBoxCommand6")}  </li>
-                    <li>   {this.renderCommand("changeBoxCommand7")}  </li>
-                    <li>   {this.renderCommand("changeBoxCommand8")}  </li>
-                    <li>   {this.renderCommand("changeBoxCommand9")}  </li>
-                    <li>   {this.renderCommand("changeBoxCommand10")}  </li>
-                    <li>   {this.renderCommand("changeBoxCommand11")}  </li>
+                    <li>   {this.renderMyCommand("changeBoxCommand0")}  </li>
+                    <li>   {this.renderMyCommand("changeBoxCommand1")}  </li>
+                    <li>   {this.renderMyCommand("changeBoxCommand2")}  </li>
+                    <li>   {this.renderMyCommand("changeBoxCommand3")}  </li>
+                    <li>   {this.renderMyCommand("changeBoxCommand4")}  </li>
+                    <li>   {this.renderMyCommand("changeBoxCommand5")}  </li>
+                    <li>   {this.renderMyCommand("changeBoxCommand6")}  </li>
+                    <li>   {this.renderMyCommand("changeBoxCommand7")}  </li>
+                    <li>   {this.renderMyCommand("changeBoxCommand8")}  </li>
+                    <li>   {this.renderMyCommand("changeBoxCommand9")}  </li>
+                    <li>   {this.renderMyCommand("changeBoxCommand10")}  </li>
+                    <li>   {this.renderMyCommand("changeBoxCommand11")}  </li>
+                </div>
+                </div>
+
+                <div  class="dropdown">
+                <button class="dropbtn">change boxdir</button>
+                <div class="dropdown-content">
+                    <a href="//www.runoob.com">菜鸟教程 1</a>
+                    <li>   {this.renderMyCommand("changeBoxArrowL")}  </li>
+                    <li>   {this.renderMyCommand("changeBoxArrowR")}  </li>
                 </div>
                 </div>
 
@@ -171,6 +181,7 @@ export default class SseToolbar3d extends SseToolbar {
                     <div className="hflex">
                         {this.renderCommand("downloadTextCommand")}
                         {this.renderCommand("downloadFileCommand")}
+                        {this.renderCommand("downloadBoxCommand")}
                     </div>
                 </div>
             </div>

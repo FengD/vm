@@ -3,6 +3,7 @@ import React from 'react';
 import {Button, Checkbox, FormControlLabel, FormGroup, IconButton} from '@material-ui/core';
 import Mousetrap from "mousetrap";
 import SseMsg from "./SseMsg";
+import color from '@material-ui/core/colors/grey';
 
 const disabled = "disabled";
 const enabled = "enabled";
@@ -51,7 +52,10 @@ export default class SseToolbar extends React.Component {
             return null;
         else {
             return (<div>
-                <span className="title">{commandDesc.actionMessage + commandDesc.shortcut}</span>
+                {/* <span className="title" color="black">{commandDesc.actionMessage + commandDesc.shortcut}</span> */}
+                <Button  color="primary" onClick={e => this.sendMsg(commandDesc.actionMessage, {value: this.state[name]})}>
+                    <text >{commandDesc.actionMessage + " " + commandDesc.shortcut}</text>
+                </Button>
             </div>);
         }
     }

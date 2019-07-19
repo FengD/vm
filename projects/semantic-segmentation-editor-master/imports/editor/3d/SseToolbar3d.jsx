@@ -80,18 +80,10 @@ export default class SseToolbar3d extends SseToolbar {
         return (
             <div className="hflex flex-justify-content-space-around sse-toolbar toolbar-3d no-shrink">
                 <SseBranding/>
-                <div className="vflex">
-                    <div className="tool-title">Return Folder</div>
-                    <div className="hflex">
-                    {this.renderCommand("returnFolderCommand")}
-                    </div>
-                </div>
-
 
                 <div  class="dropdown">
                 <button class="dropbtn">change boxsize</button>
                 <div class="dropdown-content">
-                    <a href="//www.runoob.com">菜鸟教程 1</a>
                     <li>   {this.renderMyCommand("changeBoxCommand0")}  </li>
                     <li>   {this.renderMyCommand("changeBoxCommand1")}  </li>
                     <li>   {this.renderMyCommand("changeBoxCommand2")}  </li>
@@ -110,10 +102,16 @@ export default class SseToolbar3d extends SseToolbar {
                 <div  class="dropdown">
                 <button class="dropbtn">change boxdir</button>
                 <div class="dropdown-content">
-                    <a href="//www.runoob.com">菜鸟教程 1</a>
                     <li>   {this.renderMyCommand("changeBoxArrowL")}  </li>
                     <li>   {this.renderMyCommand("changeBoxArrowR")}  </li>
                 </div>
+                </div>
+
+                <div className="vflex">
+                    <div className="tool-title">Return Folder</div>
+                    <div className="hflex">
+                    {this.renderCommand("returnFolderCommand")}
+                    </div>
                 </div>
 
                 <div className="vflex">
@@ -134,7 +132,6 @@ export default class SseToolbar3d extends SseToolbar {
                     <div className="tool-title">Undo</div>
                     <div className="hflex">
                     {this.renderCommand("undoCommand")}
-                    {/* {this.renderCommand("redoCommand")} */}
                     </div>
                 </div>
 

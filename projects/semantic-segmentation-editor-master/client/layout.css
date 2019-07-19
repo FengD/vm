@@ -182,7 +182,8 @@
 
 
 .dropbtn {
-    background-color: #4CAF50;
+    /* background-color: #4CAF50; */
+    background-color: #6E6E6E;
     color: white;
     padding: 16px;
     font-size: 16px;
@@ -211,7 +212,16 @@
     display: block;
 }
 
+.dropdown-content li {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
 .dropdown-content a:hover {background-color: #db4848}
+
+.dropdown-content li:hover {background-color: #db4848}
 
 .dropdown:hover .dropdown-content {
     display: block;

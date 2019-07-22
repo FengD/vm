@@ -28,10 +28,8 @@ if (info==null)
     return ;
   }
 
-console.log("search_info",info)
 var tempPcd=[];
 var tempJpg=[];
-console.log("search_url",window.location.pathname);
 var tempUrlNow=[];
 var viewUrl;
 for (var x of info) {
@@ -72,7 +70,7 @@ const formatGroupLabel = data => (
 );
 
 function logChange(val) {
-  console.log("change_label",val.label);
+  // console.log("change_label",val.label);
   // if(val.label.slice(-4)==".jpg")
   // {
   //   for (var x of info) {

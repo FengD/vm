@@ -100,7 +100,6 @@ function generatePCDOutput(req, res, next) {
                     const objects = SseDataWorkerServer.uncompress(objectContent);
                     // console.log("objects",objects);
                     objects.forEach((obj, objIndex) => {
-                        console.log("obj-index",obj.max,obj.min, obj.angle,obj.classIndex,objIndex);
                         obj.points.forEach(ptIdx => {
                             objectByPointIndex.set(ptIdx, objIndex);
                         })

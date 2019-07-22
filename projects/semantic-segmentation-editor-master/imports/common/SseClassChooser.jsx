@@ -181,8 +181,7 @@ export default class SseClassChooser extends SseToolbar {
                                 onDoubleClick={() => this.sendMsg("class-multi-select", {name: objDesc.label})}
                                 onClick={() => {
                                     this.sendMsg('classSelection', {descriptor: objDesc});
-                                    console.log('classSelection', {descriptor: objDesc});
-                                    console.log('state', this.state);
+                                    // console.log('classSelection', {descriptor: objDesc});
                                 }}
                                 style={
                                     {

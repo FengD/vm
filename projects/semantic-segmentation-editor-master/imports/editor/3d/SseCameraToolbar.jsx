@@ -6,6 +6,7 @@ import {
     Brightness6, CubeSend, ImageFilterTiltShift, Rotate3D, Target, Video, Movie, ArrowDown, FormatRotate90
 } from 'mdi-material-ui';
 import SseToolbar from "../../common/SseToolbar";
+import zIndex from '@material-ui/core/styles/zIndex';
 
 export default class SseCameraToolbar extends SseToolbar {
     constructor() {
@@ -79,10 +80,12 @@ export default class SseCameraToolbar extends SseToolbar {
                 height: "150px",
                 position: "absolute",
                 left: "-30px",
-                top: "-110px"
+                top: "-110px",
+                zIndex: "6",
             };
         const pointSizeSliderStyle =
-            {display: this.state.pointSizeVisible, height: "150px", position: "absolute", left: "-30px", top: "-110px"};
+            {display: this.state.pointSizeVisible, height: "150px", 
+            position: "absolute", left: "-30px", top: "-110px",zIndex: "6",};
 
         return (
             <div className="vflex flex-justify-content-space-around sse-toolbar no-shrink">

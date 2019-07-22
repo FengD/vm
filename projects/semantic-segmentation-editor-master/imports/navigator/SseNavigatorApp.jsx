@@ -83,8 +83,7 @@ class SseNavigatorApp extends React.Component {
         if (this.state.data.error){
             return <div>{this.state.data.error}</div>
         }
-        console.log("navigator_props",this.props);
-        console.log("navigator_state",this.state)
+        // console.log("navigator_props",this.props);
         var str=JSON.stringify(this.state.data.allimages);
         localStorage.setItem("imagesres",str);
         localStorage.setItem("firsturl",window.location);

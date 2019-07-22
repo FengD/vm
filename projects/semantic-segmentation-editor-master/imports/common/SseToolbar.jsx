@@ -24,7 +24,6 @@ export default class SseToolbar extends React.Component {
 
     renderCommand(name) {
         const commandDesc = this.commands.get(name);
-        console.log("commandDesc0",commandDesc);
         const tippyKey = "#" + name + "Help";
         if (!commandDesc)
             return null;

@@ -20,7 +20,10 @@ import SseObjectToolbar from "./SseObjectToolbar";
 import tippy from "tippy.js";
 import SseTooltips3d from "./SseTooltips3d";
 import SseCurrentFolder from "../../common/SseCurrentFolder";
-import SseSearch from "../../common/SseSearch";
+// import SseSearch from "../../common/SseSearch";
+
+import SseSearchNew from "../../common/SseSearchNew";
+
 import SseGlobals from "../../common/SseGlobals";
 
 
@@ -80,7 +83,7 @@ export default class SseApp3d extends React.Component {
                                  </div>
 
                                  <div  className="search" style={{"color":"black"}}>
-                                     <SseSearch
+                                     <SseSearchNew
                                      imageUrl={this.props.imageUrl}/>
                                  </div>
                                  

@@ -1,7 +1,7 @@
 {
   "configuration": {
-    "images-folder": "/home/xjf/projects/itd_hmi_group/projects/semantic-segmentation-editor-master/point_cloud",
-    "internal-folder": "/home/xjf/projects/itd_hmi_group/projects/semantic-segmentation-editor-master/point_cloud_cache"
+    "images-folder": "/home/xjf/input",
+    "internal-folder": "/home/xjf/output"
   },
   "sets-of-classes": [
     {

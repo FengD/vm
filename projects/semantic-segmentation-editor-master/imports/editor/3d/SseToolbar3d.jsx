@@ -39,8 +39,8 @@ export default class SseToolbar3d extends SseToolbar {
         this.addCommand("changeBoxCommand10","Box Size",0,"shift+c","maxz+",Help,undefined,undefined);
         this.addCommand("changeBoxCommand11","Box Size",0,"shift+v","maxz-",Help,undefined,undefined);
 
-        this.addCommand("changeBoxArrowL","Box Dir",0,"shift+left","positive",ArrowLeft,undefined,undefined);
-        this.addCommand("changeBoxArrowR","Box Dir",0,"shift+right","negative",ArrowRight,undefined,undefined);
+        this.addCommand("changeBoxArrowN","Box Dir",0,"shift+left","negative",ArrowLeft,undefined,undefined);
+        this.addCommand("changeBoxArrowO","Box Dir",0,"shift+right","positive",ArrowRight,undefined,undefined);
 
         this.addCommand("viewPicCommand","Picture View ",0,"P","viewpicture",ViewColumn,undefined,undefined);
 
@@ -102,8 +102,8 @@ export default class SseToolbar3d extends SseToolbar {
                 <div  class="dropdown">
                 <button class="dropbtn">change boxdir</button>
                 <div class="dropdown-content">
-                    <li>   {this.renderMyCommand("changeBoxArrowL")}  </li>
-                    <li>   {this.renderMyCommand("changeBoxArrowR")}  </li>
+                    <li>   {this.renderMyCommand("changeBoxArrowN")}  </li>
+                    <li>   {this.renderMyCommand("changeBoxArrowO")}  </li>
                 </div>
                 </div>
 

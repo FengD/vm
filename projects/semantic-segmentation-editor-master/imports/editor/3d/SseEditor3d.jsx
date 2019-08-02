@@ -280,10 +280,20 @@ export default class SseEditor3d extends React.Component {
         }
 
         if (points) {
+
+            var length=firstBox.max.x-firstBox.min.x;
+            var width=firstBox.max.y-firstBox.min.y;
+            var height=firstBox.max.z-firstBox.min.z;
+            var centre={x:(firstBox.max.x+firstBox.min.x)/2,
+                        y:(firstBox.max.y+firstBox.min.y)/2,
+                        z:(firstBox.max.z+firstBox.min.z)/2
+                    };
             const obj = {id: Random.id(), classIndex: this.activeClassIndex, points: Array.from(points),
-            max:firstBox.max,min:firstBox.min,angle:0};
+            angle:0,length:length,width:width,height:height,centre:centre};
             this.objects.add(obj);
-            // console.log("now_obj",obj);
+
+            console.log("now_obj",obj);
+
             this.sendMsg("objects-update", {value: this.objects});
             this.sendMsg("object-select", {value: obj});
             this.changeClassOfSelection(this.activeClassIndex);
@@ -338,7 +348,7 @@ export default class SseEditor3d extends React.Component {
             this.setViewFilterState("object");
             this.updateGlobalBox();
 
-            this.showObjBoundingBox();
+            this.showObjBoundingBoxSec();
             this.showObjArrow();
             // this.destroyMyBox();
             // var obb=this.showObjBoundingBox(this.selectedObject.max,this.selectedObject.min);
@@ -1853,19 +1863,65 @@ export default class SseEditor3d extends React.Component {
         // return [bh, newbox];
     }
 
+    showObjBoundingBoxSec() {
+
+        this.destroyMyBox();
+
+        console.log("showboxnew_selectobj",this.selectedObject);
+        var length=this.selectedObject.length;
+        var width=this.selectedObject.width;
+        var height=this.selectedObject.height;
+        var centre=this.selectedObject.centre;
+        // var newbox=new THREE.BoxGeometry(length,width,height);
+
+        // const material = new THREE.MeshBasicMaterial({
+        //     color:0x00ff7c,
+        //     wireframe: true,
+        //     transparent:true,
+        // });
+
+        // const bbo = new THREE.Mesh(newbox, material);
+        // bbo.position.set(centre.x,centre.y,centre.z);
+        // bbo.rotation.z=2*Math.PI-this.selectedObject.angle;
+        
+        // this.scene.add(bbo);
+        // this.renderer.render(this.scene, this.camera);
+        
+        // this.myBoxObject = bbo;
+        // this.objectBox3=newbox;
+
+        var geometry = new THREE.BoxGeometry(length,width,height);
+        console.log("geometry",geometry);
+        // geometry.position.set(centre.x,centre.y,centre.z);
+        // geometry.rotation.z=2*Math.PI-this.selectedObject.angle;
+        var cubeEdges = new THREE.EdgesGeometry(geometry, 1);
+        var edgesMtl =  new THREE.LineBasicMaterial({color: 0x00ff7c});
+        var cubeLine = new THREE.LineSegments(cubeEdges, edgesMtl);
+        console.log("cubeLine",cubeLine);
+        cubeLine.position.set(centre.x,centre.y,centre.z);
+        cubeLine.rotation.z=2*Math.PI-this.selectedObject.angle;
+        // bbo.position.set(centre.x,centre.y,centre.z);
+        // bbo.rotation.z=2*Math.PI-this.selectedObject.angle;
+        
+        // var edges = new THREE.EdgesGeometry( bbo );
+        // var line = new THREE.LineSegments( edges, new THREE.LineBasicMaterial( { color: 0xffffff } ) );
+        this.scene.add( cubeLine );
+        this.renderer.render(this.scene, this.camera);
+        this.myBoxObject = cubeLine;
+        this.objectBox3=geometry;
+    }
+
     showObjArrow() {
         this.scene.remove(this.arrowobject);
 
-        var max=this.selectedObject.max;
-        var min=this.selectedObject.min;
+        var x=this.selectedObject.centre.x;
+        var y=this.selectedObject.centre.y;
+        var z=this.selectedObject.centre.z;
         var angle=this.selectedObject.angle;
-        var x=(max.x+min.x)/2;
-        var y=(max.y+min.y)/2;
         //keep z max to put arrow
-        var z=max.z;
-        var length = (max.y-min.y)/2;
+        var length = this.selectedObject.length;
         var xadd=Math.cos(angle);
-        var yadd=Math.sin(angle);
+        var yadd=-Math.sin(angle);
         var dir = new THREE.Vector3(xadd,yadd,0);
         // var dir = new THREE.Vector3( -0.7, 0.7, 0);
         var origin = new THREE.Vector3( x, y, z);
@@ -1879,53 +1935,76 @@ export default class SseEditor3d extends React.Component {
 
     changeObjBoundingBox(message) {
         // console.log("message",message);
+        var angle=this.selectedObject.angle;
         switch(message)
         {
             case "minx+":
-                this.selectedObject.min.x=this.selectedObject.min.x+1;
+                this.selectedObject.length=this.selectedObject.length+1;
+                this.selectedObject.centre.x+=0.5*Math.cos(angle);
+                this.selectedObject.centre.y-=0.5*Math.sin(angle);
                 break;
             case "minx-":
-                this.selectedObject.min.x=this.selectedObject.min.x-1;
+                this.selectedObject.length=this.selectedObject.length-1;
+                this.selectedObject.centre.x-=0.5*Math.cos(angle);
+                this.selectedObject.centre.y+=0.5*Math.sin(angle);
                 break;
             case "miny+":
-                this.selectedObject.min.y=this.selectedObject.min.y+1;
+                this.selectedObject.width=this.selectedObject.width+1;
+                // this.selectedObject.centre.y+=0.5;
+                this.selectedObject.centre.y+=0.5*Math.cos(angle);
+                this.selectedObject.centre.x+=0.5*Math.sin(angle);
                 break;
             case "miny-":
-                this.selectedObject.min.y=this.selectedObject.min.y-1;
+                this.selectedObject.width=this.selectedObject.width-1;
+                // this.selectedObject.centre.y-=0.5;
+                this.selectedObject.centre.y-=0.5*Math.cos(angle);
+                this.selectedObject.centre.x-=0.5*Math.sin(angle);
                 break;
             case "minz+":
-                this.selectedObject.min.z=this.selectedObject.min.z+1;
+                this.selectedObject.height=this.selectedObject.height+1;
+                this.selectedObject.centre.z+=0.5;
                 break;
             case "minz-":
-                this.selectedObject.min.z=this.selectedObject.min.z-1;
+                this.selectedObject.height=this.selectedObject.height-1;
+                this.selectedObject.centre.z-=0.5;
                 break;
             case "maxx+":
-                this.selectedObject.max.x=this.selectedObject.max.x+1;
+                this.selectedObject.length=this.selectedObject.length+1;
+                this.selectedObject.centre.x-=0.5*Math.cos(angle);
+                this.selectedObject.centre.y+=0.5*Math.sin(angle);
                 break;
             case "maxx-":
-                this.selectedObject.max.x=this.selectedObject.max.x-1;
+                this.selectedObject.length=this.selectedObject.length-1;
+                this.selectedObject.centre.x+=0.5*Math.cos(angle);
+                this.selectedObject.centre.y-=0.5*Math.sin(angle);
                 break;
             case "maxy+":
-                this.selectedObject.max.y=this.selectedObject.max.y+1;
+                this.selectedObject.width=this.selectedObject.width+1;
+                this.selectedObject.centre.y-=0.5*Math.cos(angle);
+                this.selectedObject.centre.x-=0.5*Math.sin(angle);
                 break;
             case "maxy-":
-                this.selectedObject.max.y=this.selectedObject.max.y-1;
+                this.selectedObject.width=this.selectedObject.width-1;
+                this.selectedObject.centre.y+=0.5*Math.cos(angle);
+                this.selectedObject.centre.x+=0.5*Math.sin(angle);
                 break;
             case "maxz+":
-                this.selectedObject.max.z=this.selectedObject.max.z+1;
+                this.selectedObject.height=this.selectedObject.height+1;
+                this.selectedObject.centre.z-=0.5;
                 break;
             case "maxz-":
-                this.selectedObject.max.z=this.selectedObject.max.z-1;
+                this.selectedObject.height=this.selectedObject.height-1;
+                this.selectedObject.centre.z+=0.5;
                 break;
         }
-        this.showObjBoundingBox();
+        this.showObjBoundingBoxSec();
         this.saveAll();
     }
 
     changeBoxArrow(message){
         switch(message)
         {
-            case "positive":
+            case "negative":
                 this.selectedObject.angle=this.selectedObject.angle+10/360*Math.PI;
                 if(this.selectedObject.angle>2*Math.PI)
                 {
@@ -1933,7 +2012,7 @@ export default class SseEditor3d extends React.Component {
                 }
                 // console.log("this.selectedObject.angle",this.selectedObject.angle);
                 break;
-            case "negative":
+            case "positive":
                 this.selectedObject.angle=this.selectedObject.angle-10/360*Math.PI;
                 if(this.selectedObject.angle<0)
                 {
@@ -1942,6 +2021,7 @@ export default class SseEditor3d extends React.Component {
                 break;
         }
         this.showObjArrow();
+        this.showObjBoundingBoxSec();
         this.saveAll();
     }
 

@@ -171,8 +171,8 @@ function generateBOXOutput(req, res, next) {
                 objects.forEach((obj, objIndex) => {
                     // console.log("obj-index",objIndex,obj.min,obj.max,obj.angle,obj.classIndex);
                     out +=objIndex + " " + 
-                    (obj.max.x-obj.min.x) + " " + (obj.max.y-obj.min.y) + " " +(obj.max.z-obj.min.z) + " " +
-                    (obj.max.x+obj.min.x)/2 + " " + (obj.max.y+obj.min.y)/2 + " " +(obj.max.z+obj.min.z)/2 + " " +
+                    obj.length + " " + obj.width + " " +obj.height + " " +
+                    obj.centre.x + " " + obj.centre.y + " " +obj.centre.z + " " +
                     obj.angle*Math.PI/180 + " " + obj.classIndex + "\n";
                     // out +=objIndex + " " + 
                     // obj.min.x + " " + obj.min.y + " " +obj.min.z + " " +

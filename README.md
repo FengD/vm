@@ -19,34 +19,65 @@
 # 使用规范
 
 * 上传规则
-	> 1. 代码提交与管理 [示例](http://10.10.51.40:3000/feng.ding/itd_hmi_group/blob/master/doc/code_management.png)
+	> 1. 代码提交与管理 [示例](http://10.10.51.40:3000/feng.ding/itd_hmi_group/blob/master/doc/code_management.jpg)
+http://10.10.51.40:3000/feng.ding/itd_hmi_group/blob/master/doc/code_management.jpg
   >> 1.1. 需求确认后，从master创建develop分支
-
-  >> 1.2. 开发人员从develop分支创建自己的feature分支进行开发
-
-  >> 1.3. master分支发生变更，需要从master分支合并到develop分支、可以考虑定期合并一次
-
-  >> 1.4. feature分支合并到对应的develop分支之前，需要从develop分支合并到feature分支
-
-  >> 1.5. feature分支合并到对应的develop分支之后，发布到测试环境进行测试
-
-  >> 1.6. develop分支在测试环境测试通过之后，合并到release分支并发布到预发布环境进行测试
-
-  >> 1.7. release分支在预发布环境验证通过后，合并到master分支并发布到生产环境进行验证
-
-  >> 1.8. 分支名称约定：
+  >> 1.2. develop分支在预发布环境验证通过后，合并到master分支并发布到生产环境进行验证
+  >> 1.3. 分支名称约定：
 
   | 分支类型 | 名称格式             | 说明  |
   | ------- | ------------------- | :----: |
   | Master  | master              | 有且只有一个 |
-  | Release | release-*           | *可以是班车发布日期也可以是需求名称缩写，也可以根据需要只用一个release分支 |
   | Develop | develop-*           | *通常是班车发布日期或者需求名称缩写 |
-  | Feature | feature-{username}-*|                               |
-
-  >> <img src="doc/code_management.png" height="400pix" /></br>
+  >> <img src="doc/code_management.jpg" height="400pix" /></br>
 	> 2. 每个工程都应有 `README.md` 和 `CHANGE.md` 。分别用于提供必要的工程说明和大版本更迭的必要说明。
 	> 3. 本地端编译的文件应写在 `.gitignore` 文件中，禁止上传。
 	> 4. `不符合规定的代码会要求重写！ `
+
+* commit 书写规则
+
+``` HTML
+<type>(<scope>): <subject>
+<BLANK LINE>
+<body>
+<BLANK LINE>
+<footer>
+```
+
+> **`type`** 
+>> * type为`必填项`，用于指定commit的类型，约定了feat、fix两个主要type，以及docs、style、build、refactor、revert五个特殊type，其余type暂不使用。
+>> * 当一次改动包括主要type与特殊type时，统一采用主要type
+>> 
+``` shell
+# 主要type
+feat: 增加新功能
+fix: 修复bug
+
+# 特殊type
+docs: 只改动了文档相关的内容
+style: 不影响代码含义的改动，例如去掉空格、改变缩进、增删分号
+build: 构造工具的或者外部依赖的改动，例如webpack，npm
+refactor: 代码重构时使用
+revert: 执行git revert打印的message
+
+# 暂不使用type
+test: 添加测试或者修改现有测试
+perf: 提高性能的改动
+ci: 与CI（持续集成服务）有关的改动
+chore: 不修改src或者test的其余修改，例如构建过程或辅助工具的变动
+```
+
+> **`scope`** 
+>> scope也为必填项，用于描述改动的范围，格式为项目名/模块名
+
+> **`body`** 
+>> body填写详细描述，主要描述改动之前的情况及修改动机，对于小的修改不作要求，但是重大需求、更新等必须添加body来作说明。
+
+> **`break changes`** 
+>> break changes指明是否产生了破坏性修改，涉及break changes的改动必须指明该项，类似版本升级、接口参数减少、接口删除、迁移等。
+
+> **`affect issues`** 
+>> affect issues指明是否影响了某个问题。例如我们使用jira时，我们在commit message中可以填写其影响的JIRA_ID，若要开启该功能需要先打通jira与gitlab。
 
 * HTML/JS/CSS的代码规范
 

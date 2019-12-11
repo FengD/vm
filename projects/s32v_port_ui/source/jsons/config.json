@@ -1,0 +1,113 @@
+{
+  "nav": {
+    "logo_img_path": "./source/imgs/logo.png",
+    "navbar_brand": "HirainITD",
+    "navbar_sub_brand": "JING TANG 105",
+    "button_groups": [
+      {
+        "button_name": "Cloud Display",
+        "dropdown_menu": [
+          {
+            "item_name": "Left Cloud",
+            "check": "left_cloud_check",
+            "init_check": "checked"
+          },
+          {
+            "item_name": "Right Cloud",
+            "check": "right_cloud_check",
+            "init_check": "checked"
+          },
+          {
+            "item_name": "Top Cloud",
+            "check": "top_cloud_check",
+            "init_check": "checked"
+          }
+        ]
+      },
+      {
+        "button_name": "Detection Display",
+        "dropdown_menu": [
+          {
+            "item_name": "Freespace",
+            "check": "freespace_check"
+          },
+          {
+            "item_name": "Trailer",
+            "check": "trailer_check"
+          },
+          {
+            "item_name": "Bridge",
+            "check": "bridge_check"
+          },
+          {
+            "item_name": "Boundary",
+            "check": "boundary_check"
+          },
+          {
+            "item_name": "Signboard",
+            "check": "signboard_check"
+          },
+          {
+            "item_name": "Container",
+            "check": "container_check"
+          }
+        ]
+      }
+    ]
+  },
+  "view": {
+    "clouds": [
+      {
+        "name": "left_cloud",
+        "path": "source/pcds/left.pcd",
+        "check": "left_cloud_check"
+      },
+      {
+        "name": "right_cloud",
+        "path": "source/pcds/right.pcd",
+        "check": "right_cloud_check"
+      },
+      {
+        "name": "top_cloud",
+        "path": "source/pcds/top.pcd",
+        "check": "top_cloud_check"
+      }
+    ],
+
+    "detections": {
+      "path": "source/yamls/detection.yaml",
+      "elements" : [
+        {
+          "key": "freespace",
+          "name": ["freespace"],
+          "check": "freespace_check"
+        },
+        {
+          "key": "signboard",
+          "name": ["signboard"],
+          "check": "signboard_check"
+        },
+        {
+          "key": "bridge",
+          "name": ["bridge"],
+          "check": "bridge_check"
+        },
+        {
+          "key": "boundary",
+          "name": ["left_boundary", "right_boundary"],
+          "check": "boundary_check"
+        },
+        {
+          "key": "trailer",
+          "name": ["trailer"],
+          "check": "trailer_check"
+        },
+        {
+          "key": "container",
+          "name": ["container"],
+          "check": "container_check"
+        }
+      ]
+    }
+  }
+}

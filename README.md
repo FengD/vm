@@ -20,7 +20,6 @@
 
 * 上传规则
 	> 1. 代码提交与管理 [示例](http://10.10.51.40:3000/feng.ding/itd_hmi_group/blob/master/doc/code_management.jpg)
-http://10.10.51.40:3000/feng.ding/itd_hmi_group/blob/master/doc/code_management.jpg
   >> 1.1. 需求确认后，从master创建develop分支
   >> 1.2. develop分支在预发布环境验证通过后，合并到master分支并发布到生产环境进行验证
   >> 1.3. 分支名称约定：
@@ -35,7 +34,6 @@ http://10.10.51.40:3000/feng.ding/itd_hmi_group/blob/master/doc/code_management.
 	> 4. `不符合规定的代码会要求重写！ `
 
 * commit 书写规则
-
 ``` HTML
 <type>(<scope>): <subject>
 <BLANK LINE>

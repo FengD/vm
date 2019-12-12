@@ -71,6 +71,7 @@ export default class SseToolbar3d extends SseToolbar {
         this.addCommand("downloadTextCommand", "PCD Output as Text", false, "", "downloadText", FileDownloadOutline);
         this.addCommand("downloadFileCommand", "PCD Output as File", false, "", "downloadFile", FileDownloadOutline);
         this.addCommand("downloadBoxCommand", "BOX Output as File", false, "", "downloadBox", FileDownloadOutline);
+        this.addCommand("downloadAllCommand", "All PCD Output as File", false, "", "downloadAll", FileDownloadOutline);
 
         this.sendMsg("selector");
         this.sendMsg("selection-mode-add");
@@ -179,6 +180,7 @@ export default class SseToolbar3d extends SseToolbar {
                         {this.renderCommand("downloadTextCommand")}
                         {this.renderCommand("downloadFileCommand")}
                         {this.renderCommand("downloadBoxCommand")}
+                        {this.renderCommand("downloadAllCommand")}
                     </div>
                 </div>
             </div>

@@ -1,7 +1,7 @@
 {
   "configuration": {
-    "images-folder": "/home/xjf/input",
-    "internal-folder": "/home/xjf/output"
+    "images-folder": "/home/xjf/Data/input",
+    "internal-folder": "/home/xjf/Data/output"
   },
   "sets-of-classes": [
     {

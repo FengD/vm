@@ -10,7 +10,7 @@ import hirain.itd.hmi.demo.bean.Car;
 public interface CarMapper {
 	int insert(Car car);
 
-	Car selectByPrimaryKey(String id);
+	Car selectByPrimaryKey(int id);
 
 	int updateByPrimaryKey(Car car);
 

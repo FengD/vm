@@ -2,6 +2,11 @@ DROP DATABASE IF EXISTS itd_hmi;
 CREATE DATABASE itd_hmi;
 
 DROP TABLE IF EXISTS car;
+DROP TABLE IF EXISTS carStatus;
+DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS car;
+
+
 CREATE TABLE car (
   id serial NOT NULL,
   name varchar(255) NOT NULL UNIQUE,
@@ -10,6 +15,8 @@ CREATE TABLE car (
   createTime timestamp DEFAULT CURRENT_TIMESTAMP,
   updateTime timestamp DEFAULT CURRENT_TIMESTAMP
 );
+
+
 
 INSERT INTO car (name, pwd, projectName)
 VALUES ('260', '260', 'park');

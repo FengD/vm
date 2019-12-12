@@ -15,7 +15,7 @@ import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 
 import hirain.itd.hmi.demo.annotation.PassToken;
-import hirain.itd.hmi.demo.annotation.UserLoginToken;
+import hirain.itd.hmi.demo.annotation.CarLoginToken;
 import hirain.itd.hmi.demo.bean.Car;
 import hirain.itd.hmi.demo.serviceimpl.CarService;
 
@@ -28,6 +28,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 			Object object) throws Exception {
 		// get token from http header
 		String token = httpServletRequest.getHeader("token");
+		System.out.println(token);
 		// if not project in method pass
 		if (!(object instanceof HandlerMethod)) {
 			return true;
@@ -42,8 +43,8 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 			}
 		}
 		// check if the user need login
-		if (method.isAnnotationPresent(UserLoginToken.class)) {
-			UserLoginToken userLoginToken = method.getAnnotation(UserLoginToken.class);
+		if (method.isAnnotationPresent(CarLoginToken.class)) {
+			CarLoginToken userLoginToken = method.getAnnotation(CarLoginToken.class);
 			if (userLoginToken.required()) {
 				if (token == null) {
 					throw new RuntimeException("no token. relogin.");
@@ -55,7 +56,9 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 				} catch (JWTDecodeException j) {
 					throw new RuntimeException("401");
 				}
+				System.out.println(carId);
 				Car car = carService.selectByPrimaryKey(Integer.parseInt(carId));
+				System.out.println(car);
 				if (car == null) {
 					throw new RuntimeException("role not exist.");
 				}

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
 
-import hirain.itd.hmi.demo.annotation.UserLoginToken;
+import hirain.itd.hmi.demo.annotation.CarLoginToken;
 import hirain.itd.hmi.demo.bean.Car;
 import hirain.itd.hmi.demo.serviceimpl.CarService;
 import hirain.itd.hmi.demo.serviceimpl.TokenService;
@@ -24,26 +24,38 @@ public class LoginController {
 	TokenService tokenService;
 
 	@ApiOperation(value = "login", notes = "login parameter is name and password")
-	@PostMapping("/login")
+	@PostMapping("/car/login")
 	public Object login(@RequestBody Car car) throws Exception {
 		JSONObject jsonObject = new JSONObject();
 		Car carForBase = carService.selectCarByName(car.getName());
 
 		if (!carForBase.getPwd().equals(car.getPwd())) {
 			jsonObject.put("message", "password error, login failed.");
+			jsonObject.put("action", "LOGIN");
 			jsonObject.put("status", "FATAL");
 			return jsonObject;
 		} else {
 			String token = tokenService.getToken(carForBase);
 			jsonObject.put("token", token);
+			jsonObject.put("action", "LOGIN");
 			jsonObject.put("status", "SUCCESS");
-			jsonObject.put("authority", carForBase.getName());
+			jsonObject.put("authority", "CAR");
 			jsonObject.put("car", carForBase);
 			return jsonObject;
 		}
 	}
+	
+	@ApiOperation(value = "logout", notes = "logout parameter is name and password")
+	@PostMapping("/car/logout")
+	@CarLoginToken
+	public Object logout() throws Exception {
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("action", "LOGOUT");
+		jsonObject.put("status", "SUCCESS");
+		return jsonObject;
+	}
 
-	@UserLoginToken
+	@CarLoginToken
 	@GetMapping("/testToken")
 	public String getMessage() {
 		return "pass";

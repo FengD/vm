@@ -17,26 +17,22 @@ public class CarService implements ICarService {
 
 	@Override
 	public int insert(Car car) {
-		// TODO Auto-generated method stub
-		return 0;
+		return carMapper.insert(car);
 	}
 
 	@Override
 	public Car selectByPrimaryKey(int id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return carMapper.selectByPrimaryKey(id);
 	}
 
 	@Override
 	public int updateByPrimaryKey(Car car) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		return carMapper.updateByPrimaryKey(car);
 	}
 
 	@Override
 	public int deleteByPrimaryKey(int id) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		return carMapper.deleteByPrimaryKey(id);
 	}
 
 	@Override
@@ -51,8 +47,7 @@ public class CarService implements ICarService {
 
 	@Override
 	public List<Car> selectCarsByProjectName(String projectName) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return carMapper.selectCarsByProjectName(projectName);
 	}
 
 }

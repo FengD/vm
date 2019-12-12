@@ -2,9 +2,6 @@ package hirain.itd.hmi.demo.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,11 +15,11 @@ import hirain.itd.hmi.demo.service.ICarService;
 public class CarController {
 	@Autowired
 	private ICarService carService;
-	@Autowired
-	private HttpServletRequest myHttpRequest;
-
-	@Autowired
-	private HttpServletResponse myHttpResponse;
+//	@Autowired
+//	private HttpServletRequest myHttpRequest;
+//
+//	@Autowired
+//	private HttpServletResponse myHttpResponse;
 
 	@GetMapping("all")
 	public List<Car> getAllCar() {

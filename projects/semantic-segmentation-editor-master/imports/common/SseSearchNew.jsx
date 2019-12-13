@@ -25,7 +25,7 @@ export default class SseSearchNew extends React.Component {
     constructor(url) {
         super();
         this.url=url;
-        console.log("url",this.url);
+        // console.log("url",this.url);
     }
 
     
@@ -44,7 +44,7 @@ myinit(){
     for (var x of info) {
       if (x.editUrl==window.location.pathname)
       {
-        console.log("x.editUrl",x.editUrl,"window.location.pathname",window.location.pathname);
+        // console.log("x.editUrl",x.editUrl,"window.location.pathname",window.location.pathname);
         tempUrlNow.push({"label":x.name})
       }
       if (x.name.slice(-4)==".pcd")

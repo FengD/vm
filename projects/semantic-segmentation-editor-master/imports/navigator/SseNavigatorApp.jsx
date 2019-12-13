@@ -31,7 +31,10 @@ class SseNavigatorApp extends React.Component {
         const ti = params.pageLength || this.increment;
         if (this.state.data) {
             this.state.data.nextPage = this.state.data.previousPage = null;
-            this.setState(this.state);
+            // this.setState(this.state);
+            // var str=JSON.stringify(this.state.data.allimages);
+            // localStorage.setItem("imagesres",str);
+            // localStorage.setItem("firsturl",window.location);
         }
         // console.log("params,fi,ti",params,fi,ti);
         Meteor.call("images", params.path, fi, ti, (err, res) => {

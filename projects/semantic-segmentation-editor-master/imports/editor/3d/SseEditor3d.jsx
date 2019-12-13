@@ -1,8 +1,8 @@
-import {Random} from 'meteor/random';
+import { Random } from 'meteor/random';
 
 import React from 'react';
 import * as THREE from 'three';
-import {BoxHelper} from './GradientBoxHelper';
+import { BoxHelper } from './GradientBoxHelper';
 import SseGlobals from "../../common/SseGlobals";
 import SsePCDLoader from "./SsePCDLoader";
 import OrbitControls from "./tools/OrbitControls"
@@ -18,12 +18,13 @@ import PolyBool from "polybooljs";
 import lineclip from "lineclip";
 import SseMsg from "../../common/SseMsg";
 
-import {Meteor} from "meteor/meteor";
-import {withTracker} from "meteor/react-meteor-data";
+import { Meteor } from "meteor/meteor";
+import { withTracker } from "meteor/react-meteor-data";
 
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import browserHistory from 'react-router';
+import { Sleep } from 'mdi-material-ui';
 
 
 
@@ -48,7 +49,7 @@ export default class SseEditor3d extends React.Component {
         this.autoFocusMode = false;
         this.colorBoost = 0;
         this.orientationArrows = new Map();
-        this.state = {ready: false};
+        this.state = { ready: false };
         this.screen = {};
         this.colorCache = new Map();
         this.pointSizeWithAttenuation = .03;
@@ -140,7 +141,7 @@ export default class SseEditor3d extends React.Component {
 
     render() {
         return (
-                <div className="absoluteTopLeftZeroW100H100">
+            <div className="absoluteTopLeftZeroW100H100">
                 <canvas id="canvas3d" className="absoluteTopLeftZeroW100H100">
                 </canvas>
                 <canvas id="canvas2d" className="absoluteTopLeftZeroW100H100"></canvas>
@@ -151,7 +152,7 @@ export default class SseEditor3d extends React.Component {
     get classesDescriptors() {
         if (!this._classesData) {
             const byIndex = this.activeSoc.descriptors;
-            this._classesData = {byName: this.activeSoc.byLabel, byIndex};
+            this._classesData = { byName: this.activeSoc.byLabel, byIndex };
 
             this.activeSoc.labels.forEach((k) => {
                 let c = this.activeSoc.byLabel.get(k);
@@ -175,14 +176,14 @@ export default class SseEditor3d extends React.Component {
                 const classData = this.classesDescriptors.byIndex[pt.classIndex];
                 if (classData.visible) {
                     this.assignNewClass(pos, pt.classIndex);
-                    const {x, y, z} = this.cloudData[pos];
+                    const { x, y, z } = this.cloudData[pos];
                     this.setPosition(pos, x, y, z);
                     this.showIndex(pos);
                 }
             });
             this.fitView();
             this.updateGlobalBox();
-            this.sendMsg("object-select", {value: undefined});
+            this.sendMsg("object-select", { value: undefined });
             this.setViewFilterState(undefined);
         }
     }
@@ -216,7 +217,7 @@ export default class SseEditor3d extends React.Component {
             if (!visible) {
                 this.hideIndex(pos);
             } else {
-                const {x, y, z} = this.cloudData[pos];
+                const { x, y, z } = this.cloudData[pos];
                 this.setPosition(pos, x, y, z);
                 this.showIndex(pos);
             }
@@ -230,7 +231,7 @@ export default class SseEditor3d extends React.Component {
     startVisibilityTween() {
         if (this.visibilityState.moving)
             return;
-        const visibilityDest = {position: 100};
+        const visibilityDest = { position: 100 };
         this.visibilityState.moving = true;
         this.visibilityState.position = 0;
         this.visibilityTween.to(visibilityDest, this.tweenDuration)
@@ -239,7 +240,7 @@ export default class SseEditor3d extends React.Component {
     }
 
 
-    setColor(idx, color = {red: 1, green: 0, blue: 0}) {
+    setColor(idx, color = { red: 1, green: 0, blue: 0 }) {
         const colors = this.colorArray;
         const altColor = this.getCachedColor(color.red, color.green, color.blue, this.colorBoost);
         colors[idx * 3] = altColor.r;
@@ -260,7 +261,7 @@ export default class SseEditor3d extends React.Component {
         if (this.selectedObject) {
             this.selectedObject.classIndex = classIndex;
             this.selectedObject.points.forEach(idx => this.assignNewClass(idx, classIndex));
-            this.sendMsg("object-select", {value: this.selectedObject})
+            this.sendMsg("object-select", { value: this.selectedObject })
         }
         this.invalidateColor();
         this.invalidateCounters();
@@ -274,28 +275,31 @@ export default class SseEditor3d extends React.Component {
             points = this.selection;
         else if (this.viewFilterState === "points")
             points = this.visibleIndices;
-        
+
         if (points) {
-            firstBox=this.computeOriginalBox(points);
+            firstBox = this.computeOriginalBox(points);
         }
 
         if (points) {
 
-            var length=firstBox.max.x-firstBox.min.x;
-            var width=firstBox.max.y-firstBox.min.y;
-            var height=firstBox.max.z-firstBox.min.z;
-            var centre={x:(firstBox.max.x+firstBox.min.x)/2,
-                        y:(firstBox.max.y+firstBox.min.y)/2,
-                        z:(firstBox.max.z+firstBox.min.z)/2
-                    };
-            const obj = {id: Random.id(), classIndex: this.activeClassIndex, points: Array.from(points),
-            angle:0,length:length,width:width,height:height,centre:centre};
+            var length = firstBox.max.x - firstBox.min.x;
+            var width = firstBox.max.y - firstBox.min.y;
+            var height = firstBox.max.z - firstBox.min.z;
+            var centre = {
+                x: (firstBox.max.x + firstBox.min.x) / 2,
+                y: (firstBox.max.y + firstBox.min.y) / 2,
+                z: (firstBox.max.z + firstBox.min.z) / 2
+            };
+            const obj = {
+                id: Random.id(), classIndex: this.activeClassIndex, points: Array.from(points),
+                angle: 0, length: length, width: width, height: height, centre: centre
+            };
             this.objects.add(obj);
 
-            console.log("now_obj",obj);
+            // console.log("now_obj", obj);
 
-            this.sendMsg("objects-update", {value: this.objects});
-            this.sendMsg("object-select", {value: obj});
+            this.sendMsg("objects-update", { value: this.objects });
+            this.sendMsg("object-select", { value: obj });
             this.changeClassOfSelection(this.activeClassIndex);
         }
         this.saveAll();
@@ -304,21 +308,21 @@ export default class SseEditor3d extends React.Component {
     invalidateCounters() {
         let i = 0;
         this.activeSoc.labels.forEach(a => {
-            const arg = {classIndex: i, count: (this.cloudData.byClassIndex[i] || {size: 0}).size};
+            const arg = { classIndex: i, count: (this.cloudData.byClassIndex[i] || { size: 0 }).size };
             this.sendMsg("class-instance-count", arg);
             i++;
         });
     }
 
     invalidateObjects() {
-        this.sendMsg("objects-update", {value: this.objects});
+        this.sendMsg("objects-update", { value: this.objects });
     }
 
     deleteSelectedObject() {
         if (this.selectedObject) {
             this.objects.delete(this.selectedObject);
             this.selectedObject = undefined;
-            this.sendMsg("object-select", {value: undefined});
+            this.sendMsg("object-select", { value: undefined });
             this.invalidateObjects();
             this.saveAll();
         }
@@ -329,7 +333,7 @@ export default class SseEditor3d extends React.Component {
         // console.log("select_obj",this.selectedObject);
         this.ungrayAll();
         if (this.selectedObject) {
-            this.sendMsg("classIndex-select", {value: obj.classIndex});
+            this.sendMsg("classIndex-select", { value: obj.classIndex });
             if (this.autoFilterMode)
                 this.filterIndices(this.selectedObject.points);
             else {
@@ -356,14 +360,14 @@ export default class SseEditor3d extends React.Component {
             // this.objectBox3=obb[1];
 
             if (!this.selectionIsEmpty()) {
-                this.sendMsg("enableCommand", {name: "addPointsObjectCommand"});
+                this.sendMsg("enableCommand", { name: "addPointsObjectCommand" });
             }
         }
     }
 
     unselectObject() {
         this.selectedObject = undefined;
-        this.sendMsg("object-select", {value: undefined});
+        this.sendMsg("object-select", { value: undefined });
         this.displayAll();
     }
 
@@ -406,8 +410,8 @@ export default class SseEditor3d extends React.Component {
     componentDidMount() {
         this.init();
         const changePointSize = (amount) => {
-            const withAttenuation = {min: 0.01, max: .5, increment: 0.01};
-            const withoutAttenuation = {min: 1, max: 5, increment: 0.5};
+            const withAttenuation = { min: 0.01, max: .5, increment: 0.01 };
+            const withoutAttenuation = { min: 1, max: 5, increment: 0.5 };
             const bounds = this.cloudObject.material.sizeAttenuation ? withAttenuation : withoutAttenuation;
             this.cloudObject.material.size = bounds.min + amount * (bounds.max - bounds.min);
 
@@ -450,73 +454,73 @@ export default class SseEditor3d extends React.Component {
         });
 
         //function return can return back to the folder where you first enter;
-        this.onMsg("return",() =>{
-            var firsturl=localStorage.getItem("firsturl");
-            window.location=firsturl;
+        this.onMsg("return", () => {
+            var firsturl = localStorage.getItem("firsturl");
+            window.location = firsturl;
         });
 
         //change box size
-        this.onMsg("minx+",() =>{
+        this.onMsg("minx+", () => {
             this.changeObjBoundingBox("minx+");
         });
-        this.onMsg("minx-",() =>{
+        this.onMsg("minx-", () => {
             this.changeObjBoundingBox("minx-");
         });
-        this.onMsg("miny+",() =>{
+        this.onMsg("miny+", () => {
             this.changeObjBoundingBox("miny+");
         });
-        this.onMsg("miny-",() =>{
+        this.onMsg("miny-", () => {
             this.changeObjBoundingBox("miny-");
         });
-        this.onMsg("minz+",() =>{
+        this.onMsg("minz+", () => {
             this.changeObjBoundingBox("minz+");
         });
-        this.onMsg("minz-",() =>{
+        this.onMsg("minz-", () => {
             this.changeObjBoundingBox("minz-");
         });
-        this.onMsg("maxx+",() =>{
+        this.onMsg("maxx+", () => {
             this.changeObjBoundingBox("maxx+");
         });
-        this.onMsg("maxx-",() =>{
+        this.onMsg("maxx-", () => {
             this.changeObjBoundingBox("maxx-");
         });
-        this.onMsg("maxy+",() =>{
+        this.onMsg("maxy+", () => {
             this.changeObjBoundingBox("maxy+");
         });
-        this.onMsg("maxy-",() =>{
+        this.onMsg("maxy-", () => {
             this.changeObjBoundingBox("maxy-");
         });
-        this.onMsg("maxz+",() =>{
+        this.onMsg("maxz+", () => {
             this.changeObjBoundingBox("maxz+");
         });
-        this.onMsg("maxz-",() =>{
+        this.onMsg("maxz-", () => {
             this.changeObjBoundingBox("maxz-");
         });
-        
-        this.onMsg("positive",() =>{
+
+        this.onMsg("positive", () => {
             this.changeBoxArrow("positive");
         });
 
-        this.onMsg("negative",() =>{
+        this.onMsg("negative", () => {
             this.changeBoxArrow("negative");
         });
 
-        this.onMsg("viewpicture",() =>{
-            var infoStr=localStorage.getItem("imagesres");
-            var info=JSON.parse(infoStr);
+        this.onMsg("viewpicture", () => {
+            var infoStr = localStorage.getItem("imagesres");
+            var info = JSON.parse(infoStr);
             var viewUrl;
             for (var x of info) {
-                if (x.editUrl.slice(5)==this.props.imageUrl){
-                    viewUrl=x.url;
+                if (x.editUrl.slice(5) == this.props.imageUrl) {
+                    viewUrl = x.url;
                 }
             }
-            var newUrl=viewUrl.replace(".pcd",".jpg");
-            window.open("/file"+newUrl+"?size=small", '', 'height:100,width:100,left:0,top:20');
+            var newUrl = viewUrl.replace(".pcd", ".jpg");
+            window.open("/file" + newUrl + "?size=small", '', 'height:100,width:100,left:0,top:20');
         });
 
-        this.onMsg("clean",()=>{
+        this.onMsg("clean", () => {
             // console.log("clean_cloud",this.cloudData.length);
-            let f = length => Array.from({length}).map((v,k) => k);
+            let f = length => Array.from({ length }).map((v, k) => k);
             f(this.cloudData.length).forEach(idx => this.assignNewClass(idx, 0));
             if (this.objects) {
                 this.objects.clear();
@@ -524,19 +528,19 @@ export default class SseEditor3d extends React.Component {
             this.invalidateColor();
             this.invalidateCounters();
             this.saveAll();
-            this.sendMsg("objects-update", {value: this.objects});
+            this.sendMsg("objects-update", { value: this.objects });
         });
 
         //function undo
-        this.onMsg("undo",() =>{
-            var str=localStorage.getItem("changepoints");
-            var changepoints=JSON.parse(str);
+        this.onMsg("undo", () => {
+            var str = localStorage.getItem("changepoints");
+            var changepoints = JSON.parse(str);
             // console.log("change_points",changepoints);
             changepoints.forEach(idx => this.assignNewClass(idx, 0));
             if (this.selectedObject) {
                 this.selectedObject.classIndex = 0;
                 this.selectedObject.points.forEach(idx => this.assignNewClass(idx, 0));
-                this.sendMsg("object-select", {value: this.selectedObject})
+                this.sendMsg("object-select", { value: this.selectedObject })
             }
             this.invalidateColor();
             this.invalidateCounters();
@@ -545,66 +549,54 @@ export default class SseEditor3d extends React.Component {
 
 
         //page down or up can both browse all images including in this folder;
-        this.onMsg("pageup",() => {
-            var infoStr=localStorage.getItem("imagesres");
-            var info=JSON.parse(infoStr);
-            for (var i=info.length-1;i>=0;i--)
-            {
-                if(i==0)
-                {
+        this.onMsg("pageup", () => {
+            var infoStr = localStorage.getItem("imagesres");
+            var info = JSON.parse(infoStr);
+            for (var i = info.length - 1; i >= 0; i--) {
+                if (i == 0) {
                     alert("this folder has no image.");
                     break;
                 }
-                if(this.props.imageUrl==(info[i].editUrl.slice(5)))
-                {
-                    if(info[i-1].editUrl.slice(-4)!=".jpg")
-                    {
-                      i=i-1;
-                      break;
+                if (this.props.imageUrl == (info[i].editUrl.slice(5))) {
+                    if (info[i - 1].editUrl.slice(-4) != ".jpg") {
+                        i = i - 1;
+                        break;
                     }
-                    else
-                    {
-                      if(i-2>=0)
-                      {
-                          i=i-2;
-                          break;
-                      }  
+                    else {
+                        if (i - 2 >= 0) {
+                            i = i - 2;
+                            break;
+                        }
                     }
                 }
             }
-            this.props.imageUrl=info[i].editUrl.slice(5);
-            window.location.pathname=(info[i].editUrl);
+            this.props.imageUrl = info[i].editUrl.slice(5);
+            window.location.pathname = (info[i].editUrl);
         });
 
-        this.onMsg("pagedown",() => {
-            var infoStr=localStorage.getItem("imagesres");
-            var info=JSON.parse(infoStr);
-            for (var i=0;i<info.length;i++)
-            {
-                if(i==info.length-1)
-                {
+        this.onMsg("pagedown", () => {
+            var infoStr = localStorage.getItem("imagesres");
+            var info = JSON.parse(infoStr);
+            for (var i = 0; i < info.length; i++) {
+                if (i == info.length - 1) {
                     alert("this folder has no image.");
                     break;
                 }
-                if(this.props.imageUrl==(info[i].editUrl.slice(5)))
-                {
-                    if(info[i+1].editUrl.slice(-4)!=".jpg")
-                    {
-                      i=i+1;
-                      break;
+                if (this.props.imageUrl == (info[i].editUrl.slice(5))) {
+                    if (info[i + 1].editUrl.slice(-4) != ".jpg") {
+                        i = i + 1;
+                        break;
                     }
-                    else
-                    {
-                      if(i+2<=info.length-1)
-                      {
-                          i=i+2;
-                          break;
-                      }  
+                    else {
+                        if (i + 2 <= info.length - 1) {
+                            i = i + 2;
+                            break;
+                        }
                     }
                 }
             }
-            this.props.imageUrl=info[i].editUrl.slice(5);
-            window.location.pathname=(info[i].editUrl);
+            this.props.imageUrl = info[i].editUrl.slice(5);
+            window.location.pathname = (info[i].editUrl);
             //some attempts to change pages 1.window 2.global 3.url link
             // return <SseApp3d imageUrl={this.props.imageUrl} global={window.global}/>;
             // browserHistory.push(window.global[i].editUrl);
@@ -655,23 +647,23 @@ export default class SseEditor3d extends React.Component {
 
         this.sendMsg("editor-ready");
 
-        this.onMsg("autoFilter", ({value}) => {
+        this.onMsg("autoFilter", ({ value }) => {
             this.autoFilterMode = value;
             this.selectObject(this.selectedObject);
         });
 
-        this.onMsg("globalbox", ({value}) => {
+        this.onMsg("globalbox", ({ value }) => {
             this.globalBoxMode = this.globalBoxObject.visible = value;
             this.invalidateAnimation();
         });
 
-        this.onMsg("selectionOutline", ({value}) => {
+        this.onMsg("selectionOutline", ({ value }) => {
             this.selectionOutlineMode = !this.selectionOutlineMode;
             this.invalidate2dOverlay()
         });
 
 
-        this.onMsg("autoFocus", ({value}) => {
+        this.onMsg("autoFocus", ({ value }) => {
             this.autoFocusMode = value;
             this.selectObject(this.selectedObject);
         });
@@ -711,17 +703,19 @@ export default class SseEditor3d extends React.Component {
         this.onMsg("downloadFile", () => this.downloadFile());
         this.onMsg("downloadText", () => this.downloadText());
         this.onMsg("downloadBox", () => this.downloadBox());
+        this.onMsg("downloadAll", () => this.downloadAll());
         this.onMsg("color-boost", (arg => {
             this.colorBoost = arg.value;
             this.invalidateColor();
         }));
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         SseMsg.unregister(this);
     }
 
     downloadFile() {
+        // console.log("this.props.imageUrl", this.props.imageUrl);
         window.open("/api/pcdfile" + this.props.imageUrl, "_blank");
     }
 
@@ -729,12 +723,27 @@ export default class SseEditor3d extends React.Component {
         window.open("/api/pcdtext" + this.props.imageUrl, "_blank");
     }
 
-    downloadBox(){
+    downloadBox() {
         window.open("/api/boxfile" + this.props.imageUrl, "_blank");
     }
 
+    downloadAll() {
+        // console.log("downloadAll");
+        var infoStr = localStorage.getItem("imagesres");
+        var info = JSON.parse(infoStr);
+        var viewUrl=[];
+        for (var x of info) {
+            // if (x.editUrl.slice(5)==this.props.imageUrl){
+            //     viewUrl=x.url;
+            // }
+            viewUrl.push(x.editUrl.slice(5))
+        }
+        // console.log(viewUrl);
+        window.open("/api/allpcdfile" + viewUrl);
+    }
+
     init() {
-        this.sendMsg("bottom-right-label", {message: "Downloading PCD File..."});
+        this.sendMsg("bottom-right-label", { message: "Downloading PCD File..." });
         /*
         THREE.Vector3.prototype.toString = function () {
             const s = (n) => Math.round(n * 100) / 100;
@@ -791,7 +800,7 @@ export default class SseEditor3d extends React.Component {
         this.orbiter.addEventListener("start", this.orbiterStart.bind(this), false);
         this.orbiter.addEventListener("change", this.orbiterChange.bind(this), false);
         this.orbiter.addEventListener("end", this.orbiterEnd.bind(this), false);
-        
+
         this.frustum = new THREE.Frustum();
 
         this.setupTools();
@@ -825,7 +834,7 @@ export default class SseEditor3d extends React.Component {
     showIndex(idx) {
         this.hiddenIndices.delete(idx);
         this.visibleIndices.add(idx);
-        const {x, y, z} = this.cloudData[idx];
+        const { x, y, z } = this.cloudData[idx];
 
         this.setPosition(idx, x, y, z);
         this.startVisibilityTween();
@@ -858,7 +867,7 @@ export default class SseEditor3d extends React.Component {
             }
             else {
 
-                this.cameraPresetInfo = {where, eye: this.cameraEye, target: this.cameraTarget};
+                this.cameraPresetInfo = { where, eye: this.cameraEye, target: this.cameraTarget };
             }
         }
         let eye;
@@ -876,17 +885,15 @@ export default class SseEditor3d extends React.Component {
                 eye = new THREE.Vector3(target.x, slope, target.z + 1);
                 break;
             case "spin":
-                if (this.camera.up.y==-1)
-                    {
-                        this.camera.up.set(0, 0, 1);                
-                    }
-                else if (this.camera.up.z==1)
-                    {
-                        this.camera.up.set(0, -1, 0);                
-                    }
+                if (this.camera.up.y == -1) {
+                    this.camera.up.set(0, 0, 1);
+                }
+                else if (this.camera.up.z == 1) {
+                    this.camera.up.set(0, -1, 0);
+                }
                 // console.log("op",this.cameraPresetInfo);
                 // console.log("camera",this.camera);
-                break;    
+                break;
             case "top":
                 eye = new THREE.Vector3(target.x, -1, 0.99999 * target.z);
                 break;
@@ -895,7 +902,7 @@ export default class SseEditor3d extends React.Component {
                 break;
             case "right":
                 eye = new THREE.Vector3(target.x + 1, slope, target.z);
-                break; 
+                break;
         }
         if (eye)
             this.fitView(this.visibleIndices, eye);
@@ -953,7 +960,7 @@ export default class SseEditor3d extends React.Component {
         state.rangeX = target1.x - target0.x;
         state.rangeY = target1.y - target0.y;
         state.rangeZ = target1.z - target0.z;
-        this.cameraTween.to({position: 1}, this.tweenDuration).easing(TWEEN.Easing.Quadratic.Out).start();
+        this.cameraTween.to({ position: 1 }, this.tweenDuration).easing(TWEEN.Easing.Quadratic.Out).start();
     }
 
     generateColorCache() {
@@ -978,32 +985,32 @@ export default class SseEditor3d extends React.Component {
         };
 
         this.classesDescriptors.byIndex.forEach(desc => {
-                const color = Color(desc.color);
-                for (let i = 0; i <= 1; i += .05) {
-                    i = Math.round(i * 100) / 100;
-                    const altColor = color.lighten(i).saturate(i).rgb().object();
-                    altColor.r /= 256;
-                    altColor.g /= 256;
-                    altColor.b /= 256;
-                    tripleMap(i, altColor, desc.red, desc.green, desc.blue);
-                }
+            const color = Color(desc.color);
+            for (let i = 0; i <= 1; i += .05) {
+                i = Math.round(i * 100) / 100;
+                const altColor = color.lighten(i).saturate(i).rgb().object();
+                altColor.r /= 256;
+                altColor.g /= 256;
+                altColor.b /= 256;
+                tripleMap(i, altColor, desc.red, desc.green, desc.blue);
             }
+        }
         );
     }
 
     getCachedColor(r, g, b, l) {
         const v1 = this.colorCache.get(l);
         if (!v1)
-            return {r, g, b};
+            return { r, g, b };
         const v2 = v1.get(r);
         if (!v2)
-            return {r, g, b};
+            return { r, g, b };
         const v3 = v2.get(g);
         if (!v3)
-            return {r, g, b};
+            return { r, g, b };
         const v4 = v3.get(b);
         if (!v4)
-            return {r, g, b};
+            return { r, g, b };
         return v4;
     }
 
@@ -1017,7 +1024,7 @@ export default class SseEditor3d extends React.Component {
             const x = state.fromX + state.rangeX * pos;
             const y = state.fromY + state.rangeY * pos;
             const z = state.fromZ + state.rangeZ * pos;
-            this.orbiter.target.copy({x, y, z});
+            this.orbiter.target.copy({ x, y, z });
 
             // Changing camera position
             const phi = state.fromPhi + state.rangePhi * pos;
@@ -1039,7 +1046,7 @@ export default class SseEditor3d extends React.Component {
 
     setViewFilterState(value) {
         this.viewFilterState = value;
-        this.sendMsg("view-filter", {value});
+        this.sendMsg("view-filter", { value });
     }
 
     selectByPolygon(polygon) {
@@ -1087,9 +1094,9 @@ export default class SseEditor3d extends React.Component {
         }
 
         if (this.selection.size > 0 && this.selectedObject)
-            this.sendMsg("enableCommand", {name: "addPointsObjectCommand"});
+            this.sendMsg("enableCommand", { name: "addPointsObjectCommand" });
         else
-            this.sendMsg("disableCommand", {name: "addPointsObjectCommand"});
+            this.sendMsg("disableCommand", { name: "addPointsObjectCommand" });
         this.updateGlobalBox();
 
         this.invalidateColor();
@@ -1107,7 +1114,7 @@ export default class SseEditor3d extends React.Component {
                 message += " (x: " + round2(oc.x)
                     + "m, y: " + round2(oc.y)
                     + "m, z: " + round2(oc.z) + "m)";
-                this.sendMsg("bottom-right-label", {message})
+                this.sendMsg("bottom-right-label", { message })
             }
         } else {
             this.setSelectionFeedback();
@@ -1118,7 +1125,7 @@ export default class SseEditor3d extends React.Component {
         let msg = this.selection.size + " point selected";
         if (this.selection.size > 1) {
             msg = msg.replace("point", "points");
-            this.sendMsg("bottom-right-label", {message: msg});
+            this.sendMsg("bottom-right-label", { message: msg });
         }
         else {
             this.setOverviewFeedback();
@@ -1133,7 +1140,7 @@ export default class SseEditor3d extends React.Component {
             message += "m / Height: " + round2(bsize.y);
             message += "m / Depth: " + round2(bsize.z);
             message += "m";
-            this.sendMsg("bottom-right-label", {message})
+            this.sendMsg("bottom-right-label", { message })
         }
     }
 
@@ -1141,9 +1148,9 @@ export default class SseEditor3d extends React.Component {
         if (this.cloudData) {
             this.cloudData.forEach((pt, idx) => {
                 if (this.selection.has(idx)) {
-                    this.setColor(idx, {red: 1, green: 0});
+                    this.setColor(idx, { red: 1, green: 0 });
                 } else if (this.grayIndices.has(idx)) {
-                    this.setColor(idx, {red: .5, green: 0.5, blue: 0.5});
+                    this.setColor(idx, { red: .5, green: 0.5, blue: 0.5 });
                 }
                 else {
                     this.setColor(idx,
@@ -1212,11 +1219,11 @@ export default class SseEditor3d extends React.Component {
 
     originalCoordinates(idx) {
         const geometry = new THREE.Geometry();
-        let {x, y, z} = this.cloudData[idx];
+        let { x, y, z } = this.cloudData[idx];
         geometry.vertices.push(new THREE.Vector3(x, y, z));
         geometry.rotateZ(this.meta.rotationZ || 0).rotateY(this.meta.rotationY || 0).rotateX(this.meta.rotationX || 0);
         const v = geometry.vertices[0];
-        return {x: v.x, y: v.y, z: v.z};
+        return { x: v.x, y: v.y, z: v.z };
     }
 
     updatePixelProjection(idx) {
@@ -1251,7 +1258,7 @@ export default class SseEditor3d extends React.Component {
             } else {
                 projection.pixelX = projection.pixelY = NaN;
             }
-            return {x: projection.pixelX, y: projection.pixelY};
+            return { x: projection.pixelX, y: projection.pixelY };
         };
 
         if (idx !== undefined)
@@ -1482,7 +1489,7 @@ export default class SseEditor3d extends React.Component {
     }
 
     resetRotation() {
-        const {rotationX, rotationY, rotationZ} = this.meta;
+        const { rotationX, rotationY, rotationZ } = this.meta;
         this.cloudGeometry.rotateZ(-rotationZ || 0).rotateY(-rotationY || 0).rotateX(-rotationX || 0);
         this.meta.rotationX = this.meta.rotationY = this.meta.rotationZ = 0;
         this.updateGlobalBox();
@@ -1602,7 +1609,7 @@ export default class SseEditor3d extends React.Component {
         this.positionArray.forEach((v, i) => {
             switch (i % 3) {
                 case 0:
-                    obj = {x: v};
+                    obj = { x: v };
                     break;
                 case 1:
                     obj.y = v;
@@ -1834,32 +1841,32 @@ export default class SseEditor3d extends React.Component {
 
         this.destroyMyBox();
 
-        var max=this.selectedObject.max;
-        var min=this.selectedObject.min;
-        var newbox=new THREE.BufferGeometry();
+        var max = this.selectedObject.max;
+        var min = this.selectedObject.min;
+        var newbox = new THREE.BufferGeometry();
         // bbox.max.x=bbox.max.x+10;
         // bbox.max.y=bbox.max.y+10;
         // bbox.max.z=bbox.max.z+10;
-        var myvertices = new Float32Array( [
-            max.x,max.y,max.z,
-            min.x,min.y,min.z,
-        ] );
+        var myvertices = new Float32Array([
+            max.x, max.y, max.z,
+            min.x, min.y, min.z,
+        ]);
         const material = new THREE.LineBasicMaterial({
             color: 0x787878,
             linewidth: 1,
             linecap: 'round',
             linejoin: 'round'
         });
-        newbox.addAttribute( 'position', new THREE.BufferAttribute( myvertices, 3 ) );
+        newbox.addAttribute('position', new THREE.BufferAttribute(myvertices, 3));
         const bbo = new THREE.Mesh(newbox, material);
         const bh = new BoxHelper(bbo, 0x505050);
         // console.log("bh",bh);
         this.scene.add(bh);
 
         this.renderer.render(this.scene, this.camera);
-        
+
         this.myBoxObject = bh;
-        this.objectBox3=newbox;
+        this.objectBox3 = newbox;
         // return [bh, newbox];
     }
 
@@ -1867,11 +1874,11 @@ export default class SseEditor3d extends React.Component {
 
         this.destroyMyBox();
 
-        console.log("showboxnew_selectobj",this.selectedObject);
-        var length=this.selectedObject.length;
-        var width=this.selectedObject.width;
-        var height=this.selectedObject.height;
-        var centre=this.selectedObject.centre;
+        // console.log("showboxnew_selectobj", this.selectedObject);
+        var length = this.selectedObject.length;
+        var width = this.selectedObject.width;
+        var height = this.selectedObject.height;
+        var centre = this.selectedObject.centre;
         // var newbox=new THREE.BoxGeometry(length,width,height);
 
         // const material = new THREE.MeshBasicMaterial({
@@ -1883,51 +1890,51 @@ export default class SseEditor3d extends React.Component {
         // const bbo = new THREE.Mesh(newbox, material);
         // bbo.position.set(centre.x,centre.y,centre.z);
         // bbo.rotation.z=2*Math.PI-this.selectedObject.angle;
-        
+
         // this.scene.add(bbo);
         // this.renderer.render(this.scene, this.camera);
-        
+
         // this.myBoxObject = bbo;
         // this.objectBox3=newbox;
 
-        var geometry = new THREE.BoxGeometry(length,width,height);
-        console.log("geometry",geometry);
+        var geometry = new THREE.BoxGeometry(length, width, height);
+        // console.log("geometry", geometry);
         // geometry.position.set(centre.x,centre.y,centre.z);
         // geometry.rotation.z=2*Math.PI-this.selectedObject.angle;
         var cubeEdges = new THREE.EdgesGeometry(geometry, 1);
-        var edgesMtl =  new THREE.LineBasicMaterial({color: 0x00ff7c});
+        var edgesMtl = new THREE.LineBasicMaterial({ color: 0x00ff7c });
         var cubeLine = new THREE.LineSegments(cubeEdges, edgesMtl);
-        console.log("cubeLine",cubeLine);
-        cubeLine.position.set(centre.x,centre.y,centre.z);
-        cubeLine.rotation.z=2*Math.PI-this.selectedObject.angle;
+        // console.log("cubeLine", cubeLine);
+        cubeLine.position.set(centre.x, centre.y, centre.z);
+        cubeLine.rotation.z = 2 * Math.PI - this.selectedObject.angle;
         // bbo.position.set(centre.x,centre.y,centre.z);
         // bbo.rotation.z=2*Math.PI-this.selectedObject.angle;
-        
+
         // var edges = new THREE.EdgesGeometry( bbo );
         // var line = new THREE.LineSegments( edges, new THREE.LineBasicMaterial( { color: 0xffffff } ) );
-        this.scene.add( cubeLine );
+        this.scene.add(cubeLine);
         this.renderer.render(this.scene, this.camera);
         this.myBoxObject = cubeLine;
-        this.objectBox3=geometry;
+        this.objectBox3 = geometry;
     }
 
     showObjArrow() {
         this.scene.remove(this.arrowobject);
 
-        var x=this.selectedObject.centre.x;
-        var y=this.selectedObject.centre.y;
-        var z=this.selectedObject.centre.z;
-        var angle=this.selectedObject.angle;
+        var x = this.selectedObject.centre.x;
+        var y = this.selectedObject.centre.y;
+        var z = this.selectedObject.centre.z;
+        var angle = this.selectedObject.angle;
         //keep z max to put arrow
         var length = this.selectedObject.length;
-        var xadd=Math.cos(angle);
-        var yadd=-Math.sin(angle);
-        var dir = new THREE.Vector3(xadd,yadd,0);
+        var xadd = Math.cos(angle);
+        var yadd = -Math.sin(angle);
+        var dir = new THREE.Vector3(xadd, yadd, 0);
         // var dir = new THREE.Vector3( -0.7, 0.7, 0);
-        var origin = new THREE.Vector3( x, y, z);
+        var origin = new THREE.Vector3(x, y, z);
         var hex = 0xffff00;
-        var arrowHelper = new THREE.ArrowHelper( dir, origin, length, hex );
-        this.arrowobject=arrowHelper;
+        var arrowHelper = new THREE.ArrowHelper(dir, origin, length, hex);
+        this.arrowobject = arrowHelper;
         this.scene.add(this.arrowobject);
 
         this.renderer.render(this.scene, this.camera);
@@ -1935,88 +1942,84 @@ export default class SseEditor3d extends React.Component {
 
     changeObjBoundingBox(message) {
         // console.log("message",message);
-        var angle=this.selectedObject.angle;
-        switch(message)
-        {
+        var angle = this.selectedObject.angle;
+        switch (message) {
             case "minx+":
-                this.selectedObject.length=this.selectedObject.length+1;
-                this.selectedObject.centre.x+=0.5*Math.cos(angle);
-                this.selectedObject.centre.y-=0.5*Math.sin(angle);
+                this.selectedObject.length = this.selectedObject.length + 1;
+                this.selectedObject.centre.x += 0.5 * Math.cos(angle);
+                this.selectedObject.centre.y -= 0.5 * Math.sin(angle);
                 break;
             case "minx-":
-                this.selectedObject.length=this.selectedObject.length-1;
-                this.selectedObject.centre.x-=0.5*Math.cos(angle);
-                this.selectedObject.centre.y+=0.5*Math.sin(angle);
+                this.selectedObject.length = this.selectedObject.length - 1;
+                this.selectedObject.centre.x -= 0.5 * Math.cos(angle);
+                this.selectedObject.centre.y += 0.5 * Math.sin(angle);
                 break;
             case "miny+":
-                this.selectedObject.width=this.selectedObject.width+1;
+                this.selectedObject.width = this.selectedObject.width + 1;
                 // this.selectedObject.centre.y+=0.5;
-                this.selectedObject.centre.y+=0.5*Math.cos(angle);
-                this.selectedObject.centre.x+=0.5*Math.sin(angle);
+                this.selectedObject.centre.y += 0.5 * Math.cos(angle);
+                this.selectedObject.centre.x += 0.5 * Math.sin(angle);
                 break;
             case "miny-":
-                this.selectedObject.width=this.selectedObject.width-1;
+                this.selectedObject.width = this.selectedObject.width - 1;
                 // this.selectedObject.centre.y-=0.5;
-                this.selectedObject.centre.y-=0.5*Math.cos(angle);
-                this.selectedObject.centre.x-=0.5*Math.sin(angle);
+                this.selectedObject.centre.y -= 0.5 * Math.cos(angle);
+                this.selectedObject.centre.x -= 0.5 * Math.sin(angle);
                 break;
             case "minz+":
-                this.selectedObject.height=this.selectedObject.height+1;
-                this.selectedObject.centre.z+=0.5;
+                this.selectedObject.height = this.selectedObject.height + 1;
+                this.selectedObject.centre.z += 0.5;
                 break;
             case "minz-":
-                this.selectedObject.height=this.selectedObject.height-1;
-                this.selectedObject.centre.z-=0.5;
+                this.selectedObject.height = this.selectedObject.height - 1;
+                this.selectedObject.centre.z -= 0.5;
                 break;
             case "maxx+":
-                this.selectedObject.length=this.selectedObject.length+1;
-                this.selectedObject.centre.x-=0.5*Math.cos(angle);
-                this.selectedObject.centre.y+=0.5*Math.sin(angle);
+                this.selectedObject.length = this.selectedObject.length + 1;
+                this.selectedObject.centre.x -= 0.5 * Math.cos(angle);
+                this.selectedObject.centre.y += 0.5 * Math.sin(angle);
                 break;
             case "maxx-":
-                this.selectedObject.length=this.selectedObject.length-1;
-                this.selectedObject.centre.x+=0.5*Math.cos(angle);
-                this.selectedObject.centre.y-=0.5*Math.sin(angle);
+                this.selectedObject.length = this.selectedObject.length - 1;
+                this.selectedObject.centre.x += 0.5 * Math.cos(angle);
+                this.selectedObject.centre.y -= 0.5 * Math.sin(angle);
                 break;
             case "maxy+":
-                this.selectedObject.width=this.selectedObject.width+1;
-                this.selectedObject.centre.y-=0.5*Math.cos(angle);
-                this.selectedObject.centre.x-=0.5*Math.sin(angle);
+                this.selectedObject.width = this.selectedObject.width + 1;
+                this.selectedObject.centre.y -= 0.5 * Math.cos(angle);
+                this.selectedObject.centre.x -= 0.5 * Math.sin(angle);
                 break;
             case "maxy-":
-                this.selectedObject.width=this.selectedObject.width-1;
-                this.selectedObject.centre.y+=0.5*Math.cos(angle);
-                this.selectedObject.centre.x+=0.5*Math.sin(angle);
+                this.selectedObject.width = this.selectedObject.width - 1;
+                this.selectedObject.centre.y += 0.5 * Math.cos(angle);
+                this.selectedObject.centre.x += 0.5 * Math.sin(angle);
                 break;
             case "maxz+":
-                this.selectedObject.height=this.selectedObject.height+1;
-                this.selectedObject.centre.z-=0.5;
+                this.selectedObject.height = this.selectedObject.height + 1;
+                this.selectedObject.centre.z -= 0.5;
                 break;
             case "maxz-":
-                this.selectedObject.height=this.selectedObject.height-1;
-                this.selectedObject.centre.z+=0.5;
+                this.selectedObject.height = this.selectedObject.height - 1;
+                this.selectedObject.centre.z += 0.5;
                 break;
         }
         this.showObjBoundingBoxSec();
         this.saveAll();
     }
 
-    changeBoxArrow(message){
-        switch(message)
-        {
+    changeBoxArrow(message) {
+        switch (message) {
             case "negative":
-                this.selectedObject.angle=this.selectedObject.angle+10/360*Math.PI;
-                if(this.selectedObject.angle>2*Math.PI)
-                {
-                    this.selectedObject.angle=this.selectedObject.angle%(2*Math.PI);
+                this.selectedObject.angle = this.selectedObject.angle + 10 / 360 * Math.PI;
+                if (this.selectedObject.angle > 2 * Math.PI) {
+                    this.selectedObject.angle = this.selectedObject.angle % (2 * Math.PI);
                 }
                 // console.log("this.selectedObject.angle",this.selectedObject.angle);
                 break;
             case "positive":
-                this.selectedObject.angle=this.selectedObject.angle-10/360*Math.PI;
-                if(this.selectedObject.angle<0)
-                {
-                    this.selectedObject.angle=this.selectedObject.angle+2*Math.PI
+                this.selectedObject.angle = this.selectedObject.angle - 10 / 360 * Math.PI;
+                if (this.selectedObject.angle < 0) {
+                    this.selectedObject.angle = this.selectedObject.angle + 2 * Math.PI
                 }
                 break;
         }
@@ -2309,7 +2312,7 @@ export default class SseEditor3d extends React.Component {
     }
 
     notifySelectionChange() {
-        this.sendMsg("selection-changed", {selection: this.selection});
+        this.sendMsg("selection-changed", { selection: this.selection });
     }
 
     fitView(forEachableIndices, ev3) {
@@ -2365,7 +2368,7 @@ export default class SseEditor3d extends React.Component {
         positionArray.forEach((v, i) => {
             switch (i % 3) {
                 case 0:
-                    obj = {x: v};
+                    obj = { x: v };
                     break;
                 case 1:
                     obj.y = v;
@@ -2390,7 +2393,7 @@ export default class SseEditor3d extends React.Component {
 
         geometry.computeBoundingSphere();
 
-        const material = new THREE.PointsMaterial({size: 2, vertexColors: THREE.VertexColors});
+        const material = new THREE.PointsMaterial({ size: 2, vertexColors: THREE.VertexColors });
         material.sizeAttenuation = false;
 
         // build mesh
@@ -2430,7 +2433,7 @@ export default class SseEditor3d extends React.Component {
             loader.load(fileUrl, (arg) => {
                 $("#waiting").addClass("display-none");
                 this.display(arg.object, arg.position, arg.label);
-                Object.assign(this.meta, {header: arg.header});
+                Object.assign(this.meta, { header: arg.header });
                 res();
             });
         });
@@ -2458,16 +2461,16 @@ export default class SseEditor3d extends React.Component {
     }
 
     start() {
-        const serverMeta = SseSamples.findOne({url: this.props.imageUrl});
-        this.meta = serverMeta || {url: this.props.imageUrl};
+        const serverMeta = SseSamples.findOne({ url: this.props.imageUrl });
+        this.meta = serverMeta || { url: this.props.imageUrl };
         if (serverMeta) {
             this.meta.socName = serverMeta.socName;
-            this.sendMsg("active-soc-name", {value: this.meta.socName});
+            this.sendMsg("active-soc-name", { value: this.meta.socName });
         } else {
             this.meta.socName = this.activeSoc.name;
         }
 
-        this.sendMsg("currentSample", {data: this.meta});
+        this.sendMsg("currentSample", { data: this.meta });
         const fileUrl = SseGlobals.getFileUrl(this.props.imageUrl);
 
         this.loadPCDFile(fileUrl).then(() => {
@@ -2476,19 +2479,19 @@ export default class SseEditor3d extends React.Component {
                 .then(result => {
                     this.labelArray = result;
                     this.maxClassIndex = Math.max(...this.labelArray);
-                    this.sendMsg("maximum-classIndex", {value: this.maxClassIndex});
+                    this.sendMsg("maximum-classIndex", { value: this.maxClassIndex });
                 }, () => {
                     this.saveBinaryLabels();
                 }).then(() => {
 
-                this.dataManager.loadBinaryFile(this.props.imageUrl + ".objects").then(result => {
-                    if (result.forEach)
-                        this.display(result, this.positionArray, this.labelArray);
-                    else
-                        this.display(undefined, this.positionArray, this.labelArray);
-                }, () => {
+                    this.dataManager.loadBinaryFile(this.props.imageUrl + ".objects").then(result => {
+                        if (result.forEach)
+                            this.display(result, this.positionArray, this.labelArray);
+                        else
+                            this.display(undefined, this.positionArray, this.labelArray);
+                    }, () => {
+                    });
                 });
-            });
         });
     }
 }

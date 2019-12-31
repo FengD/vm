@@ -1,7 +1,6 @@
 package hirain.itd.hmi.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -53,11 +52,5 @@ public class LoginController {
 		jsonObject.put("action", "LOGOUT");
 		jsonObject.put("status", "SUCCESS");
 		return jsonObject;
-	}
-
-	@CarLoginToken
-	@GetMapping("/testToken")
-	public String getMessage() {
-		return "pass";
 	}
 }

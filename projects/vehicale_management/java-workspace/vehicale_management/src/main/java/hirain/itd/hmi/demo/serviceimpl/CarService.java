@@ -10,7 +10,6 @@ import hirain.itd.hmi.demo.dao.CarMapper;
 import hirain.itd.hmi.demo.service.ICarService;
 
 @Service
-
 public class CarService implements ICarService {
 	@Autowired
 	private CarMapper carMapper;

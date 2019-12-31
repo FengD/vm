@@ -1,8 +1,10 @@
-package hirain.itd.hmi.demo.controller;
+package hirain.itd.hmi.demo.config.interceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -19,16 +21,18 @@ import hirain.itd.hmi.demo.annotation.CarLoginToken;
 import hirain.itd.hmi.demo.bean.Car;
 import hirain.itd.hmi.demo.serviceimpl.CarService;
 
-public class AuthenticationInterceptor implements HandlerInterceptor {
+public class CarAuthentication implements HandlerInterceptor {
 	@Autowired
 	CarService carService;
-
+	
+	private static Logger logger = LoggerFactory.getLogger(CarAuthentication.class);
+	
 	@Override
 	public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
 			Object object) throws Exception {
+		logger.debug("car authentication");
 		// get token from http header
 		String token = httpServletRequest.getHeader("token");
-		System.out.println(token);
 		// if not project in method pass
 		if (!(object instanceof HandlerMethod)) {
 			return true;
@@ -56,9 +60,9 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 				} catch (JWTDecodeException j) {
 					throw new RuntimeException("401");
 				}
-				System.out.println(carId);
+
 				Car car = carService.selectByPrimaryKey(Integer.parseInt(carId));
-				System.out.println(car);
+
 				if (car == null) {
 					throw new RuntimeException("role not exist.");
 				}

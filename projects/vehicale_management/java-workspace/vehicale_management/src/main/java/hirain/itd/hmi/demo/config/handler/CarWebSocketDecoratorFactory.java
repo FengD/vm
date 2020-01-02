@@ -22,10 +22,10 @@ public class CarWebSocketDecoratorFactory implements WebSocketHandlerDecoratorFa
 		return new WebSocketHandlerDecorator(handler) {
 			@Override
 			public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-				logger.info("sessionId = {} join", session.getId());
+				logger.debug("sessionId = {} join", session.getId());
 				Principal principal = session.getPrincipal();
 				if (principal != null) {
-					logger.info("key = {} save", principal.getName());
+					logger.debug("key = {} save", principal.getName());
 					WebSocketService.add(Integer.parseInt(principal.getName()), session);
 				}
 				super.afterConnectionEstablished(session);
@@ -33,7 +33,7 @@ public class CarWebSocketDecoratorFactory implements WebSocketHandlerDecoratorFa
 
 			@Override
 			public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
-				logger.info("sessionId = {} leave", session.getId());
+				logger.debug("sessionId = {} leave", session.getId());
 				Principal principal = session.getPrincipal();
 				if (principal != null) {
 					WebSocketService.remove(Integer.parseInt(principal.getName()));

@@ -11,17 +11,17 @@ public class WebSocketService {
 	private static ConcurrentHashMap<Integer, WebSocketSession> manager = new ConcurrentHashMap<Integer, WebSocketSession>();
 
 	public static void add(int key, WebSocketSession webSocketSession) {
-		logger.info("add webSocket connection {} ", key);
+		logger.debug("add webSocket connection {} ", key);
 		manager.put(key, webSocketSession);
 	}
 
 	public static void remove(int key) {
-		logger.info("remove webSocket connnection {} ", key);
+		logger.debug("remove webSocket connnection {} ", key);
 		manager.remove(key);
 	}
 
 	public static WebSocketSession get(int key) {
-		logger.info("get webSocket connection {}", key);
+		logger.debug("get webSocket connection {}", key);
 		return manager.get(key);
 	}
 

@@ -1,4 +1,4 @@
-package hirain.itd.hmi.demo.config.handler;
+package hirain.itd.hmi.demo;
 
 import java.net.InetSocketAddress;
 
@@ -31,7 +31,7 @@ public class TcpServer {
 		ServerBootstrap bootstrap = new ServerBootstrap();
 		bootstrap.group(boss, work).channel(NioServerSocketChannel.class).localAddress(new InetSocketAddress(port))
 				.option(ChannelOption.SO_BACKLOG, 1024).childOption(ChannelOption.SO_KEEPALIVE, true)
-				.childOption(ChannelOption.TCP_NODELAY, true).childHandler(new ServerChannelInitializer());
+				.childOption(ChannelOption.TCP_NODELAY, true).childHandler(new TcpServerChannelInitializer());
 		ChannelFuture future = bootstrap.bind().sync();
 		if (future.isSuccess()) {
 			logger.info("tcp server start at port {}", port);

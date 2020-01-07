@@ -45,15 +45,21 @@ ST_GeomFromText('multipoint(31.32675217115862 121.54935570966389,31.326799335318
 ST_GeomFromText('point(31.32675217115862 121.54935570966389)',4326),
 ST_GeomFromText('point(31.326717268521605 121.54921092609901)',4326) );
 
-INSERT INTO vm_car_status(is_login) VALUES
-(false),
-(false),
-(false);
 
-INSERT INTO vm_car(name, pwd, project_id, car_status_id, city_id, capacity) VALUES
-('260', '260', 1, 1, 1, 8),
-('test', 'test', 2, 2, 2, 7),
-('hmi', 'hmi', 1, 3, 4, 9);
+INSERT INTO vm_car(name, pwd) VALUES
+('260', '260'),
+('test', 'test'),
+('hmi', 'hmi');
+
+INSERT INTO vm_car_status(car_id, is_login) VALUES
+(1, false),
+(2, false),
+(3, false);
+
+INSERT INTO vm_car_profile(car_id, project_id, city_id, capacity, photo_path) VALUES
+(1, 1, 1, 8, ''),
+(2, 2, 2, 7, ''),
+(3, 1, 4, 9, '');
 
 INSERT INTO vm_car_route_relation(car_id, route_id) VALUES
 (1,1),

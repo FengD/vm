@@ -15,23 +15,23 @@ public class CarService implements ICarService {
 	private CarMapper carMapper;
 
 	@Override
-	public int insert(Car car) {
-		return carMapper.insert(car);
+	public int insert(String name, String pwd) {
+		return carMapper.insert(name, pwd);
 	}
 
 	@Override
-	public Car selectByPrimaryKey(int id) throws Exception {
-		return carMapper.selectByPrimaryKey(id);
+	public Car selectCarById(int id) throws Exception {
+		return carMapper.selectCarById(id);
 	}
 
 	@Override
-	public int updateByPrimaryKey(Car car) throws Exception {
-		return carMapper.updateByPrimaryKey(car);
+	public int updateCarById(int id, String name, String pwd) throws Exception {
+		return carMapper.updateCarById(name, pwd, id);
 	}
 
 	@Override
-	public int deleteByPrimaryKey(int id) throws Exception {
-		return carMapper.deleteByPrimaryKey(id);
+	public int deleteCarById(int id) throws Exception {
+		return carMapper.deleteCarById(id);
 	}
 
 	@Override
@@ -42,11 +42,6 @@ public class CarService implements ICarService {
 	@Override
 	public Car selectCarByName(String name) throws Exception {
 		return carMapper.selectCarByName(name);
-	}
-
-	@Override
-	public List<Car> selectCarsByProjectName(String projectName) throws Exception {
-		return carMapper.selectCarsByProjectName(projectName);
 	}
 
 }

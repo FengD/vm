@@ -42,7 +42,7 @@ public class CarHandShake implements HandshakeInterceptor {
 			throw new RuntimeException("401");
 		}
 
-		Car car = carService.selectByPrimaryKey(Integer.parseInt(carId));
+		Car car = carService.selectCarById(Integer.parseInt(carId));
 
 		if (car == null) {
 			throw new RuntimeException("role not exist.");

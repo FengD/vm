@@ -3,22 +3,22 @@ package hirain.itd.hmi.demo.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.data.repository.query.Param;
 
 import hirain.itd.hmi.demo.bean.Car;
 
 @Mapper
 public interface CarMapper {
-	int insert(Car car);
+	int insert(@Param("name") String name, @Param("pwd") String pwd);
 
-	Car selectByPrimaryKey(int id);
+	Car selectCarById(int id);
 
-	int updateByPrimaryKey(Car car);
+	int updateCarById(@Param("name") String name, @Param("pwd") String pwd, @Param("id") int id);
 
-	int deleteByPrimaryKey(int id);
+	int deleteCarById(int id);
 
 	List<Car> selectAll();
 
 	Car selectCarByName(String name);
 
-	List<Car> selectCarsByProjectName(String projectName);
 }

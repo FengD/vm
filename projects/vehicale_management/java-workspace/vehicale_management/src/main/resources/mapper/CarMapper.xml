@@ -2,56 +2,47 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="hirain.itd.hmi.demo.dao.CarMapper">
 
-	<insert id="insert" parameterType="hirain.itd.hmi.demo.bean.Car">
-		insert into car (name, pwd,
-		projectName)
-		values (#{name,jdbcType=VARCHAR},
-		#{pwd,jdbcType=VARCHAR},#{projectName,jdbcType=VARCHAR})
+	<insert id="insert">
+		insert into vm_car (name, pwd)
+		values
+		(#{name,jdbcType=VARCHAR},
+		#{pwd,jdbcType=VARCHAR})
 	</insert>
 
-	<select id="selectByPrimaryKey"
-		resultType="hirain.itd.hmi.demo.bean.Car"
-		parameterType="int">
-		select * from car
-		where id = #{id,jdbcType=INTEGER}
+	<select id="selectCarById"
+		resultType="hirain.itd.hmi.demo.bean.Car" parameterType="int">
+		select * from
+		vm_car
+		where car_id = #{id,jdbcType=INTEGER}
 	</select>
 
-	<update id="updateByPrimaryKey"
-		parameterType="hirain.itd.hmi.demo.bean.Car">
-		update car
-		set pwd =
-		#{pwd,jdbcType=VARCHAR},
-		projectName =
-		#{projectName,jdbcType=VARCHAR}
-		where id = #{id,jdbcType=INTEGER}
+	<update id="updateCarById">
+		update vm_car
+		set name=
+		'#{name,jdbcType=VARCHAR}',pwd=
+		'#{pwd,jdbcType=VARCHAR}'
+		where car_id =
+		#{id,jdbcType=INTEGER}
 	</update>
 
-	<delete id="deleteByPrimaryKey" parameterType="int">
+	<delete id="deleteCarById" parameterType="int">
 		delete from
-		car
-		where id = #{id,jdbcType=INTEGER}
+		vm_car
+		where
+		car_id = #{id,jdbcType=INTEGER}
 	</delete>
 
 
 	<select id="selectAll" resultType="hirain.itd.hmi.demo.bean.Car">
-		select * from car
+		select * from vm_car
 	</select>
 
 	<select id="selectCarByName"
 		resultType="hirain.itd.hmi.demo.bean.Car"
 		parameterType="java.lang.String">
 		select * from
-		car
+		vm_car
 		where name =
 		#{name,jdbcType=VARCHAR}
-	</select>
-
-	<select id="selectCarsByProjectName"
-		resultType="hirain.itd.hmi.demo.bean.Car"
-		parameterType="java.lang.String">
-		select * from
-		car
-		where projectName =
-		#{projectName,jdbcType=VARCHAR}
 	</select>
 </mapper>

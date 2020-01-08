@@ -5,17 +5,15 @@ import java.util.List;
 import hirain.itd.hmi.demo.bean.Car;
 
 public interface ICarService {
-	int insert(Car car);
+	int insert(String name, String pwd);
 
-	Car selectByPrimaryKey(int id) throws Exception;
+	Car selectCarById(int id) throws Exception;
 
-	int updateByPrimaryKey(Car car) throws Exception;
+	int updateCarById(int id, String name, String pwd) throws Exception;
 
-	int deleteByPrimaryKey(int id) throws Exception;
+	int deleteCarById(int id) throws Exception;
 
 	List<Car> selectAll() throws Exception;
 
 	Car selectCarByName(String name) throws Exception;
-
-	List<Car> selectCarsByProjectName(String projectName) throws Exception;
 }

@@ -17,7 +17,7 @@ public class TokenService {
 		long currentTime = System.currentTimeMillis();
 		long oneDayLater = currentTime + 24 * 60 * 60 * 1000;
 		Date end = new Date(oneDayLater);
-		String token = JWT.create().withAudience("" + car.getId()).withIssuedAt(start).withExpiresAt(end)
+		String token = JWT.create().withAudience("" + car.getCar_id()).withIssuedAt(start).withExpiresAt(end)
 				.sign(Algorithm.HMAC256(car.getPwd()));
 		return token;
 	}

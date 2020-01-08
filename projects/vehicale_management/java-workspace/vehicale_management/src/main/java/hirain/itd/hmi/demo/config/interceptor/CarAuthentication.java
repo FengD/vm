@@ -16,8 +16,8 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 
-import hirain.itd.hmi.demo.annotation.PassToken;
 import hirain.itd.hmi.demo.annotation.CarLoginToken;
+import hirain.itd.hmi.demo.annotation.PassToken;
 import hirain.itd.hmi.demo.bean.Car;
 import hirain.itd.hmi.demo.serviceimpl.CarService;
 
@@ -61,7 +61,7 @@ public class CarAuthentication implements HandlerInterceptor {
 					throw new RuntimeException("401");
 				}
 
-				Car car = carService.selectByPrimaryKey(Integer.parseInt(carId));
+				Car car = carService.selectCarById(Integer.parseInt(carId));
 
 				if (car == null) {
 					throw new RuntimeException("role not exist.");

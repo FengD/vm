@@ -9,7 +9,8 @@ import com.alibaba.fastjson.JSONObject;
 
 import hirain.itd.hmi.demo.annotation.CarLoginToken;
 import hirain.itd.hmi.demo.bean.Car;
-import hirain.itd.hmi.demo.serviceimpl.CarService;
+import hirain.itd.hmi.demo.service.ICarService;
+import hirain.itd.hmi.demo.service.ICarStatusService;
 import hirain.itd.hmi.demo.serviceimpl.TokenService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -18,9 +19,11 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 public class LoginController {
 	@Autowired
-	CarService carService;
+	ICarService carService;
 	@Autowired
 	TokenService tokenService;
+	@Autowired
+	ICarStatusService carStatusService;
 
 	@ApiOperation(value = "login", notes = "login parameter is name and password")
 	@PostMapping("/car/login")
@@ -34,23 +37,26 @@ public class LoginController {
 			jsonObject.put("status", "FATAL");
 			return jsonObject;
 		} else {
+			System.out.println(carForBase.getCar_id());
+			carStatusService.updateStatusByCarId(carForBase.getCar_id(), true);
 			String token = tokenService.getToken(carForBase);
 			jsonObject.put("token", token);
 			jsonObject.put("action", "LOGIN");
-			jsonObject.put("status", "SUCCESS");
+			jsonObject.put("status", 200);
 			jsonObject.put("authority", "CAR");
 			jsonObject.put("car", carForBase);
 			return jsonObject;
 		}
 	}
-	
+
 	@ApiOperation(value = "logout", notes = "logout parameter is name and password")
 	@PostMapping("/car/logout")
 	@CarLoginToken
-	public Object logout() throws Exception {
+	public Object logout(@RequestBody Car car) throws Exception {
+		carStatusService.updateStatusByCarId(car.getCar_id(), false);
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("action", "LOGOUT");
-		jsonObject.put("status", "SUCCESS");
+		jsonObject.put("status", 200);
 		return jsonObject;
 	}
 }

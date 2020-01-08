@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="hirain.itd.hmi.demo.dao.CarStatusMapper">
+
+	<select id="selectStatusByCarId"
+		resultType="hirain.itd.hmi.demo.bean.CarStatus" parameterType="int">
+		select
+		vm_car_status.car_status_id as car_status_id , vm_car_status.is_login
+		as is_login from
+		vm_car_status
+		where car_id =
+		#{carId,jdbcType=INTEGER}
+	</select>
+
+	<update id="updateStatusByCarId">
+		update
+		vm_car_status set is_login=
+		#{isLogin,jdbcType=BOOLEAN}
+		where car_id =
+		#{carId,jdbcType=INTEGER}
+	</update>
+
+
+</mapper>

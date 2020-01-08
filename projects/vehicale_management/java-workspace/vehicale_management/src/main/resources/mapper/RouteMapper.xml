@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="hirain.itd.hmi.demo.dao.RouteMapper">
+
+	<select id="selectRouteById"
+		resultType="hirain.itd.hmi.demo.bean.Route" parameterType="int">
+		select
+		route_id, name, ST_AsText(route_point) as route_point,
+		ST_AsText(start_point) as start_point, ST_AsText(end_point) as
+		end_point FROM vm_route
+		where route_id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<select id="selectRoutesByCarId"
+		resultType="hirain.itd.hmi.demo.bean.Route" parameterType="int">
+		select
+		vm_route.route_id as route_id, vm_route.name as name FROM vm_route,
+		vm_car,
+		vm_car_route_relation where vm_route.route_id =
+		vm_car_route_relation.route_id and vm_car.car_id =
+		vm_car_route_relation.car_id and vm_car_route_relation.car_id =
+		#{id,jdbcType=INTEGER}
+	</select>
+
+
+
+</mapper>

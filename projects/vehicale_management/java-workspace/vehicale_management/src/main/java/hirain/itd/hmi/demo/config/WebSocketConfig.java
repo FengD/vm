@@ -16,7 +16,7 @@ import hirain.itd.hmi.demo.config.interceptor.CarHandShake;
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-	final private String endPoint = "/car/ws";
+	final private String endPoint = "/ws/car";
 	final private String allowedOrigins = "*";
 
 	@Override

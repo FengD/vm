@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="hirain.itd.hmi.demo.dao.CarProfileMapper">
+
+	<select id="selectProfileByCarId"
+		resultType="hirain.itd.hmi.demo.bean.CarProfile" parameterType="int">
+		select
+		vm_car_profile.car_profile_id as car_profile_id,
+		vm_car_profile.capacity as capacity,
+		dictionary_project.name
+		as project,
+		dictionary_city.name as city from
+		vm_car_profile,
+		dictionary_project,
+		dictionary_city
+		where
+		vm_car_profile.project_id =
+		dictionary_project.project_id and
+		vm_car_profile.city_id =
+		dictionary_city.city_id and car_id =
+		#{carId,jdbcType=INTEGER}
+	</select>
+
+</mapper>

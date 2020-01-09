@@ -32,12 +32,12 @@ public class LoginController {
 		Car carForBase = carService.selectCarByName(car.getName());
 
 		if (!carForBase.getPwd().equals(car.getPwd())) {
+			carStatusService.updateStatusByCarId(carForBase.getCar_id(), false);
 			jsonObject.put("message", "password error, login failed.");
 			jsonObject.put("action", "LOGIN");
 			jsonObject.put("status", "FATAL");
 			return jsonObject;
 		} else {
-			System.out.println(carForBase.getCar_id());
 			carStatusService.updateStatusByCarId(carForBase.getCar_id(), true);
 			String token = tokenService.getToken(carForBase);
 			jsonObject.put("token", token);

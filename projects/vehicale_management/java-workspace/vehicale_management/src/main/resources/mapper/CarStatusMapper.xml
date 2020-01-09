@@ -15,8 +15,10 @@
 	<update id="updateStatusByCarId">
 		update
 		vm_car_status set is_login=
-		#{isLogin,jdbcType=BOOLEAN}
-		where car_id =
+		#{isLogin,jdbcType=BOOLEAN},
+		update_time = CURRENT_TIMESTAMP
+		where
+		car_id =
 		#{carId,jdbcType=INTEGER}
 	</update>
 

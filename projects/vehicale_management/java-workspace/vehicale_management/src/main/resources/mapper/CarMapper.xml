@@ -17,12 +17,13 @@
 	</select>
 
 	<update id="updateCarById">
-		update vm_car
-		set name=
-		'#{name,jdbcType=VARCHAR}',pwd=
-		'#{pwd,jdbcType=VARCHAR}'
-		where car_id =
-		#{id,jdbcType=INTEGER}
+	update vm_car
+	set name=
+	'#{name,jdbcType=VARCHAR}',pwd=
+	'#{pwd,jdbcType=VARCHAR}',
+	update_time = CURRENT_TIMESTAMP
+	where car_id =
+	#{id,jdbcType=INTEGER}
 	</update>
 
 	<delete id="deleteCarById" parameterType="int">

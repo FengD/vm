@@ -15,7 +15,7 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioDatagramChannel;
 
-//@Component
+@Component
 public class UdpServer {
 	private EventLoopGroup group = new NioEventLoopGroup();
 	private static Logger logger = LoggerFactory.getLogger(UdpServer.class);

@@ -1,5 +1,14 @@
 package hirain.itd.hmi.demo.config.handler;
 
+import java.io.IOException;
+
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
+import hirain.itd.hmi.demo.serviceimpl.WebSocketService;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -13,12 +22,26 @@ public class UdpServerHandler extends SimpleChannelInboundHandler<DatagramPacket
 		byte[] req = new byte[buf.readableBytes()];
 		buf.readBytes(req);
 		String body = new String(req, "UTF-8");
-		System.out.println(body);//打印收到的信息
-//        //向客户端发送消息
-//        String json = "来自服务端: 南无阿弥陀佛";
-//        // 由于数据报的数据是以字符数组传的形式存储的，所以传转数据
-//        byte[] bytes = json.getBytes("UTF-8");
-//        DatagramPacket data = new DatagramPacket(Unpooled.copiedBuffer(bytes), packet.sender());
-//        ctx.writeAndFlush(data);
+		System.out.println(body);
+		try {
+			JSONObject jsonObject = JSON.parseObject(body);
+			Object carId = jsonObject.get("carId");
+			Object sendMsg = jsonObject.get("msg");
+			if (null != carId) {
+				int carIdInt = Integer.parseInt(carId.toString());
+				WebSocketSession webSocketSession = WebSocketService.get(carIdInt);
+				if (null != webSocketSession) {
+					TextMessage m = new TextMessage(sendMsg.toString());
+					try {
+						webSocketSession.sendMessage(m);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

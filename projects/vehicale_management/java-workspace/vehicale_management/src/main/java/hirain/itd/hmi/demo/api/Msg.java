@@ -14,104 +14,6 @@ public final class Msg {
     registerAllExtensions(
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
-  /**
-   * Protobuf enum {@code hirain.itd.hmi.demo.api.ActionType}
-   */
-  public enum ActionType
-      implements com.google.protobuf.ProtocolMessageEnum {
-    /**
-     * <code>SoftStop = 0;</code>
-     */
-    SoftStop(0),
-    /**
-     * <code>EmergencyStop = 1;</code>
-     */
-    EmergencyStop(1),
-    UNRECOGNIZED(-1),
-    ;
-
-    /**
-     * <code>SoftStop = 0;</code>
-     */
-    public static final int SoftStop_VALUE = 0;
-    /**
-     * <code>EmergencyStop = 1;</code>
-     */
-    public static final int EmergencyStop_VALUE = 1;
-
-
-    public final int getNumber() {
-      if (this == UNRECOGNIZED) {
-        throw new java.lang.IllegalArgumentException(
-            "Can't get the number of an unknown enum value.");
-      }
-      return value;
-    }
-
-    /**
-     * @deprecated Use {@link #forNumber(int)} instead.
-     */
-    @java.lang.Deprecated
-    public static ActionType valueOf(int value) {
-      return forNumber(value);
-    }
-
-    public static ActionType forNumber(int value) {
-      switch (value) {
-        case 0: return SoftStop;
-        case 1: return EmergencyStop;
-        default: return null;
-      }
-    }
-
-    public static com.google.protobuf.Internal.EnumLiteMap<ActionType>
-        internalGetValueMap() {
-      return internalValueMap;
-    }
-    private static final com.google.protobuf.Internal.EnumLiteMap<
-        ActionType> internalValueMap =
-          new com.google.protobuf.Internal.EnumLiteMap<ActionType>() {
-            public ActionType findValueByNumber(int number) {
-              return ActionType.forNumber(number);
-            }
-          };
-
-    public final com.google.protobuf.Descriptors.EnumValueDescriptor
-        getValueDescriptor() {
-      return getDescriptor().getValues().get(ordinal());
-    }
-    public final com.google.protobuf.Descriptors.EnumDescriptor
-        getDescriptorForType() {
-      return getDescriptor();
-    }
-    public static final com.google.protobuf.Descriptors.EnumDescriptor
-        getDescriptor() {
-      return hirain.itd.hmi.demo.api.Msg.getDescriptor().getEnumTypes().get(0);
-    }
-
-    private static final ActionType[] VALUES = values();
-
-    public static ActionType valueOf(
-        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
-      if (desc.getType() != getDescriptor()) {
-        throw new java.lang.IllegalArgumentException(
-          "EnumValueDescriptor is not for this type.");
-      }
-      if (desc.getIndex() == -1) {
-        return UNRECOGNIZED;
-      }
-      return VALUES[desc.getIndex()];
-    }
-
-    private final int value;
-
-    private ActionType(int value) {
-      this.value = value;
-    }
-
-    // @@protoc_insertion_point(enum_scope:hirain.itd.hmi.demo.api.ActionType)
-  }
-
   public interface FromAduMessageOrBuilder extends
       // @@protoc_insertion_point(interface_extends:hirain.itd.hmi.demo.api.FromAduMessage)
       com.google.protobuf.MessageOrBuilder {
@@ -1673,18 +1575,13 @@ public final class Msg {
     int getPathNumOri();
 
     /**
-     * <code>int32 ADVSwitch = 2;</code>
+     * <code>.hirain.itd.hmi.demo.api.ToAduMessage.ActionType ADVSwitch = 2;</code>
      */
-    int getADVSwitch();
-
+    int getADVSwitchValue();
     /**
-     * <code>.hirain.itd.hmi.demo.api.ActionType action = 3;</code>
+     * <code>.hirain.itd.hmi.demo.api.ToAduMessage.ActionType ADVSwitch = 2;</code>
      */
-    int getActionValue();
-    /**
-     * <code>.hirain.itd.hmi.demo.api.ActionType action = 3;</code>
-     */
-    hirain.itd.hmi.demo.api.Msg.ActionType getAction();
+    hirain.itd.hmi.demo.api.Msg.ToAduMessage.ActionType getADVSwitch();
   }
   /**
    * Protobuf type {@code hirain.itd.hmi.demo.api.ToAduMessage}
@@ -1701,7 +1598,6 @@ public final class Msg {
     private ToAduMessage() {
       pathNumOri_ = 0;
       aDVSwitch_ = 0;
-      action_ = 0;
     }
 
     @java.lang.Override
@@ -1741,14 +1637,9 @@ public final class Msg {
               break;
             }
             case 16: {
-
-              aDVSwitch_ = input.readInt32();
-              break;
-            }
-            case 24: {
               int rawValue = input.readEnum();
 
-              action_ = rawValue;
+              aDVSwitch_ = rawValue;
               break;
             }
           }
@@ -1775,6 +1666,113 @@ public final class Msg {
               hirain.itd.hmi.demo.api.Msg.ToAduMessage.class, hirain.itd.hmi.demo.api.Msg.ToAduMessage.Builder.class);
     }
 
+    /**
+     * Protobuf enum {@code hirain.itd.hmi.demo.api.ToAduMessage.ActionType}
+     */
+    public enum ActionType
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>AdvStart = 0;</code>
+       */
+      AdvStart(0),
+      /**
+       * <code>SoftStop = 1;</code>
+       */
+      SoftStop(1),
+      /**
+       * <code>EmergencyStop = 2;</code>
+       */
+      EmergencyStop(2),
+      UNRECOGNIZED(-1),
+      ;
+
+      /**
+       * <code>AdvStart = 0;</code>
+       */
+      public static final int AdvStart_VALUE = 0;
+      /**
+       * <code>SoftStop = 1;</code>
+       */
+      public static final int SoftStop_VALUE = 1;
+      /**
+       * <code>EmergencyStop = 2;</code>
+       */
+      public static final int EmergencyStop_VALUE = 2;
+
+
+      public final int getNumber() {
+        if (this == UNRECOGNIZED) {
+          throw new java.lang.IllegalArgumentException(
+              "Can't get the number of an unknown enum value.");
+        }
+        return value;
+      }
+
+      /**
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static ActionType valueOf(int value) {
+        return forNumber(value);
+      }
+
+      public static ActionType forNumber(int value) {
+        switch (value) {
+          case 0: return AdvStart;
+          case 1: return SoftStop;
+          case 2: return EmergencyStop;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<ActionType>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static final com.google.protobuf.Internal.EnumLiteMap<
+          ActionType> internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<ActionType>() {
+              public ActionType findValueByNumber(int number) {
+                return ActionType.forNumber(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(ordinal());
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return hirain.itd.hmi.demo.api.Msg.ToAduMessage.getDescriptor().getEnumTypes().get(0);
+      }
+
+      private static final ActionType[] VALUES = values();
+
+      public static ActionType valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        if (desc.getIndex() == -1) {
+          return UNRECOGNIZED;
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int value;
+
+      private ActionType(int value) {
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:hirain.itd.hmi.demo.api.ToAduMessage.ActionType)
+    }
+
     public static final int PATHNUMORI_FIELD_NUMBER = 1;
     private int pathNumOri_;
     /**
@@ -1787,26 +1785,17 @@ public final class Msg {
     public static final int ADVSWITCH_FIELD_NUMBER = 2;
     private int aDVSwitch_;
     /**
-     * <code>int32 ADVSwitch = 2;</code>
+     * <code>.hirain.itd.hmi.demo.api.ToAduMessage.ActionType ADVSwitch = 2;</code>
      */
-    public int getADVSwitch() {
+    public int getADVSwitchValue() {
       return aDVSwitch_;
     }
-
-    public static final int ACTION_FIELD_NUMBER = 3;
-    private int action_;
     /**
-     * <code>.hirain.itd.hmi.demo.api.ActionType action = 3;</code>
+     * <code>.hirain.itd.hmi.demo.api.ToAduMessage.ActionType ADVSwitch = 2;</code>
      */
-    public int getActionValue() {
-      return action_;
-    }
-    /**
-     * <code>.hirain.itd.hmi.demo.api.ActionType action = 3;</code>
-     */
-    public hirain.itd.hmi.demo.api.Msg.ActionType getAction() {
-      hirain.itd.hmi.demo.api.Msg.ActionType result = hirain.itd.hmi.demo.api.Msg.ActionType.valueOf(action_);
-      return result == null ? hirain.itd.hmi.demo.api.Msg.ActionType.UNRECOGNIZED : result;
+    public hirain.itd.hmi.demo.api.Msg.ToAduMessage.ActionType getADVSwitch() {
+      hirain.itd.hmi.demo.api.Msg.ToAduMessage.ActionType result = hirain.itd.hmi.demo.api.Msg.ToAduMessage.ActionType.valueOf(aDVSwitch_);
+      return result == null ? hirain.itd.hmi.demo.api.Msg.ToAduMessage.ActionType.UNRECOGNIZED : result;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -1824,11 +1813,8 @@ public final class Msg {
       if (pathNumOri_ != 0) {
         output.writeInt32(1, pathNumOri_);
       }
-      if (aDVSwitch_ != 0) {
-        output.writeInt32(2, aDVSwitch_);
-      }
-      if (action_ != hirain.itd.hmi.demo.api.Msg.ActionType.SoftStop.getNumber()) {
-        output.writeEnum(3, action_);
+      if (aDVSwitch_ != hirain.itd.hmi.demo.api.Msg.ToAduMessage.ActionType.AdvStart.getNumber()) {
+        output.writeEnum(2, aDVSwitch_);
       }
       unknownFields.writeTo(output);
     }
@@ -1842,13 +1828,9 @@ public final class Msg {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(1, pathNumOri_);
       }
-      if (aDVSwitch_ != 0) {
+      if (aDVSwitch_ != hirain.itd.hmi.demo.api.Msg.ToAduMessage.ActionType.AdvStart.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(2, aDVSwitch_);
-      }
-      if (action_ != hirain.itd.hmi.demo.api.Msg.ActionType.SoftStop.getNumber()) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(3, action_);
+          .computeEnumSize(2, aDVSwitch_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1868,9 +1850,7 @@ public final class Msg {
       boolean result = true;
       result = result && (getPathNumOri()
           == other.getPathNumOri());
-      result = result && (getADVSwitch()
-          == other.getADVSwitch());
-      result = result && action_ == other.action_;
+      result = result && aDVSwitch_ == other.aDVSwitch_;
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -1885,9 +1865,7 @@ public final class Msg {
       hash = (37 * hash) + PATHNUMORI_FIELD_NUMBER;
       hash = (53 * hash) + getPathNumOri();
       hash = (37 * hash) + ADVSWITCH_FIELD_NUMBER;
-      hash = (53 * hash) + getADVSwitch();
-      hash = (37 * hash) + ACTION_FIELD_NUMBER;
-      hash = (53 * hash) + action_;
+      hash = (53 * hash) + aDVSwitch_;
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -2021,8 +1999,6 @@ public final class Msg {
 
         aDVSwitch_ = 0;
 
-        action_ = 0;
-
         return this;
       }
 
@@ -2047,7 +2023,6 @@ public final class Msg {
         hirain.itd.hmi.demo.api.Msg.ToAduMessage result = new hirain.itd.hmi.demo.api.Msg.ToAduMessage(this);
         result.pathNumOri_ = pathNumOri_;
         result.aDVSwitch_ = aDVSwitch_;
-        result.action_ = action_;
         onBuilt();
         return result;
       }
@@ -2092,11 +2067,8 @@ public final class Msg {
         if (other.getPathNumOri() != 0) {
           setPathNumOri(other.getPathNumOri());
         }
-        if (other.getADVSwitch() != 0) {
-          setADVSwitch(other.getADVSwitch());
-        }
-        if (other.action_ != 0) {
-          setActionValue(other.getActionValue());
+        if (other.aDVSwitch_ != 0) {
+          setADVSwitchValue(other.getADVSwitchValue());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -2151,72 +2123,46 @@ public final class Msg {
         return this;
       }
 
-      private int aDVSwitch_ ;
+      private int aDVSwitch_ = 0;
       /**
-       * <code>int32 ADVSwitch = 2;</code>
+       * <code>.hirain.itd.hmi.demo.api.ToAduMessage.ActionType ADVSwitch = 2;</code>
        */
-      public int getADVSwitch() {
+      public int getADVSwitchValue() {
         return aDVSwitch_;
       }
       /**
-       * <code>int32 ADVSwitch = 2;</code>
+       * <code>.hirain.itd.hmi.demo.api.ToAduMessage.ActionType ADVSwitch = 2;</code>
        */
-      public Builder setADVSwitch(int value) {
-        
+      public Builder setADVSwitchValue(int value) {
         aDVSwitch_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>int32 ADVSwitch = 2;</code>
+       * <code>.hirain.itd.hmi.demo.api.ToAduMessage.ActionType ADVSwitch = 2;</code>
        */
-      public Builder clearADVSwitch() {
-        
-        aDVSwitch_ = 0;
-        onChanged();
-        return this;
-      }
-
-      private int action_ = 0;
-      /**
-       * <code>.hirain.itd.hmi.demo.api.ActionType action = 3;</code>
-       */
-      public int getActionValue() {
-        return action_;
+      public hirain.itd.hmi.demo.api.Msg.ToAduMessage.ActionType getADVSwitch() {
+        hirain.itd.hmi.demo.api.Msg.ToAduMessage.ActionType result = hirain.itd.hmi.demo.api.Msg.ToAduMessage.ActionType.valueOf(aDVSwitch_);
+        return result == null ? hirain.itd.hmi.demo.api.Msg.ToAduMessage.ActionType.UNRECOGNIZED : result;
       }
       /**
-       * <code>.hirain.itd.hmi.demo.api.ActionType action = 3;</code>
+       * <code>.hirain.itd.hmi.demo.api.ToAduMessage.ActionType ADVSwitch = 2;</code>
        */
-      public Builder setActionValue(int value) {
-        action_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>.hirain.itd.hmi.demo.api.ActionType action = 3;</code>
-       */
-      public hirain.itd.hmi.demo.api.Msg.ActionType getAction() {
-        hirain.itd.hmi.demo.api.Msg.ActionType result = hirain.itd.hmi.demo.api.Msg.ActionType.valueOf(action_);
-        return result == null ? hirain.itd.hmi.demo.api.Msg.ActionType.UNRECOGNIZED : result;
-      }
-      /**
-       * <code>.hirain.itd.hmi.demo.api.ActionType action = 3;</code>
-       */
-      public Builder setAction(hirain.itd.hmi.demo.api.Msg.ActionType value) {
+      public Builder setADVSwitch(hirain.itd.hmi.demo.api.Msg.ToAduMessage.ActionType value) {
         if (value == null) {
           throw new NullPointerException();
         }
         
-        action_ = value.getNumber();
+        aDVSwitch_ = value.getNumber();
         onChanged();
         return this;
       }
       /**
-       * <code>.hirain.itd.hmi.demo.api.ActionType action = 3;</code>
+       * <code>.hirain.itd.hmi.demo.api.ToAduMessage.ActionType ADVSwitch = 2;</code>
        */
-      public Builder clearAction() {
+      public Builder clearADVSwitch() {
         
-        action_ = 0;
+        aDVSwitch_ = 0;
         onChanged();
         return this;
       }
@@ -3384,17 +3330,18 @@ public final class Msg {
       "yReturn\030\n \001(\005\022\017\n\007LocFlag\030\013 \001(\005\022\022\n\nGPSFla" +
       "gPos\030\014 \001(\005\022\025\n\rActuatorError\030\r \001(\005\022\023\n\013Sen" +
       "sorError\030\016 \001(\005\022\r\n\005EvAim\030\017 \001(\002\022\017\n\007NaviNum" +
-      "\030\020 \001(\005\022\014\n\004CIPO\030\021 \001(\002\"j\n\014ToAduMessage\022\022\n\n" +
-      "PathNumOri\030\001 \001(\005\022\021\n\tADVSwitch\030\002 \001(\005\0223\n\006a" +
-      "ction\030\003 \001(\0162#.hirain.itd.hmi.demo.api.Ac" +
-      "tionType\"\366\001\n\007Message\022:\n\004type\030\001 \001(\0162,.hir" +
-      "ain.itd.hmi.demo.api.Message.MessageType" +
-      "\0227\n\004from\030\002 \001(\0132\'.hirain.itd.hmi.demo.api" +
-      ".FromAduMessageH\000\0223\n\002to\030\003 \001(\0132%.hirain.i" +
-      "td.hmi.demo.api.ToAduMessageH\000\"3\n\013Messag" +
-      "eType\022\022\n\016FromAduMessage\020\000\022\020\n\014ToAduMessag" +
-      "e\020\001B\014\n\naduMessage*-\n\nActionType\022\014\n\010SoftS" +
-      "top\020\000\022\021\n\rEmergencyStop\020\001B\003\370\001\001b\006proto3"
+      "\030\020 \001(\005\022\014\n\004CIPO\030\021 \001(\002\"\244\001\n\014ToAduMessage\022\022\n" +
+      "\nPathNumOri\030\001 \001(\005\022C\n\tADVSwitch\030\002 \001(\01620.h" +
+      "irain.itd.hmi.demo.api.ToAduMessage.Acti" +
+      "onType\";\n\nActionType\022\014\n\010AdvStart\020\000\022\014\n\010So" +
+      "ftStop\020\001\022\021\n\rEmergencyStop\020\002\"\366\001\n\007Message\022" +
+      ":\n\004type\030\001 \001(\0162,.hirain.itd.hmi.demo.api." +
+      "Message.MessageType\0227\n\004from\030\002 \001(\0132\'.hira" +
+      "in.itd.hmi.demo.api.FromAduMessageH\000\0223\n\002" +
+      "to\030\003 \001(\0132%.hirain.itd.hmi.demo.api.ToAdu" +
+      "MessageH\000\"3\n\013MessageType\022\022\n\016FromAduMessa" +
+      "ge\020\000\022\020\n\014ToAduMessage\020\001B\014\n\naduMessageB\003\370\001" +
+      "\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -3419,7 +3366,7 @@ public final class Msg {
     internal_static_hirain_itd_hmi_demo_api_ToAduMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_hirain_itd_hmi_demo_api_ToAduMessage_descriptor,
-        new java.lang.String[] { "PathNumOri", "ADVSwitch", "Action", });
+        new java.lang.String[] { "PathNumOri", "ADVSwitch", });
     internal_static_hirain_itd_hmi_demo_api_Message_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_hirain_itd_hmi_demo_api_Message_fieldAccessorTable = new

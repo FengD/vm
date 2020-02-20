@@ -1,12 +1,11 @@
 package hirain.itd.hmi.demo.bean.vo;
 
-import hirain.itd.hmi.demo.api.Msg.ActionType;
+import hirain.itd.hmi.demo.api.Msg.ToAduMessage.ActionType;
 
 public class CarDisplayAction {
 	private String carName;
 	private int path;
-	private int advSwitch;
-	private ActionType action;
+	private ActionType advSwitch;
 
 	public String getCarName() {
 		return carName;
@@ -24,20 +23,11 @@ public class CarDisplayAction {
 		this.path = path;
 	}
 
-	public int getAdvSwitch() {
+	public ActionType getAdvSwitch() {
 		return advSwitch;
 	}
 
-	public void setAdvSwitch(int advSwitch) {
+	public void setAdvSwitch(ActionType advSwitch) {
 		this.advSwitch = advSwitch;
 	}
-
-	public ActionType getAction() {
-		return action;
-	}
-
-	public void setAction(ActionType action) {
-		this.action = action;
-	}
-
 }

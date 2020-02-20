@@ -8,19 +8,20 @@ import org.springframework.web.socket.WebSocketSession;
 
 public class WebSocketService {
 	private static Logger logger = LoggerFactory.getLogger(WebSocketService.class);
-	private static ConcurrentHashMap<Integer, WebSocketSession> manager = new ConcurrentHashMap<Integer, WebSocketSession>();
+	private static ConcurrentHashMap<String, WebSocketSession> manager = new ConcurrentHashMap<String, WebSocketSession>();
 
-	public static void add(int key, WebSocketSession webSocketSession) {
-		logger.debug("add webSocket connection {} ", key);
+	public static void add(String key, WebSocketSession webSocketSession) {
+		logger.info("add webSocket connection {} ", key);
 		manager.put(key, webSocketSession);
 	}
 
-	public static void remove(int key) {
-		logger.debug("remove webSocket connnection {} ", key);
+	public static void remove(String key) {
+		logger.info("remove webSocket connnection {} ", key);
 		manager.remove(key);
+		TcpWebSocketPairService.remove(key);
 	}
 
-	public static WebSocketSession get(int key) {
+	public static WebSocketSession get(String key) {
 		logger.debug("get webSocket connection {}", key);
 		return manager.get(key);
 	}

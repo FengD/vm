@@ -1,19 +1,14 @@
-package hirain.itd.hmi.demo.bean;
+package hirain.itd.hmi.demo.bean.vo;
 
 public class CarProfile {
-	private int car_profile_id;
+	private String name;
+	private String pwd;
+	private String type;
 	private String project;
 	private String city;
 	private int capacity;
 	private String photo_path;
 
-	public int getCar_profile_id() {
-		return car_profile_id;
-	}
-
-	public void setCar_profile_id(int car_profile_id) {
-		this.car_profile_id = car_profile_id;
-	}
 
 	public String getProject() {
 		return project;
@@ -46,4 +41,28 @@ public class CarProfile {
 	public void setPhoto_path(String photo_path) {
 		this.photo_path = photo_path;
 	}
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getPwd() {
+		return pwd;
+	}
+
+	public void setPwd(String pwd) {
+		this.pwd = pwd;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
 }

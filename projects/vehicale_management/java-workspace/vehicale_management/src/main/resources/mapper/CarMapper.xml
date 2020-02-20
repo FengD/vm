@@ -2,28 +2,42 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="hirain.itd.hmi.demo.dao.CarMapper">
 
-	<insert id="insert">
-		insert into vm_car (name, pwd)
+	<insert id="insert" parameterType="hirain.itd.hmi.demo.bean.Car">
+		insert into vm_car (name, pwd,type,city_id,project_id,capacity,photo_path)
 		values
 		(#{name,jdbcType=VARCHAR},
-		#{pwd,jdbcType=VARCHAR})
+		#{pwd,jdbcType=VARCHAR},
+		#{type,jdbcType=VARCHAR},
+		#{city_id,jdbcType=INTEGER},
+		#{project_id,jdbcType=INTEGER},
+		#{capacity,jdbcType=INTEGER},#{photo_path,jdbcType=VARCHAR})
+
 	</insert>
 
-	<select id="selectCarById"
-		resultType="hirain.itd.hmi.demo.bean.Car" parameterType="int">
-		select * from
-		vm_car
-		where car_id = #{id,jdbcType=INTEGER}
+	<select id="selectCarProfileById" resultType="hirain.itd.hmi.demo.bean.vo.CarProfile" parameterType="int">
+		select car.car_id,car.name,car.pwd,car.type,city.name as city,pj.name as project,car.capacity,car.photo_path
+		 from vm_car as car , dictionary_city as city,dictionary_project as pj
+		where car.city_id=city.city_id and car.project_id = pj.project_id and car_id =#{car_id,jdbcType=INTEGER}
 	</select>
 
-	<update id="updateCarById">
+	<update id="updateCarById" parameterType="hirain.itd.hmi.demo.bean.Car">
 	update vm_car
 	set name=
-	'#{name,jdbcType=VARCHAR}',pwd=
-	'#{pwd,jdbcType=VARCHAR}',
+	#{name,jdbcType=VARCHAR},pwd=
+	#{pwd,jdbcType=VARCHAR},type= #{type,jdbcType=VARCHAR},
+	city_id=#{city_id,jdbcType=INTEGER},
+	project_id=#{project_id,jdbcType=INTEGER},
+	capacity=#{capacity,jdbcType=INTEGER},
 	update_time = CURRENT_TIMESTAMP
 	where car_id =
-	#{id,jdbcType=INTEGER}
+	#{car_id,jdbcType=INTEGER}
+	</update>
+
+	<update id="updateCarPhotoPathById">
+		update vm_car
+		set photo_path=#{path,jdbcType=VARCHAR},update_time = CURRENT_TIMESTAMP
+		where car_id=#{id,jdbcType=INTEGER}
+
 	</update>
 
 	<delete id="deleteCarById" parameterType="int">
@@ -34,8 +48,19 @@
 	</delete>
 
 
-	<select id="selectAll" resultType="hirain.itd.hmi.demo.bean.Car">
-		select * from vm_car
+	<select id="selectAll" resultType="hirain.itd.hmi.demo.bean.vo.CarProfile">
+		select car.car_id,car.name,car.pwd,car.type,city.name as city,pj.name as project,car.capacity,car.photo_path
+		 from vm_car as car , dictionary_city as city,dictionary_project as pj
+		where car.city_id=city.city_id and car.project_id = pj.project_id
+		<if test="param1 !=null">
+			and  car.type like concat ('%',#{type},'%')
+		</if>
+		<if test="param2 !=null">
+			and  city.name like concat ('%',#{cityName},'%')
+		</if>
+		<if test="param3 !=null">
+			and  pj.name like concat ('%',#{projectName},'%')
+		</if>
 	</select>
 
 	<select id="selectCarByName"
@@ -46,4 +71,14 @@
 		where name =
 		#{name,jdbcType=VARCHAR}
 	</select>
+
+	<delete id="deleteCarByProjectId">
+		delete from vm_car
+		where project_id=#{project_id,jdbcType=INTEGER}
+	</delete>
+
+	<delete id="deleteCarByCityId">
+		delete from vm_car
+		where city_id=#{city_id,jdbcType=INTEGER}
+	</delete>
 </mapper>

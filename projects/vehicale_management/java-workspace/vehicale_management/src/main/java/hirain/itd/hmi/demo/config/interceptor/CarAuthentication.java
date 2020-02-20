@@ -3,6 +3,7 @@ package hirain.itd.hmi.demo.config.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import hirain.itd.hmi.demo.bean.vo.CarProfile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +62,7 @@ public class CarAuthentication implements HandlerInterceptor {
 					throw new RuntimeException("401");
 				}
 
-				Car car = carService.selectCarById(Integer.parseInt(carId));
+				CarProfile car = carService.selectCarProfileById(Integer.parseInt(carId));
 
 				if (car == null) {
 					throw new RuntimeException("role not exist.");

@@ -3,7 +3,7 @@
 <mapper namespace="hirain.itd.hmi.demo.dao.CarProfileMapper">
 
 	<select id="selectProfileByCarId"
-		resultType="hirain.itd.hmi.demo.bean.CarProfile" parameterType="int">
+            resultType="hirain.itd.hmi.demo.bean.vo.CarProfile" parameterType="int">
 		select
 		vm_car_profile.car_profile_id as car_profile_id,
 		vm_car_profile.capacity as capacity,

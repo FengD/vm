@@ -10,8 +10,8 @@ import io.netty.util.CharsetUtil;
 public class TcpServerChannelInitializer extends ChannelInitializer<SocketChannel> {
 	@Override
 	protected void initChannel(SocketChannel socketChannel) throws Exception {
-		socketChannel.pipeline().addLast("decoder", new StringDecoder(CharsetUtil.UTF_8));
-		socketChannel.pipeline().addLast("encoder", new StringEncoder(CharsetUtil.UTF_8));
+		socketChannel.pipeline().addLast("decoder", new StringDecoder(CharsetUtil.ISO_8859_1));
+		socketChannel.pipeline().addLast("encoder", new StringEncoder(CharsetUtil.ISO_8859_1));
 		socketChannel.pipeline().addLast(new TcpServerHandler());
 	}
 }

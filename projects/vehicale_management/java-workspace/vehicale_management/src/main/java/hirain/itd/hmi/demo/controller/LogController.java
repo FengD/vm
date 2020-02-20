@@ -1,29 +1,27 @@
 package hirain.itd.hmi.demo.controller;
 
+import hirain.itd.hmi.demo.serviceimpl.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.alibaba.fastjson.JSONObject;
 
 import hirain.itd.hmi.demo.annotation.CarLoginToken;
 import hirain.itd.hmi.demo.bean.Car;
 import hirain.itd.hmi.demo.service.ICarService;
-import hirain.itd.hmi.demo.service.ICarStatusService;
 import hirain.itd.hmi.demo.serviceimpl.TokenService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @Api(value = "used for authentication")
 @RestController
-public class LoginController {
+public class LogController {
 	@Autowired
 	ICarService carService;
 	@Autowired
 	TokenService tokenService;
 	@Autowired
-	ICarStatusService carStatusService;
+	private RedisService redisService;
 
 	@ApiOperation(value = "login", notes = "login parameter is name and password")
 	@PostMapping("/car/login")
@@ -32,31 +30,39 @@ public class LoginController {
 		Car carForBase = carService.selectCarByName(car.getName());
 
 		if (!carForBase.getPwd().equals(car.getPwd())) {
-			carStatusService.updateStatusByCarId(carForBase.getCar_id(), false);
 			jsonObject.put("message", "password error, login failed.");
 			jsonObject.put("action", "LOGIN");
 			jsonObject.put("status", "FATAL");
 			return jsonObject;
 		} else {
-			carStatusService.updateStatusByCarId(carForBase.getCar_id(), true);
 			String token = tokenService.getToken(carForBase);
-			jsonObject.put("token", token);
-			jsonObject.put("action", "LOGIN");
-			jsonObject.put("status", 200);
-			jsonObject.put("authority", "CAR");
-			jsonObject.put("car", carForBase);
-			return jsonObject;
+            if(redisService.set(carForBase.getCar_id()+"",true,(long)24 * 60 * 60 ))
+			{
+				jsonObject.put("token", token);
+				jsonObject.put("action", "LOGIN");
+				jsonObject.put("status", 200);
+				jsonObject.put("authority", "CAR");
+				jsonObject.put("car", carForBase);
+				return jsonObject;
+			}
+          else {
+				jsonObject.put("message", "request timeout");
+				jsonObject.put("action", "LOGIN");
+				jsonObject.put("status", "FATAL");
+				return jsonObject;
+			}
 		}
 	}
 
 	@ApiOperation(value = "logout", notes = "logout parameter is name and password")
-	@PostMapping("/car/logout")
+	@PostMapping("/car/{carId}/logout")
 	@CarLoginToken
-	public Object logout(@RequestBody Car car) throws Exception {
-		carStatusService.updateStatusByCarId(car.getCar_id(), false);
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("action", "LOGOUT");
-		jsonObject.put("status", 200);
-		return jsonObject;
+	public Object logout(@PathVariable int carId) throws Exception {
+
+			redisService.removeKey(carId+"");
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("action", "LOGOUT");
+			jsonObject.put("status", 200);
+			return jsonObject;
 	}
 }

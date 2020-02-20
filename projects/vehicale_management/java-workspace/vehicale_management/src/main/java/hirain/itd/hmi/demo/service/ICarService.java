@@ -1,19 +1,21 @@
 package hirain.itd.hmi.demo.service;
 
-import java.util.List;
-
 import hirain.itd.hmi.demo.bean.Car;
+import hirain.itd.hmi.demo.bean.vo.CarProfile;
+import hirain.itd.hmi.demo.bean.vo.PageBean;
 
 public interface ICarService {
-	int insert(String name, String pwd);
+	int insert(Car car);
 
-	Car selectCarById(int id) throws Exception;
+	CarProfile selectCarProfileById(int id) throws Exception;
 
-	int updateCarById(int id, String name, String pwd) throws Exception;
+	int updateCarById(Car car) throws Exception;
+
+	int updateCarPhotoPathById(int car_id,String photo_path) throws Exception;
 
 	int deleteCarById(int id) throws Exception;
 
-	List<Car> selectAll() throws Exception;
+	PageBean selectAllByPage(String type,String cityName,String projectName,int pageCode, int pageSize) throws Exception;
 
 	Car selectCarByName(String name) throws Exception;
 }

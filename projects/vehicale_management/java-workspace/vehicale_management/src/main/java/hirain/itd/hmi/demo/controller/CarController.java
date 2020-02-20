@@ -1,24 +1,25 @@
 package hirain.itd.hmi.demo.controller;
 
-import java.util.List;
-
+import hirain.itd.hmi.demo.bean.vo.CarProfile;
+import hirain.itd.hmi.demo.bean.vo.PageBean;
+import hirain.itd.hmi.demo.service.IFileService;
+import hirain.itd.hmi.demo.serviceimpl.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import hirain.itd.hmi.demo.bean.Car;
-import hirain.itd.hmi.demo.service.ICarProfileService;
+
 import hirain.itd.hmi.demo.service.ICarService;
-import hirain.itd.hmi.demo.service.ICarStatusService;
 import hirain.itd.hmi.demo.utils.Response;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.UUID;
+
 
 @RestController
 @RequestMapping("car")
@@ -27,18 +28,18 @@ public class CarController {
 	private ICarService carService;
 
 	@Autowired
-	private ICarProfileService carProfileService;
+	private RedisService redisService;
 
-	@Autowired
-	private ICarStatusService carStatusService;
+    @Autowired
+	private IFileService fileService;
 
 	@GetMapping("{carId}")
 	@ApiOperation(value = "car", notes = "get car by id")
 	public Object getCarById(@PathVariable int carId) {
 		Response response;
-		Car car;
+		CarProfile car;
 		try {
-			car = carService.selectCarById(carId);
+			car = carService.selectCarProfileById(carId);
 			response = new Response(car, HttpStatus.OK);
 		} catch (Exception e) {
 			response = new Response(null, HttpStatus.NOT_FOUND);
@@ -48,11 +49,17 @@ public class CarController {
 	}
 
 	@PostMapping("")
-	@ApiOperation(value = "car", notes = "inset car")
-	public Object insert(@RequestBody Car car) {
+	@ApiOperation(value = "car", notes = "insert car")
+	public Object insert( Car car,@RequestParam("car-image-file") MultipartFile file) {
 		Response response;
+		if (file.isEmpty()) {
+			return new Response("文件不能为空",HttpStatus.FOUND);
+		}
+		String photo_path;
 		try {
-			carService.insert(car.getName(), car.getPwd());
+			photo_path=fileService.upload(file);
+			car.setPhoto_path(photo_path);
+			carService.insert(car);
 			response = new Response(null, HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -61,12 +68,12 @@ public class CarController {
 		return response.getResponse();
 	}
 
-	@PutMapping("{carId}")
-	@ApiOperation(value = "car", notes = "update car by id")
-	public Object update(@PathVariable int carId, @RequestBody Car car) {
+	@PutMapping("")
+	@ApiOperation(value = "update car by id ignore car_photo_path", notes = "update car by id ignore car_photo_path")
+	public Object update( @RequestBody Car car) {
 		Response response;
 		try {
-			carService.updateCarById(carId, car.getName(), car.getPwd());
+			carService.updateCarById(car);
 			response = new Response(null, HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -74,6 +81,26 @@ public class CarController {
 
 		}
 		return response.getResponse();
+	}
+
+	@PutMapping("updatePhoto")
+	@ApiOperation(value = "update car_photo_path by car_id", notes="update car_photo_path by car_id")
+	public Object updatePhoto(int car_id,@RequestParam("car-image-file") MultipartFile file){
+		Response response;
+		if (file.isEmpty()) {
+			return new Response("文件不能为空",HttpStatus.FOUND);
+		}
+		String photo_path;
+		try {
+			photo_path=fileService.upload(file);
+			carService.updateCarPhotoPathById(car_id,photo_path);
+			response = new Response(null, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			response = new Response(null, HttpStatus.FOUND);
+		}
+		return response.getResponse();
+
 	}
 
 	@DeleteMapping("{carId}")
@@ -89,39 +116,31 @@ public class CarController {
 		return response.getResponse();
 	}
 
-	@GetMapping("all")
-	@ApiOperation(value = "car", notes = "get all car")
-	public Object getAllCar() {
+	@GetMapping("")
+	@ApiOperation(value = "car", notes = "get all car by paging")
+	public Object getAllCar(@RequestParam(value = "type", required = false,defaultValue="") String type,
+								@RequestParam(value = "cityName", required = false,defaultValue="") String cityName,
+								@RequestParam(value = "projectName", required = false,defaultValue="") String projectName,
+								@RequestParam(value = "pageCode", required = false, defaultValue = "1") int pageCode,
+							@RequestParam(value = "pageSize", required = false, defaultValue = "5") int pageSize) {
 		Response response;
-		List<Car> cars;
+		PageBean pageBean;
 		try {
-			cars = carService.selectAll();
-			response = new Response(cars, HttpStatus.OK);
+			pageBean = carService.selectAllByPage(type,cityName,projectName,pageCode, pageSize);
+			response = new Response(pageBean, HttpStatus.OK);
 		} catch (Exception e) {
 			response = new Response(null, HttpStatus.NOT_FOUND);
 		}
 		return response.getResponse();
 	}
 
-	@GetMapping("{carId}/profile")
-	@ApiOperation(value = "car profile", notes = "get profile by car id")
-	public Object getProfileByCarId(@PathVariable int carId) {
-		Response response;
-		try {
-			response = new Response(carProfileService.selectProfileByCarId(carId), HttpStatus.OK);
-		} catch (Exception e) {
-			response = new Response(null, HttpStatus.NOT_FOUND);
-
-		}
-		return response.getResponse();
-	}
 
 	@GetMapping("{carId}/status")
 	@ApiOperation(value = "car status", notes = "get status by car id")
 	public Object getStatusByCarId(@PathVariable int carId) {
 		Response response;
 		try {
-			response = new Response(carStatusService.selectStatusByCarId(carId), HttpStatus.OK);
+			response = new Response(redisService.exists(carId+""), HttpStatus.OK);
 		} catch (Exception e) {
 			response = new Response(null, HttpStatus.NOT_FOUND);
 

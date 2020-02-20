@@ -1,14 +1,12 @@
 package hirain.itd.hmi.demo;
 
-import java.util.List;
-
-import org.junit.Assert;
+//import org.junit.Assert;
+import hirain.itd.hmi.demo.bean.vo.PageBean;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import hirain.itd.hmi.demo.bean.Car;
-import hirain.itd.hmi.demo.serviceimpl.CarService;
+        import hirain.itd.hmi.demo.serviceimpl.CarService;
 
 @SpringBootTest
 class VehicaleManagementApplicationTests {
@@ -17,9 +15,9 @@ class VehicaleManagementApplicationTests {
 
 	@Test
 	public void carInsert() throws Exception {
-		List<Car> cars = carService.selectAll();
-		System.out.println(cars.size());
-		Assert.assertTrue(cars.size() == 4);
+		/*PageBean cars = carService.selectAllByPage(1,5);
+		System.out.println(cars);*/
+		//Assert.assertTrue(cars.size() == 4);
 //		carService.insert("hirain", "hirain");
 	}
 

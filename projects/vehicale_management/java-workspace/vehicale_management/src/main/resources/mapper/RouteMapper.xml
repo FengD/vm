@@ -15,13 +15,50 @@
 		resultType="hirain.itd.hmi.demo.bean.Route" parameterType="int">
 		select
 		vm_route.route_id as route_id, vm_route.name as name FROM vm_route,
-		vm_car,
-		vm_car_route_relation where vm_route.route_id =
-		vm_car_route_relation.route_id and vm_car.car_id =
-		vm_car_route_relation.car_id and vm_car_route_relation.car_id =
+		vm_car where vm_car.project_id =vm_route.project_id and vm_car.car_id =
 		#{id,jdbcType=INTEGER}
 	</select>
 
+	<select id="selectAllRoutes" resultType="hirain.itd.hmi.demo.bean.vo.RouteProject">
+		select
+		vm_route.route_id,dictionary_project.project_id, dictionary_project.name as project_name,vm_route.name as route_name,
+		 ST_AsText(route_point) as route_point, ST_AsText(start_point) as start_point, ST_AsText(end_point) as end_point
+		  FROM vm_route,dictionary_project
+		   where dictionary_project.project_id=vm_route.project_id
+		<if test="route_name !=null">
+			and  vm_route.name like concat ('%',#{route_name},'%')
+		</if>
+		<if test="project_name !=null">
+			and dictionary_project.name  like concat ('%',#{project_name},'%')
+		</if>
+	</select>
 
+	<delete id="deleteRouteById">
+		delete from vm_route where route_id=#{routeId,jdbcType=INTEGER}
+	</delete>
 
+	<delete id="deleteRouteByProjectId">
+		delete from vm_route where project_id=#{projectId,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="insert" parameterType="hirain.itd.hmi.demo.bean.Route">
+		INSERT INTO vm_route ( project_id,name,route_line, route_point, start_point, end_point )
+		 VALUES (#{project_id,jdbcType=INTEGER},
+		 #{name,jdbcType=VARCHAR},
+		 ST_GeomFromText(#{route_line},4326),
+		 ST_GeomFromText(#{route_point},4326),
+		 ST_GeomFromText(#{start_point},4326),
+		 ST_GeomFromText(#{end_point},4326)
+		)
+	</insert>
+
+    <update id="updateRouteById" parameterType="hirain.itd.hmi.demo.bean.Route">
+		update vm_route set project_id=#{project_id,jdbcType=INTEGER},
+		name=#{name,jdbcType=VARCHAR},
+		 route_line=ST_GeomFromText(#{route_line},4326),
+		route_point= ST_GeomFromText(#{route_point},4326),
+		start_point= ST_GeomFromText(#{start_point},4326),
+		end_point= ST_GeomFromText(#{end_point},4326)
+		where route_id=#{route_id,jdbcType=INTEGER}
+	</update>
 </mapper>

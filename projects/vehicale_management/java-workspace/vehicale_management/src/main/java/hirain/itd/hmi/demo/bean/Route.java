@@ -2,7 +2,9 @@ package hirain.itd.hmi.demo.bean;
 
 public class Route {
 	private int route_id;
+	private int project_id;
 	private String name;
+	private String route_line;
 	private String route_point;
 	private String start_point;
 	private String end_point;
@@ -15,12 +17,28 @@ public class Route {
 		this.route_id = route_id;
 	}
 
+	public int getProject_id() {
+		return project_id;
+	}
+
+	public void setProject_id(int project_id) {
+		this.project_id = project_id;
+	}
+
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getRoute_line() {
+		return route_line;
+	}
+
+	public void setRoute_line(String route_line) {
+		this.route_line = route_line;
 	}
 
 	public String getRoute_point() {

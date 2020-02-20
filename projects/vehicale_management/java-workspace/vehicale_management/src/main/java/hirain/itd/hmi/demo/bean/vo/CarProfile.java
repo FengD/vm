@@ -1,6 +1,9 @@
 package hirain.itd.hmi.demo.bean.vo;
 
 public class CarProfile {
+	private int car_id;
+	private int city_id;
+	private int project_id;
 	private String name;
 	private String pwd;
 	private String type;
@@ -9,6 +12,30 @@ public class CarProfile {
 	private int capacity;
 	private String photo_path;
 
+
+	public int getCar_id() {
+		return car_id;
+	}
+
+	public void setCar_id(int car_id) {
+		this.car_id = car_id;
+	}
+
+	public int getCity_id() {
+		return city_id;
+	}
+
+	public void setCity_id(int city_id) {
+		this.city_id = city_id;
+	}
+
+	public int getProject_id() {
+		return project_id;
+	}
+
+	public void setProject_id(int project_id) {
+		this.project_id = project_id;
+	}
 
 	public String getProject() {
 		return project;

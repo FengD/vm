@@ -15,7 +15,7 @@
 	</insert>
 
 	<select id="selectCarProfileById" resultType="hirain.itd.hmi.demo.bean.vo.CarProfile" parameterType="int">
-		select car.car_id,car.name,car.pwd,car.type,city.name as city,pj.name as project,car.capacity,car.photo_path
+		select car.car_id,car.city_id,car.project_id,car.name,car.pwd,car.type,city.name as city,pj.name as project,car.capacity,car.photo_path
 		 from vm_car as car , dictionary_city as city,dictionary_project as pj
 		where car.city_id=city.city_id and car.project_id = pj.project_id and car_id =#{car_id,jdbcType=INTEGER}
 	</select>
@@ -49,7 +49,7 @@
 
 
 	<select id="selectAll" resultType="hirain.itd.hmi.demo.bean.vo.CarProfile">
-		select car.car_id,car.name,car.pwd,car.type,city.name as city,pj.name as project,car.capacity,car.photo_path
+		select car.car_id,car.city_id,car.project_id,car.name,car.pwd,car.type,city.name as city,pj.name as project,car.capacity,car.photo_path
 		 from vm_car as car , dictionary_city as city,dictionary_project as pj
 		where car.city_id=city.city_id and car.project_id = pj.project_id
 		<if test="param1 !=null">
@@ -61,6 +61,7 @@
 		<if test="param3 !=null">
 			and  pj.name like concat ('%',#{projectName},'%')
 		</if>
+		order by car.car_id ASC
 	</select>
 
 	<select id="selectCarByName"

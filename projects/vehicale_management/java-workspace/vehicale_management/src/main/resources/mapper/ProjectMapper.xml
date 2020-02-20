@@ -25,6 +25,7 @@
         <if test="name !=null">
             and name like concat('%',#{name},'%')
         </if>
+        order by project_id ASC
     </select>
 
     <select id="ifExistProjectName" resultType="int">
